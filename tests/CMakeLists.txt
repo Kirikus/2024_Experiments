@@ -28,6 +28,7 @@ else()
 endif()
 
 target_link_libraries(tests PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(tests PRIVATE core)
 target_link_libraries(tests PRIVATE ${Boost_LIBRARIES})
 
 set_target_properties(tests PROPERTIES
