@@ -30,6 +30,8 @@ endif()
 target_link_libraries(tests PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 target_link_libraries(tests PRIVATE core)
 target_link_libraries(tests PRIVATE ${Boost_LIBRARIES})
+target_compile_definitions(tests PRIVATE QCUSTOMPLOT_USE_LIBRARY)
+target_link_libraries(tests PUBLIC qcustomplot)
 
 set_target_properties(tests PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
