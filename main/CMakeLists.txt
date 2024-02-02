@@ -1,11 +1,6 @@
 project(main VERSION 0.1 LANGUAGES CXX)
 
-set(PROJECT_SOURCES
-        main.cpp
-        mainwindow.cpp
-        mainwindow.h
-        mainwindow.ui
-)
+file(GLOB PROJECT_SOURCES "*.h" "*.cpp" "*.ui")
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(main
