@@ -2,6 +2,7 @@
 
 #include <QApplication>
 
+#include "../lib/module.h"
 #include "qcustomplot.h"
 
 #if !defined(WIN32)
