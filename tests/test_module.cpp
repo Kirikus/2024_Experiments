@@ -1,5 +1,3 @@
-#include "test_module.h"
-
 #include <QApplication>
 
 #include "../lib/module.h"

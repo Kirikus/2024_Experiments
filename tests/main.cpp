@@ -4,5 +4,3 @@
 #endif
 #define BOOST_TEST_MODULE AllTests
 #include <boost/test/unit_test.hpp>
-
-#include "test_module.h"
