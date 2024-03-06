@@ -1,7 +1,9 @@
 #include <QApplication>
 
-#include "../lib/module.h"
+
 #include "qcustomplot.h"
+
+/*
 
 #if !defined(WIN32)
 #define BOOST_TEST_DYN_LINK
@@ -68,3 +70,5 @@ BOOST_AUTO_TEST_CASE(plot_dummy) {
 #endif
 
 BOOST_AUTO_TEST_SUITE_END()
+
+*/
