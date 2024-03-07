@@ -27,7 +27,7 @@ class MainWindow : public QMainWindow {
 
   void on_pushButton_addScatterPlot_clicked();
 
- private:
+  private:
   Ui::MainWindow *ui;
 };
 

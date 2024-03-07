@@ -57,9 +57,11 @@ Qt::ItemFlags lib::MeasurementsTable::flags(const QModelIndex &index) const {
 
 void lib::MeasurementsTable::insertRow(int row, const QModelIndex &parent) {
   beginInsertRows(QModelIndex(), row, row);
+  endInsertRows();
 }
 
 void lib::MeasurementsTable::insertColumn(int column,
                                           const QModelIndex &parent) {
   beginInsertColumns(QModelIndex(), column, column);
+  endInsertColumns();
 }
