@@ -20,9 +20,6 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0" rowspan="3">
-     <widget class="QTableWidget" name="tableWidget"/>
-    </item>
     <item row="0" column="1" colspan="2">
      <widget class="QPushButton" name="pushButton_deletePlot">
       <property name="text">
@@ -66,6 +63,9 @@
        </attribute>
       </widget>
      </widget>
+    </item>
+    <item row="0" column="0" rowspan="3">
+     <widget class="QTableView" name="tableView"/>
     </item>
    </layout>
   </widget>
