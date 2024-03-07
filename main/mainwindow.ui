@@ -19,74 +19,55 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="pushButton_loadJSON">
-    <property name="geometry">
-     <rect>
-      <x>330</x>
-      <y>100</y>
-      <width>151</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>12</pointsize>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>loadJSON</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_addScatterPlot">
-    <property name="geometry">
-     <rect>
-      <x>480</x>
-      <y>100</y>
-      <width>141</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Add ScatterPlot</string>
-    </property>
-   </widget>
-   <widget class="QTabWidget" name="tabWidget_plots">
-    <property name="geometry">
-     <rect>
-      <x>340</x>
-      <y>170</y>
-      <width>421</width>
-      <height>371</height>
-     </rect>
-    </property>
-    <property name="currentIndex">
-     <number>0</number>
-    </property>
-    <widget class="QCustomPlot" name="tab">
-     <attribute name="title">
-      <string>Tab 1</string>
-     </attribute>
-    </widget>
-    <widget class="QCustomPlot" name="tab_2">
-     <attribute name="title">
-      <string>Tab 2</string>
-     </attribute>
-    </widget>
-   </widget>
-   <widget class="QPushButton" name="pushButton_deletePlot">
-    <property name="geometry">
-     <rect>
-      <x>620</x>
-      <y>100</y>
-      <width>141</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Delete Plot</string>
-    </property>
-   </widget>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="1" colspan="2">
+     <widget class="QPushButton" name="pushButton_deletePlot">
+      <property name="text">
+       <string>Delete Plot</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QPushButton" name="pushButton_loadJSON">
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>loadJSON</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="2">
+     <widget class="QPushButton" name="pushButton_addScatterPlot">
+      <property name="text">
+       <string>Add ScatterPlot</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1" colspan="2">
+     <widget class="QTabWidget" name="tabWidget_plots">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QCustomPlot" name="tab">
+       <attribute name="title">
+        <string>Tab 1</string>
+       </attribute>
+      </widget>
+      <widget class="QCustomPlot" name="tab_2">
+       <attribute name="title">
+        <string>Tab 2</string>
+       </attribute>
+      </widget>
+     </widget>
+    </item>
+    <item row="0" column="0" rowspan="3">
+     <widget class="QTableView" name="tableView"/>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
