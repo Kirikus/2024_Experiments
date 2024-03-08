@@ -25,6 +25,8 @@ MainWindow::MainWindow(QWidget *parent)
 
   ui->tableView->show();
 
+  connect(ui->addRow, SIGNAL(clicked()), this, SLOT(addRow()));
+  connect(ui->addColumn, SIGNAL(clicked()), this, SLOT(addColumn()));
 }
 
 MainWindow::~MainWindow() { delete ui; }
@@ -38,4 +40,13 @@ void MainWindow::on_pushButton_addScatterPlot_clicked() {
   int count = ui->tabWidget_plots->count();
   ui->tabWidget_plots->addTab(new QCustomPlot,
                               "tab" + QString::number(count + 1));
+}
+
+void MainWindow::addRow() {
+  ui->tableView->model()->insertRows(
+      lib::Manager::getInstance()->getMeasurementsCount(), 1);
+}
+void MainWindow::addColumn() {
+  ui->tableView->model()->insertColumns(
+      lib::Manager::getInstance()->getVariablesCount(), 1);
 }
