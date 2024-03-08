@@ -11,9 +11,9 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
   ui->setupUi(this);
-  lib::Variable a(5);
-  lib::Variable b(6);
-  lib::Variable c(3);
+  lib::Variable a;
+  lib::Variable b;
+  lib::Variable c;
   a.measurements = {1, 2, 3, 4, 5};
   b.measurements = {4, 2, 11, 3, 5, 1};
   c.measurements = {4, 2, 11};
