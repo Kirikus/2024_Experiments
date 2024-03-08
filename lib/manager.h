@@ -11,7 +11,6 @@ class Manager {
  private:
   QList<Variable> variables;
   QList<Variable> calculated;
-  size_t MeasurementsCount = 0;
 
  public:
   static class Manager* getInstance();
@@ -20,11 +19,9 @@ class Manager {
   void deleteVariable();
 
   size_t getVariablesCount() const { return variables.size(); }
-  size_t getMeasurementsCount() const { return MeasurementsCount; }
+  size_t getMeasurementsCount() const;
 
   Variable& getVariable(size_t Column_index) { return variables[Column_index]; }
-
-  void calculateMeasurementsCount();
 
   void addMeasurementsRow();
   void removeMeasurementsRow();

@@ -60,7 +60,6 @@ bool lib::MeasurementsTable::insertRows(int position, int rows,
   beginInsertRows(QModelIndex(), position, position + rows - 1);
   for (int i = 0; i < Manager::getInstance()->getVariablesCount(); i++) {
     Manager::getInstance()->getVariable(i).measurements.push_back(0);
-    Manager::getInstance()->calculateMeasurementsCount();
   }
   endInsertRows();
   return true;
