@@ -11,7 +11,7 @@ void lib::Manager::addVariable(const Variable& CurrentVariable) {
 }
 
 void lib::Manager::deleteVariable() {
-  if (variables.size() != 0) variables.removeLast();
+  if (variables.size() != 0) variables.pop_back();
 }
 
 size_t lib::Manager::getMeasurementsCount() const {
