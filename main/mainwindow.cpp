@@ -24,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
   ui->tableView->setModel(new lib::MeasurementsTable);
 
   ui->tableView->show();
+
 }
 
 MainWindow::~MainWindow() { delete ui; }
