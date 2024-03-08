@@ -56,6 +56,7 @@ void MainWindow::addRow() {
 
 void MainWindow::removeRow() {
   size_t count = lib::Manager::getInstance()->getMeasurementsCount();
+  if (count == 0) return;
   for (int i = 0; i < lib::Manager::getInstance()->getVariablesCount(); i++)
     if (count ==
         lib::Manager::getInstance()->getVariable(i).getMeasurementsCount())
@@ -74,5 +75,3 @@ void MainWindow::addColumn() {
   ui->tableMain->model()->insertColumns(
       lib::Manager::getInstance()->getVariablesCount(), 1);
 }
-
-
