@@ -21,26 +21,26 @@ MainWindow::MainWindow(QWidget *parent)
   lib::Manager::getInstance()->addVariable(b);
   lib::Manager::getInstance()->addVariable(c);
 
-  ui->tableView->setModel(new lib::MeasurementsTable);
+  ui->tableMain->setModel(new lib::MeasurementsTable);
 
-  ui->tableView->show();
+  ui->tableMain->show();
 
-  connect(ui->addRow, SIGNAL(clicked()), this, SLOT(addRow()));
-  connect(ui->addColumn, SIGNAL(clicked()), this, SLOT(addColumn()));
-  connect(ui->deleteRow, SIGNAL(clicked()), this, SLOT(removeRow()));
-  connect(ui->deleteColumn, SIGNAL(clicked()), this, SLOT(removeColumn()));
+  connect(ui->addRowBtn, SIGNAL(clicked()), this, SLOT(addRow()));
+  connect(ui->addColumnBtn, SIGNAL(clicked()), this, SLOT(addColumn()));
+  connect(ui->deleteRowBtn, SIGNAL(clicked()), this, SLOT(removeRow()));
+  connect(ui->deleteColumnBtn, SIGNAL(clicked()), this, SLOT(removeColumn()));
 }
 
 MainWindow::~MainWindow() { delete ui; }
 
-void MainWindow::on_pushButton_deletePlot_clicked() {
-  int index = ui->tabWidget_plots->currentIndex();
-  ui->tabWidget_plots->removeTab(index);
+void MainWindow::on_deletePlotBtn_clicked() {
+  int index = ui->tabWidgetPlots->currentIndex();
+  ui->tabWidgetPlots->removeTab(index);
 }
 
-void MainWindow::on_pushButton_addScatterPlot_clicked() {
-  int count = ui->tabWidget_plots->count();
-  ui->tabWidget_plots->addTab(new QCustomPlot,
+void MainWindow::on_addPlotBtn_clicked() {
+  int count = ui->tabWidgetPlots->count();
+  ui->tabWidgetPlots->addTab(new QCustomPlot,
                               "tab" + QString::number(count + 1));
 }
 
@@ -50,7 +50,7 @@ void MainWindow::addRow() {
     if (count ==
         lib::Manager::getInstance()->getVariable(i).getMeasurementsCount())
       lib::Manager::getInstance()->getVariable(i).measurements.push_back(0);
-  ui->tableView->model()->insertRows(
+  ui->tableMain->model()->insertRows(
       lib::Manager::getInstance()->getMeasurementsCount(), 1);
 }
 
@@ -60,17 +60,19 @@ void MainWindow::removeRow() {
     if (count ==
         lib::Manager::getInstance()->getVariable(i).getMeasurementsCount())
       lib::Manager::getInstance()->getVariable(i).measurements.pop_back();
-  ui->tableView->model()->removeRows(
+  ui->tableMain->model()->removeRows(
       lib::Manager::getInstance()->getMeasurementsCount(), 1);
 }
 
 void MainWindow::removeColumn() {
   lib::Manager::getInstance()->deleteVariable();
-  ui->tableView->model()->removeColumns(
+  ui->tableMain->model()->removeColumns(
       lib::Manager::getInstance()->getVariablesCount(), 1);
 }
 void MainWindow::addColumn() {
   lib::Manager::getInstance()->addVariable(lib::Variable());
-  ui->tableView->model()->insertColumns(
+  ui->tableMain->model()->insertColumns(
       lib::Manager::getInstance()->getVariablesCount(), 1);
 }
+
+
