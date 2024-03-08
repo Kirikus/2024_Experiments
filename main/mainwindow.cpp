@@ -21,32 +21,33 @@ MainWindow::MainWindow(QWidget *parent)
   lib::Manager::getInstance()->addVariable(b);
   lib::Manager::getInstance()->addVariable(c);
 
-  ui->tableView->setModel(new lib::MeasurementsTable);
+  ui->tableMain->setModel(new lib::MeasurementsTable);
 
-  ui->tableView->show();
+  ui->tableMain->show();
 
-  connect(ui->addRow, SIGNAL(clicked()), this, SLOT(addRow()));
-  connect(ui->addColumn, SIGNAL(clicked()), this, SLOT(addColumn()));
 }
 
 MainWindow::~MainWindow() { delete ui; }
 
-void MainWindow::on_pushButton_deletePlot_clicked() {
-  int index = ui->tabWidget_plots->currentIndex();
-  ui->tabWidget_plots->removeTab(index);
+void MainWindow::on_deletePlotBtn_clicked() {
+  int index = ui->tabWidgetPlots->currentIndex();
+  ui->tabWidgetPlots->removeTab(index);
 }
 
-void MainWindow::on_pushButton_addScatterPlot_clicked() {
-  int count = ui->tabWidget_plots->count();
-  ui->tabWidget_plots->addTab(new QCustomPlot,
+void MainWindow::on_addPlotBtn_clicked() {
+  int count = ui->tabWidgetPlots->count();
+  ui->tabWidgetPlots->addTab(new QCustomPlot,
                               "tab" + QString::number(count + 1));
 }
 
-void MainWindow::addRow() {
-  ui->tableView->model()->insertRows(
+void MainWindow::on_addRowBtn_clicked() {
+  ui->tableMain->model()->insertRows(
       lib::Manager::getInstance()->getMeasurementsCount(), 1);
 }
-void MainWindow::addColumn() {
-  ui->tableView->model()->insertColumns(
+
+void MainWindow::on_addColumnBtn_clicked() {
+  ui->tableMain->model()->insertColumns(
       lib::Manager::getInstance()->getVariablesCount(), 1);
 }
+
+
