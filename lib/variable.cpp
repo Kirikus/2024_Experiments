@@ -7,5 +7,4 @@ lib::Variable::Variable(QString name_full, QString name_short,
   Variable::measurements = measurements;
 }
 
-
 lib::Variable::Variable() {}
