@@ -58,9 +58,6 @@ Qt::ItemFlags lib::MeasurementsTable::flags(const QModelIndex &index) const {
 bool lib::MeasurementsTable::insertRows(int position, int rows,
                                         const QModelIndex &parent) {
   beginInsertRows(QModelIndex(), position, position + rows - 1);
-  for (int i = 0; i < Manager::getInstance()->getVariablesCount(); i++) {
-    Manager::getInstance()->getVariable(i).measurements.push_back(0);
-  }
   endInsertRows();
   return true;
 }
@@ -68,8 +65,20 @@ bool lib::MeasurementsTable::insertRows(int position, int rows,
 bool lib::MeasurementsTable::insertColumns(int position, int columns,
                                            const QModelIndex &parent) {
   beginInsertColumns(QModelIndex(), position, position + columns - 1);
-  Manager::getInstance()->addVariable(
-      Variable(Manager::getInstance()->getVariablesCount()));
   endInsertColumns();
+  return true;
+}
+
+bool lib::MeasurementsTable::removeRows(int position, int rows,
+                                        const QModelIndex &parent) {
+  beginRemoveRows(QModelIndex(), position, position + rows - 1);
+  endRemoveRows();
+  return true;
+}
+
+bool lib::MeasurementsTable::removeColumns(int position, int columns,
+                                           const QModelIndex &parent) {
+  beginRemoveColumns(QModelIndex(), position, position + columns - 1);
+  endRemoveColumns();
   return true;
 }

@@ -27,6 +27,8 @@ MainWindow::MainWindow(QWidget *parent)
 
   connect(ui->addRow, SIGNAL(clicked()), this, SLOT(addRow()));
   connect(ui->addColumn, SIGNAL(clicked()), this, SLOT(addColumn()));
+  connect(ui->deleteRow, SIGNAL(clicked()), this, SLOT(removeRow()));
+  connect(ui->deleteColumn, SIGNAL(clicked()), this, SLOT(removeColumn()));
 }
 
 MainWindow::~MainWindow() { delete ui; }
@@ -43,10 +45,32 @@ void MainWindow::on_pushButton_addScatterPlot_clicked() {
 }
 
 void MainWindow::addRow() {
+  size_t count = lib::Manager::getInstance()->getMeasurementsCount();
+  for (int i = 0; i < lib::Manager::getInstance()->getVariablesCount(); i++)
+    if (count ==
+        lib::Manager::getInstance()->getVariable(i).getMeasurementsCount())
+      lib::Manager::getInstance()->getVariable(i).measurements.push_back(0);
   ui->tableView->model()->insertRows(
       lib::Manager::getInstance()->getMeasurementsCount(), 1);
 }
+
+void MainWindow::removeRow() {
+  size_t count = lib::Manager::getInstance()->getMeasurementsCount();
+  for (int i = 0; i < lib::Manager::getInstance()->getVariablesCount(); i++)
+    if (count ==
+        lib::Manager::getInstance()->getVariable(i).getMeasurementsCount())
+      lib::Manager::getInstance()->getVariable(i).measurements.pop_back();
+  ui->tableView->model()->removeRows(
+      lib::Manager::getInstance()->getMeasurementsCount(), 1);
+}
+
+void MainWindow::removeColumn() {
+  lib::Manager::getInstance()->deleteVariable();
+  ui->tableView->model()->removeColumns(
+      lib::Manager::getInstance()->getVariablesCount(), 1);
+}
 void MainWindow::addColumn() {
+  lib::Manager::getInstance()->addVariable(lib::Variable());
   ui->tableView->model()->insertColumns(
       lib::Manager::getInstance()->getVariablesCount(), 1);
 }
