@@ -25,27 +25,52 @@ MainWindow::MainWindow(QWidget *parent)
 
   ui->tableMain->show();
 
+  connect(ui->addRowBtn, SIGNAL(clicked()), this, SLOT(addRow()));
+  connect(ui->addColumnBtn, SIGNAL(clicked()), this, SLOT(addColumn()));
+  connect(ui->deleteRowBtn, SIGNAL(clicked()), this, SLOT(removeRow()));
+  connect(ui->deleteColumnBtn, SIGNAL(clicked()), this, SLOT(removeColumn()));
 }
 
 MainWindow::~MainWindow() { delete ui; }
 
-void MainWindow::on_deletePlotBtn_clicked() {
+void MainWindow::on_pushButton_deletePlot_clicked() {
   int index = ui->tabWidgetPlots->currentIndex();
   ui->tabWidgetPlots->removeTab(index);
 }
 
-void MainWindow::on_addPlotBtn_clicked() {
+void MainWindow::on_pushButton_addScatterPlot_clicked() {
   int count = ui->tabWidgetPlots->count();
   ui->tabWidgetPlots->addTab(new QCustomPlot,
                               "tab" + QString::number(count + 1));
 }
 
-void MainWindow::on_addRowBtn_clicked() {
+void MainWindow::addRow() {
+  size_t count = lib::Manager::getInstance()->getMeasurementsCount();
+  for (int i = 0; i < lib::Manager::getInstance()->getVariablesCount(); i++)
+    if (count ==
+        lib::Manager::getInstance()->getVariable(i).getMeasurementsCount())
+      lib::Manager::getInstance()->getVariable(i).measurements.push_back(0);
   ui->tableMain->model()->insertRows(
       lib::Manager::getInstance()->getMeasurementsCount(), 1);
 }
 
-void MainWindow::on_addColumnBtn_clicked() {
+void MainWindow::removeRow() {
+  size_t count = lib::Manager::getInstance()->getMeasurementsCount();
+  for (int i = 0; i < lib::Manager::getInstance()->getVariablesCount(); i++)
+    if (count ==
+        lib::Manager::getInstance()->getVariable(i).getMeasurementsCount())
+      lib::Manager::getInstance()->getVariable(i).measurements.pop_back();
+  ui->tableMain->model()->removeRows(
+      lib::Manager::getInstance()->getMeasurementsCount(), 1);
+}
+
+void MainWindow::removeColumn() {
+  lib::Manager::getInstance()->deleteVariable();
+  ui->tableMain->model()->removeColumns(
+      lib::Manager::getInstance()->getVariablesCount(), 1);
+}
+void MainWindow::addColumn() {
+  lib::Manager::getInstance()->addVariable(lib::Variable());
   ui->tableMain->model()->insertColumns(
       lib::Manager::getInstance()->getVariablesCount(), 1);
 }
