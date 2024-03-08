@@ -11,17 +11,16 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
   ui->setupUi(this);
-  lib::Variable a;
-  lib::Variable b;
-  lib::Variable c;
-  a.measurements = {1, 2, 3, 4, 5};
-  b.measurements = {4, 2, 11, 3, 5, 1};
-  c.measurements = {4, 2, 11};
+  lib::Variable a{{1, 2, 3, 4, 5}, "izmerenie_1", "x"};
+  lib::Variable b{{4, 2, 11, 3, 5, 1}, "izmerenie_2"};
+  lib::Variable c{{4, 2, 11}, "izmerenie_3", "z"};
   lib::Manager::getInstance()->addVariable(c);
   lib::Manager::getInstance()->addVariable(a);
   lib::Manager::getInstance()->addVariable(b);
 
   ui->tableMain->setModel(new lib::MeasurementsTable);
+  ui->tableMain->horizontalHeader()->setSectionResizeMode(
+      QHeaderView::ResizeToContents);
 
   ui->tableMain->show();
 

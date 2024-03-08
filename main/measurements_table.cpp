@@ -53,6 +53,18 @@ bool lib::MeasurementsTable::setData(const QModelIndex &index,
   return false;
 }
 
+QVariant lib::MeasurementsTable::headerData(int section,
+                                            Qt::Orientation orientation,
+                                            int role) const {
+  if (role != Qt::DisplayRole) return QVariant();
+
+  if (orientation == Qt::Vertical) return section + 1;
+
+  return Manager::getInstance()->getVariable(section).name_short != "NONE"
+             ? Manager::getInstance()->getVariable(section).name_short
+             : Manager::getInstance()->getVariable(section).name_full;
+}
+
 Qt::ItemFlags lib::MeasurementsTable::flags(const QModelIndex &index) const {
   return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
 }
