@@ -27,6 +27,10 @@ class MainWindow : public QMainWindow {
 
   void on_pushButton_addScatterPlot_clicked();
 
+  void addColumn();
+
+  void addRow();
+
  private:
   Ui::MainWindow *ui;
 };
