@@ -17,6 +17,7 @@ class Manager {
 
   void addVariable(const Variable&);
   void deleteVariable();
+  void augmentVariables();
 
   size_t getVariablesCount() const { return variables.size(); }
   size_t getMeasurementsCount() const;
