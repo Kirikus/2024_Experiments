@@ -18,8 +18,11 @@ class MeasurementsTable : public QAbstractTableModel {
                int role = Qt::EditRole) override;
   Qt::ItemFlags flags(const QModelIndex &index) const override;
 
-  void insertRow(int row, const QModelIndex &parent);
-  void insertColumn(int column, const QModelIndex &parent);
+  // bool insertRows(int rows);
+  bool insertRows(int position, int rows,
+                  const QModelIndex &parent = QModelIndex());
+  bool insertColumns(int position, int columns,
+                  const QModelIndex &parent = QModelIndex());
 };
 
 }  // namespace lib

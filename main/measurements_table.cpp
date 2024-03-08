@@ -55,11 +55,22 @@ Qt::ItemFlags lib::MeasurementsTable::flags(const QModelIndex &index) const {
   return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
 }
 
-void lib::MeasurementsTable::insertRow(int row, const QModelIndex &parent) {
-  beginInsertRows(QModelIndex(), row, row);
+bool lib::MeasurementsTable::insertRows(int position, int rows,
+                                        const QModelIndex &parent) {
+  beginInsertRows(QModelIndex(), position, position + rows - 1);
+  for (int i = 0; i < Manager::getInstance()->getVariablesCount(); i++) {
+    Manager::getInstance()->getVariable(i).measurements.push_back(0);
+    Manager::getInstance()->calculateMeasurementsCount();
+  }
+  endInsertRows();
+  return true;
 }
 
-void lib::MeasurementsTable::insertColumn(int column,
-                                          const QModelIndex &parent) {
-  beginInsertColumns(QModelIndex(), column, column);
+bool lib::MeasurementsTable::insertColumns(int position, int columns,
+                                           const QModelIndex &parent) {
+  beginInsertColumns(QModelIndex(), position, position + columns - 1);
+  Manager::getInstance()->addVariable(
+      Variable(Manager::getInstance()->getVariablesCount()));
+  endInsertColumns();
+  return true;
 }
