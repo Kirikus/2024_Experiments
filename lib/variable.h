@@ -11,7 +11,7 @@ class Variable {
   QString name_full;
   QString name_short;
   QList<double> measurements;
-  size_t getMeasurementsCount() { return measurements.size(); }
+  size_t getMeasurementsCount() const { return measurements.size(); }
   Variable(QString name_full, QString name_short = "",
            QList<double> measurements = QList<double>{});
   Variable(size_t t);

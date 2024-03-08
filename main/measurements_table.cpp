@@ -22,6 +22,8 @@ QVariant lib::MeasurementsTable::data(const QModelIndex &index,
   if (Manager::getInstance()->getVariable(column).getMeasurementsCount() <= row)
     return QVariant();
   if (role == Qt::DisplayRole) {
+    if (Manager::getInstance()->getVariable(column).measurements[row] == 0)
+      return QVariant();
     return QVariant(
         Manager::getInstance()->getVariable(column).measurements[row]);
   }

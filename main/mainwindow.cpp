@@ -17,9 +17,9 @@ MainWindow::MainWindow(QWidget *parent)
   a.measurements = {1, 2, 3, 4, 5};
   b.measurements = {4, 2, 11, 3, 5, 1};
   c.measurements = {4, 2, 11};
+  lib::Manager::getInstance()->addVariable(c);
   lib::Manager::getInstance()->addVariable(a);
   lib::Manager::getInstance()->addVariable(b);
-  lib::Manager::getInstance()->addVariable(c);
 
   ui->tableMain->setModel(new lib::MeasurementsTable);
 
@@ -41,7 +41,7 @@ void MainWindow::on_deletePlotBtn_clicked() {
 void MainWindow::on_addPlotBtn_clicked() {
   int count = ui->tabWidgetPlots->count();
   ui->tabWidgetPlots->addTab(new QCustomPlot,
-                              "tab" + QString::number(count + 1));
+                             "tab" + QString::number(count + 1));
 }
 
 void MainWindow::addRow() {
@@ -56,7 +56,7 @@ void MainWindow::addRow() {
 
 void MainWindow::removeRow() {
   size_t count = lib::Manager::getInstance()->getMeasurementsCount();
-  if (count == 0) return;
+  if (count == 1) return;
   for (int i = 0; i < lib::Manager::getInstance()->getVariablesCount(); i++)
     if (count ==
         lib::Manager::getInstance()->getVariable(i).getMeasurementsCount())
@@ -66,6 +66,7 @@ void MainWindow::removeRow() {
 }
 
 void MainWindow::removeColumn() {
+  if (lib::Manager::getInstance()->getVariablesCount() == 1) return;
   lib::Manager::getInstance()->deleteVariable();
   ui->tableMain->model()->removeColumns(
       lib::Manager::getInstance()->getVariablesCount(), 1);
