@@ -33,12 +33,12 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow() { delete ui; }
 
-void MainWindow::on_pushButton_deletePlot_clicked() {
+void MainWindow::on_deletePlotBtn_clicked() {
   int index = ui->tabWidgetPlots->currentIndex();
   ui->tabWidgetPlots->removeTab(index);
 }
 
-void MainWindow::on_pushButton_addScatterPlot_clicked() {
+void MainWindow::on_addPlotBtn_clicked() {
   int count = ui->tabWidgetPlots->count();
   ui->tabWidgetPlots->addTab(new QCustomPlot,
                               "tab" + QString::number(count + 1));

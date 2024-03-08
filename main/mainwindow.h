@@ -23,9 +23,9 @@ class MainWindow : public QMainWindow {
 
  private slots:
 
-  void on_pushButton_deletePlot_clicked();
+  void on_deletePlotBtn_clicked();
 
-  void on_pushButton_addScatterPlot_clicked();
+  void on_addPlotBtn_clicked();
 
   void addColumn();
 
