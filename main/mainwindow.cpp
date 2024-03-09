@@ -2,10 +2,11 @@
 
 #include "./ui_mainwindow.h"
 #include "manager.h"
-#include "table_models/measurements_table.h"
 #include "plot.h"
 #include "qcustomplot.h"
 #include "strategyIO.h"
+#include "table_models/measurements_table.h"
+#include "table_models/naming_table.h"
 #include "variable.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -19,10 +20,14 @@ MainWindow::MainWindow(QWidget *parent)
   lib::Manager::getInstance()->addVariable(b);
 
   ui->tableMain->setModel(new lib::MeasurementsTable);
+  ui->tableView->setModel(new lib::NamingTable);
   ui->tableMain->horizontalHeader()->setSectionResizeMode(
+      QHeaderView::ResizeToContents);
+  ui->tableView->horizontalHeader()->setSectionResizeMode(
       QHeaderView::ResizeToContents);
 
   ui->tableMain->show();
+  ui->tableView->show();
 
   connect(ui->addRowBtn, SIGNAL(clicked()), this, SLOT(addRow()));
   connect(ui->addColumnBtn, SIGNAL(clicked()), this, SLOT(addColumn()));

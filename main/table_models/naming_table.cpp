@@ -17,30 +17,33 @@ int lib::NamingTable::columnCount(const QModelIndex &parent) const {
 }
 
 QVariant lib::NamingTable::data(const QModelIndex &index, int role) const {
+  int row = index.row();
+  int column = index.column();
+
   if (role == Qt::DisplayRole) {
-    if (index.column() == 0)
-      return Manager::getInstance()->getVariable(index.row()).name_full;
-    if (index.column() == 1)
-      return Manager::getInstance()->getVariable(index.row()).name_short;
+    if (column == 0) return Manager::getInstance()->getVariable(row).name_full;
+    if (column == 1) return Manager::getInstance()->getVariable(row).name_short;
   }
   return QVariant();
 }
 
 bool lib::NamingTable::setData(const QModelIndex &index, const QVariant &value,
                                int role) {
+  int row = index.row();
+  int column = index.column();
+
   if (role == Qt::EditRole) {
-    if (index.column() == 0)
-      return (value.toString().isEmpty() == true)
-                 ? false
-                 : Manager::getInstance()->getVariable(index.row()).name_full ==
-                       value.toString();
-    if (index.column() == 1)
-      return (value.toString().isEmpty() == true)
-                 ? false
-                 : Manager::getInstance()
-                           ->getVariable(index.row())
-                           .name_short == value.toString();
-    if (index.column() == 0 || index.column() == 1) return true;
+    if (value.toString().isEmpty() == true) return false;
+    if (column == 0) {
+      Manager::getInstance()->getVariable(row).name_full = value.toString();
+      emit dataChanged(index, index);
+      return true;
+    }
+    if (column == 1) {
+      Manager::getInstance()->getVariable(row).name_short = value.toString();
+      emit dataChanged(index, index);
+      return true;
+    }
   }
   return false;
 }
