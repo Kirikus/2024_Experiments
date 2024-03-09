@@ -22,6 +22,8 @@ QVariant lib::MeasurementsTable::data(const QModelIndex &index,
   if (Manager::getInstance()->getVariable(column).getMeasurementsCount() <= row)
     return QVariant();
   if (role == Qt::DisplayRole) {
+    if (Manager::getInstance()->getVariable(column).measurements[row] == 0)
+      return QVariant();
     return QVariant(
         Manager::getInstance()->getVariable(column).measurements[row]);
   }
@@ -49,6 +51,18 @@ bool lib::MeasurementsTable::setData(const QModelIndex &index,
     return true;
   }
   return false;
+}
+
+QVariant lib::MeasurementsTable::headerData(int section,
+                                            Qt::Orientation orientation,
+                                            int role) const {
+  if (role != Qt::DisplayRole) return QVariant();
+
+  if (orientation == Qt::Vertical) return section + 1;
+
+  return Manager::getInstance()->getVariable(section).name_short != "NONE"
+             ? Manager::getInstance()->getVariable(section).name_short
+             : Manager::getInstance()->getVariable(section).name_full;
 }
 
 Qt::ItemFlags lib::MeasurementsTable::flags(const QModelIndex &index) const {

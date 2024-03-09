@@ -8,13 +8,12 @@ namespace lib {
 // SimpleClass
 class Variable {
  public:
-  QString name_full;
-  QString name_short;
   QList<double> measurements;
-  size_t getMeasurementsCount() { return measurements.size(); }
-  Variable(QString name_full, QString name_short = "",
-           QList<double> measurements = QList<double>{});
-  Variable(size_t t);
+  QString name_full = "NONE";
+  QString name_short = "NONE";
+  size_t getMeasurementsCount() const { return measurements.size(); }
+  Variable(QList<double> measurements, QString name_full = "NONE",
+           QString name_short = "NONE");
   Variable();
 };
 
