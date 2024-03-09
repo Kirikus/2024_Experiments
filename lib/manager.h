@@ -12,7 +12,10 @@ class Manager {
   QList<Variable> variables;
   QList<Variable> calculated;
 
+
  public:
+  int mx = 0;
+
   static class Manager* getInstance();
 
   void addVariable(const Variable&);
@@ -20,7 +23,6 @@ class Manager {
   void augmentVariables();
 
   size_t getVariablesCount() const { return variables.size(); }
-  size_t getMeasurementsCount() const;
 
   Variable& getVariable(size_t Column_index) { return variables[Column_index]; }
 

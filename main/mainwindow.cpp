@@ -7,10 +7,12 @@
 #include "qcustomplot.h"
 #include "strategyIO.h"
 #include "variable.h"
+#include <iostream>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
   ui->setupUi(this);
+
   lib::Variable a{{1, 2, 3, 4, 5}, "izmerenie_1", "x"};
   lib::Variable b{{4, 2, 11, 3, 5, 1}, "izmerenie_2"};
   lib::Variable c{{4, 2, 11}, "izmerenie_3", "z"};
@@ -44,24 +46,24 @@ void MainWindow::on_addPlotBtn_clicked() {
 }
 
 void MainWindow::addRow() {
-  size_t count = lib::Manager::getInstance()->getMeasurementsCount();
+  size_t count = lib::Manager::getInstance()->mx;
   for (int i = 0; i < lib::Manager::getInstance()->getVariablesCount(); i++)
     if (count ==
         lib::Manager::getInstance()->getVariable(i).getMeasurementsCount())
       lib::Manager::getInstance()->getVariable(i).measurements.push_back(0);
   ui->tableMain->model()->insertRows(
-      lib::Manager::getInstance()->getMeasurementsCount(), 1);
+      lib::Manager::getInstance()->mx, 1);
 }
 
 void MainWindow::removeRow() {
-  size_t count = lib::Manager::getInstance()->getMeasurementsCount();
+  size_t count = lib::Manager::getInstance()->mx;
   if (count == 1) return;
   for (int i = 0; i < lib::Manager::getInstance()->getVariablesCount(); i++)
     if (count ==
         lib::Manager::getInstance()->getVariable(i).getMeasurementsCount())
       lib::Manager::getInstance()->getVariable(i).measurements.pop_back();
   ui->tableMain->model()->removeRows(
-      lib::Manager::getInstance()->getMeasurementsCount(), 1);
+      lib::Manager::getInstance()->mx, 1);
 }
 
 void MainWindow::removeColumn() {

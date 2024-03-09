@@ -7,7 +7,7 @@ lib::MeasurementsTable::MeasurementsTable(QObject *parent)
     : QAbstractTableModel(parent) {}
 
 int lib::MeasurementsTable::rowCount(const QModelIndex &parent) const {
-  return lib::Manager::getInstance()->getMeasurementsCount();
+  return lib::Manager::getInstance()->mx;
 }
 
 int lib::MeasurementsTable::columnCount(const QModelIndex &parent) const {
