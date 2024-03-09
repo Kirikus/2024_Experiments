@@ -2,7 +2,7 @@
 
 #include "./ui_mainwindow.h"
 #include "manager.h"
-#include "measurements_table.h"
+#include "table_models/measurements_table.h"
 #include "plot.h"
 #include "qcustomplot.h"
 #include "strategyIO.h"
