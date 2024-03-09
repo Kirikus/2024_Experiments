@@ -8,10 +8,17 @@ lib::Manager* lib::Manager::getInstance() { return instance; }
 
 void lib::Manager::addVariable(const Variable& CurrentVariable) {
   variables.append(CurrentVariable);
+  augmentVariables();
 }
 
 void lib::Manager::deleteVariable() {
   if (variables.size() != 0) variables.pop_back();
+}
+
+void lib::Manager::augmentVariables() {
+  for (size_t i = 0; i < getVariablesCount(); i++)
+    while (getVariable(i).getMeasurementsCount() != getMeasurementsCount())
+      variables[i].measurements.push_back(0);
 }
 
 size_t lib::Manager::getMeasurementsCount() const {
