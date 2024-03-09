@@ -22,7 +22,11 @@ class MeasurementsTable : public QAbstractTableModel {
   bool insertRows(int position, int rows,
                   const QModelIndex &parent = QModelIndex());
   bool insertColumns(int position, int columns,
+                     const QModelIndex &parent = QModelIndex());
+  bool removeRows(int position, int rows,
                   const QModelIndex &parent = QModelIndex());
+  bool removeColumns(int position, int columns,
+                     const QModelIndex &parent = QModelIndex());
 };
 
 }  // namespace lib

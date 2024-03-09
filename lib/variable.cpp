@@ -10,3 +10,5 @@ lib::Variable::Variable(QString name_full, QString name_short,
 lib::Variable::Variable(size_t t) {
   for (auto i = 0; i < t; i++) measurements.append(0);
 }
+
+lib::Variable::Variable() {}
