@@ -74,9 +74,13 @@ void MainWindow::removeColumn() {
   lib::Manager::getInstance()->deleteVariable();
   ui->tableMain->model()->removeColumns(
       lib::Manager::getInstance()->getVariablesCount(), 1);
+  ui->tableView->model()->removeRows(
+      lib::Manager::getInstance()->getVariablesCount(), 1);
 }
 void MainWindow::addColumn() {
   lib::Manager::getInstance()->addVariable(lib::Variable());
   ui->tableMain->model()->insertColumns(
+      lib::Manager::getInstance()->getVariablesCount(), 1);
+  ui->tableView->model()->insertRows(
       lib::Manager::getInstance()->getVariablesCount(), 1);
 }

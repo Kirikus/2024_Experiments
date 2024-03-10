@@ -60,3 +60,17 @@ QVariant lib::NamingTable::headerData(int section, Qt::Orientation orientation,
 Qt::ItemFlags lib::NamingTable::flags(const QModelIndex &index) const {
   return Qt::ItemIsEditable | QAbstractItemModel::flags(index);
 }
+
+bool lib::NamingTable::insertRows(int row, int count,
+                                  const QModelIndex &parent) {
+  beginInsertRows(parent, row, row + count - 1);
+  endInsertRows();
+  return true;
+}
+
+bool lib::NamingTable::removeRows(int row, int count,
+                                  const QModelIndex &parent) {
+  beginRemoveRows(parent, row, row + count - 1);
+  endRemoveRows();
+  return true;
+}
