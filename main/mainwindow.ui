@@ -60,7 +60,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="MainTab">
      <attribute name="title">
@@ -107,7 +107,7 @@
         <x>40</x>
         <y>350</y>
         <width>250</width>
-        <height>42</height>
+        <height>56</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout">
@@ -155,6 +155,24 @@
       </property>
      </widget>
     </widget>
+    <widget class="QWidget" name="NamingTab">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <attribute name="title">
+      <string>Naming</string>
+     </attribute>
+     <widget class="QTableView" name="tableView">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>20</y>
+        <width>256</width>
+        <height>192</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
     <widget class="QWidget" name="PlotSetsTab">
      <attribute name="title">
       <string>Plots Settings</string>
@@ -182,7 +200,7 @@
      <x>0</x>
      <y>0</y>
      <width>824</width>
-     <height>17</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

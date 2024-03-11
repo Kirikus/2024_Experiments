@@ -13,8 +13,11 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Widgets REQUIRED)
 
 file(GLOB PROJECT_SOURCES "*.h" "*.cpp" "*.ui")
 
+file(GLOB TABLE_SOURCES "table_models/*.h" "table_models/*.cpp")
+
 add_executable(main
     ${PROJECT_SOURCES}
+    ${TABLE_SOURCES}
 )
 
 target_link_libraries(main PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
