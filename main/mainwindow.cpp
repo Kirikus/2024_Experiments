@@ -45,7 +45,7 @@ void MainWindow::on_deletePlotBtn_clicked() {
 void MainWindow::on_addPlotBtn_clicked() {
   int count = ui->tabWidgetPlots->count();
   ui->tabWidgetPlots->addTab(new QCustomPlot,
-                             "tab" + QString::number(count + 1));
+                             "Plot " + QString::number(count + 1));
 }
 
 void MainWindow::addRow() {
