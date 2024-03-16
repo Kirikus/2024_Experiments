@@ -19,15 +19,15 @@ MainWindow::MainWindow(QWidget *parent)
   lib::Manager::getInstance()->addVariable(a);
   lib::Manager::getInstance()->addVariable(b);
 
-  ui->tableMain->setModel(new lib::MeasurementsTable);
-  ui->tableView->setModel(new lib::NamingTable);
-  ui->tableMain->horizontalHeader()->setSectionResizeMode(
+  ui->tableViewMain->setModel(new lib::MeasurementsTable);
+  ui->tableViewNaming->setModel(new lib::NamingTable);
+  ui->tableViewMain->horizontalHeader()->setSectionResizeMode(
       QHeaderView::ResizeToContents);
-  ui->tableView->horizontalHeader()->setSectionResizeMode(
+  ui->tableViewNaming->horizontalHeader()->setSectionResizeMode(
       QHeaderView::ResizeToContents);
 
-  ui->tableMain->show();
-  ui->tableView->show();
+  ui->tableViewMain->show();
+  ui->tableViewNaming->show();
 
   connect(ui->addRowBtn, SIGNAL(clicked()), this, SLOT(addRow()));
   connect(ui->addColumnBtn, SIGNAL(clicked()), this, SLOT(addColumn()));
@@ -45,7 +45,7 @@ void MainWindow::on_deletePlotBtn_clicked() {
 void MainWindow::on_addPlotBtn_clicked() {
   int count = ui->tabWidgetPlots->count();
   ui->tabWidgetPlots->addTab(new QCustomPlot,
-                             "tab" + QString::number(count + 1));
+                             "Plot " + QString::number(count + 1));
 }
 
 void MainWindow::addRow() {
@@ -54,7 +54,7 @@ void MainWindow::addRow() {
     if (count ==
         lib::Manager::getInstance()->getVariable(i).getMeasurementsCount())
       lib::Manager::getInstance()->getVariable(i).measurements.push_back(0);
-  ui->tableMain->model()->insertRows(
+  ui->tableViewMain->model()->insertRows(
       lib::Manager::getInstance()->getMeasurementsCount(), 1);
 }
 
@@ -65,22 +65,22 @@ void MainWindow::removeRow() {
     if (count ==
         lib::Manager::getInstance()->getVariable(i).getMeasurementsCount())
       lib::Manager::getInstance()->getVariable(i).measurements.pop_back();
-  ui->tableMain->model()->removeRows(
+  ui->tableViewMain->model()->removeRows(
       lib::Manager::getInstance()->getMeasurementsCount(), 1);
 }
 
 void MainWindow::removeColumn() {
   if (lib::Manager::getInstance()->getVariablesCount() == 1) return;
   lib::Manager::getInstance()->deleteVariable();
-  ui->tableMain->model()->removeColumns(
+  ui->tableViewMain->model()->removeColumns(
       lib::Manager::getInstance()->getVariablesCount(), 1);
-  ui->tableView->model()->removeRows(
+  ui->tableViewNaming->model()->removeRows(
       lib::Manager::getInstance()->getVariablesCount(), 1);
 }
 void MainWindow::addColumn() {
   lib::Manager::getInstance()->addVariable(lib::Variable());
-  ui->tableMain->model()->insertColumns(
+  ui->tableViewMain->model()->insertColumns(
       lib::Manager::getInstance()->getVariablesCount(), 1);
-  ui->tableView->model()->insertRows(
+  ui->tableViewNaming->model()->insertRows(
       lib::Manager::getInstance()->getVariablesCount(), 1);
 }
