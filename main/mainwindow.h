@@ -35,10 +35,6 @@ class MainWindow : public QMainWindow {
 
   void removeColumn();
 
-  void addColumn();
-
-  void addRow();
-
  private:
   Ui::MainWindow *ui;
 };
