@@ -1,6 +1,7 @@
 #ifndef VARIABLE_H
 #define VARIABLE_H
 
+#include "../qcustomplot_lib/qcustomplot.h"
 #include "QColor"
 #include "QList"
 
@@ -10,6 +11,9 @@ struct VisualOptions {
   bool visible = true;
   int width = 1;
   QColor color = "black";
+  QCPScatterStyle::ScatterShape point_type =
+      QCPScatterStyle::ScatterShape::ssNone;
+  Qt::PenStyle line_type = Qt::SolidLine;
 };
 
 struct Variable {
