@@ -11,7 +11,7 @@ struct VisualOptions {
   bool visible = true;
   int width = 1;
   QColor color = "black";
-  QCPScatterStyle::ScatterShape point_type =
+  QCPScatterStyle::ScatterShape point_form =
       QCPScatterStyle::ScatterShape::ssNone;
   Qt::PenStyle line_type = Qt::SolidLine;
 };
