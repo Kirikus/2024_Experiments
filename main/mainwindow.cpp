@@ -7,6 +7,7 @@
 #include "strategyIO.h"
 #include "table_models/measurements_table.h"
 #include "table_models/naming_table.h"
+#include "table_models/plot_settings_table.h"
 #include "variable.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -21,13 +22,17 @@ MainWindow::MainWindow(QWidget *parent)
 
   ui->tableViewMain->setModel(new lib::MeasurementsTable);
   ui->tableViewNaming->setModel(new lib::NamingTable);
+  ui->tableViewPlotsSets->setModel(new lib::PlotSettingsTable);
   ui->tableViewMain->horizontalHeader()->setSectionResizeMode(
       QHeaderView::ResizeToContents);
   ui->tableViewNaming->horizontalHeader()->setSectionResizeMode(
       QHeaderView::ResizeToContents);
+  ui->tableViewPlotsSets->horizontalHeader()->setSectionResizeMode(
+      QHeaderView::ResizeToContents);
 
   ui->tableViewMain->show();
   ui->tableViewNaming->show();
+  ui->tableViewPlotsSets->show();
 
   connect(ui->addRowBtn, SIGNAL(clicked()), this, SLOT(addRow()));
   connect(ui->addColumnBtn, SIGNAL(clicked()), this, SLOT(addColumn()));
