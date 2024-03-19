@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "./ui_mainwindow.h"
-#include "C:/2024_Experiments/main/plot_models/plot.h"
+#include "plot_models/plot.h"
 #include "manager.h"
 #include "qcustomplot.h"
 #include "strategyIO.h"
