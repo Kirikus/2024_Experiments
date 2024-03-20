@@ -5,6 +5,7 @@
 #include "plot.h"
 #include "qcustomplot.h"
 #include "strategyIO.h"
+#include "table_models/delegates/color_delegate.h"
 #include "table_models/measurements_table.h"
 #include "table_models/naming_table.h"
 #include "table_models/plot_settings_table.h"
@@ -23,6 +24,9 @@ MainWindow::MainWindow(QWidget *parent)
   ui->tableViewMain->setModel(new lib::MeasurementsTable);
   ui->tableViewNaming->setModel(new lib::NamingTable);
   ui->tableViewPlotsSets->setModel(new lib::PlotSettingsTable);
+
+  ui->tableViewPlotsSets->setItemDelegateForColumn(4, new ColorDelegate);
+
   ui->tableViewMain->horizontalHeader()->setSectionResizeMode(
       QHeaderView::ResizeToContents);
   ui->tableViewNaming->horizontalHeader()->setSectionResizeMode(
@@ -81,11 +85,15 @@ void MainWindow::removeColumn() {
       lib::Manager::getInstance()->getVariablesCount(), 1);
   ui->tableViewNaming->model()->removeRows(
       lib::Manager::getInstance()->getVariablesCount(), 1);
+  ui->tableViewPlotsSets->model()->removeRows(
+      lib::Manager::getInstance()->getVariablesCount(), 1);
 }
 void MainWindow::addColumn() {
   lib::Manager::getInstance()->addVariable(lib::Variable());
   ui->tableViewMain->model()->insertColumns(
       lib::Manager::getInstance()->getVariablesCount(), 1);
   ui->tableViewNaming->model()->insertRows(
+      lib::Manager::getInstance()->getVariablesCount(), 1);
+  ui->tableViewPlotsSets->model()->insertRows(
       lib::Manager::getInstance()->getVariablesCount(), 1);
 }
