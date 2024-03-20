@@ -23,6 +23,10 @@ class MainWindow : public QMainWindow {
 
  private slots:
 
+  void load();
+
+  void save();
+
   void on_deletePlotBtn_clicked();
 
   void on_addPlotBtn_clicked();
