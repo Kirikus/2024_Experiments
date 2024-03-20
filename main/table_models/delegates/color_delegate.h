@@ -1,0 +1,4 @@
+#ifndef COLOR_DELEGATE_H
+#define COLOR_DELEGATE_H
+
+#endif  // COLOR_DELEGATE_H
