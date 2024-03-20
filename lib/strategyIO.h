@@ -3,24 +3,24 @@
 
 #include "manager.h"
 
-class StrategyIO {
-  virtual void save(lib::Manager&) = 0;
-  virtual void load(lib::Manager&) = 0;
+struct StrategyIO {
+  virtual void save(const QString&) = 0;
+  virtual void load(const QString&) = 0;
 };
 
-class StrategyIO_JSON : public StrategyIO {
-  void save(lib::Manager&) override;
-  void load(lib::Manager&) override;
+struct StrategyIO_JSON : public StrategyIO {
+  void save(const QString&) override;
+  void load(const QString&) override;
 };
 
-class StrategyIO_BD : public StrategyIO {
-  void save(lib::Manager&) override;
-  void load(lib::Manager&) override;
+struct StrategyIO_DB : public StrategyIO {
+  void save(const QString&) override;
+  void load(const QString&) override;
 };
 
-class StrategyIO_Custom : public StrategyIO {
-  void save(lib::Manager&) override;
-  void load(lib::Manager&) override;
+struct StrategyIO_CSV : public StrategyIO {
+  void save(const QString&) override;
+  void load(const QString&) override;
 };
 
 #endif  // STRATEGYIO_H

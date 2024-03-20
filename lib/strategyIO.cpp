@@ -2,14 +2,14 @@
 
 #include "manager.h"
 
-void StrategyIO_JSON::save(lib::Manager&) {}
+void StrategyIO_JSON::save(const QString&) {}
 
-void StrategyIO_JSON::load(lib::Manager& CurrentManager) {}
+void StrategyIO_JSON::load(const QString&) {}
 
-void StrategyIO_BD::save(lib::Manager&) {}
+void StrategyIO_DB::save(const QString&) {}
 
-void StrategyIO_BD::load(lib::Manager&) {}
+void StrategyIO_DB::load(const QString&) {}
 
-void StrategyIO_Custom::save(lib::Manager&) {}
+void StrategyIO_CSV::save(const QString&) {}
 
-void StrategyIO_Custom::load(lib::Manager&) {}
+void StrategyIO_CSV::load(const QString&) {}
