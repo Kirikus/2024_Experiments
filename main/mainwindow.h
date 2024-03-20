@@ -8,6 +8,8 @@
 #include <QMainWindow>
 #include <QStandardItem>
 
+#include "plot_models/plot.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -35,7 +37,10 @@ class MainWindow : public QMainWindow {
 
   void removeColumn();
 
+  void Redraw();
+
  private:
+  ScatterPlot *plot = new ScatterPlot;
   Ui::MainWindow *ui;
 };
 

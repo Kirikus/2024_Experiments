@@ -1,81 +1,28 @@
 #ifndef PLOT_H
 #define PLOT_H
 
-#include "../qcustomplot_lib/qcustomplot.h"
+#include "../../lib/manager.h"
+#include "../../qcustomplot_lib/qcustomplot.h"
 #include "QString"
 #include "QTabWidget"
-#include "manager.h"
 
-class Plot {
-  lib::Manager PlotManager;
-
+class Plot : public QWidget {
+  Q_OBJECT
  public:
   void setManager();
-  virtual void draw() const = 0;
-  virtual void setOptions() = 0;
-};
-
-class ChoicePlot : public Plot {
- private:
-  lib::Manager PlotManager;
-  QTabWidget plots;
-
- public:
-  virtual void draw() const = 0;
+  virtual void draw(QCustomPlot*) = 0;
   virtual void setOptions() = 0;
 };
 
 class ScatterPlot : public Plot {
+  Q_OBJECT
  private:
-  lib::Manager PlotManager;
   QString title;
   QString X_axisname;
   QString Y_axisname;
 
  public:
-  void draw() const override;
-  void setOptions() override;
-};
-
-class HistogramPlot : public Plot {
- private:
-  lib::Manager PlotManager;
-  QString title;
-  QString X_axisname;
-  QString Y_axisname;
-  int bin_count;
-
- public:
-  void draw() const override;
-  void setOptions() override;
-};
-
-class TwoDimScatterPlot : public Plot {
- private:
-  lib::Manager PlotManager;
-  QString title;
-  QString X_axisname;
-  QString Y_axisname;
-  int xVariable;
-  int yVariable;
-
- public:
-  void draw() const override;
-  void setOptions() override;
-};
-
-class TwoDimColormapPlot : public Plot {
- private:
-  lib::Manager PlotManager;
-  QString title;
-  QString X_axisname;
-  QString Y_axisname;
-  int bin_count;
-  int xVariable;
-  int yVariable;
-
- public:
-  void draw() const override;
+  void draw(QCustomPlot*) override;
   void setOptions() override;
 };
 

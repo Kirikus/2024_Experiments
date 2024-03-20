@@ -23,7 +23,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidgetOptionsTabs">
       <property name="currentIndex">
-       <number>1</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="MainTab">
        <attribute name="title">
@@ -502,6 +502,18 @@
     <item>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
+       <widget class="QTabWidget" name="tabWidgetPlots">
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <widget class="QCustomPlot" name="customPlot">
+         <attribute name="title">
+          <string>Plot 1</string>
+         </attribute>
+        </widget>
+       </widget>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
          <spacer name="horizontalSpacer_3">
@@ -513,7 +525,36 @@
           </property>
           <property name="sizeHint" stdset="0">
            <size>
-            <width>40</width>
+            <width>10</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="redrawPlotBtn">
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Redraw</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_17">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Maximum</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>10</width>
             <height>20</height>
            </size>
           </property>
@@ -536,7 +577,7 @@
           </property>
           <property name="sizeHint" stdset="0">
            <size>
-            <width>40</width>
+            <width>10</width>
             <height>20</height>
            </size>
           </property>
@@ -559,25 +600,13 @@
           </property>
           <property name="sizeHint" stdset="0">
            <size>
-            <width>40</width>
+            <width>10</width>
             <height>20</height>
            </size>
           </property>
          </spacer>
         </item>
        </layout>
-      </item>
-      <item>
-       <widget class="QTabWidget" name="tabWidgetPlots">
-        <property name="currentIndex">
-         <number>0</number>
-        </property>
-        <widget class="QCustomPlot" name="customPlot">
-         <attribute name="title">
-          <string>Plot 1</string>
-         </attribute>
-        </widget>
-       </widget>
       </item>
      </layout>
     </item>
@@ -590,7 +619,7 @@
      <x>0</x>
      <y>0</y>
      <width>960</width>
-     <height>17</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuSettings">
