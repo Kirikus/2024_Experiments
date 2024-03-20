@@ -74,11 +74,11 @@ bool lib::PlotSettingsTable::setData(const QModelIndex &index,
           emit dataChanged(index, index);
           return true;
         case PlotSettings_shell::data::point_form:
-          // TODO
+          visual.point_form = VisualOptions::point_forms.key(value.toString());
           emit dataChanged(index, index);
           return true;
         case PlotSettings_shell::data::line_type:
-          // TODO
+          visual.line_type = VisualOptions::line_types.key(value.toString());
           emit dataChanged(index, index);
           return true;
         case PlotSettings_shell::data::color:
