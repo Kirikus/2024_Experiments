@@ -43,7 +43,7 @@ QVariant lib::PlotSettingsTable::data(const QModelIndex &index,
         case PlotSettings_shell::data::point_form:
           if (visual.point_form == QCPScatterStyle::ScatterShape::ssNone)
             return QString("Standart");
-          return QVariant::fromValue(visual.point_form);
+          return visual.point_forms.value(visual.point_form);
         case PlotSettings_shell::data::line_type:
           return QVariant::fromValue(visual.line_type);
       }
