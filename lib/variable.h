@@ -4,6 +4,7 @@
 #include "../qcustomplot_lib/qcustomplot.h"
 #include "QColor"
 #include "QList"
+#include "QMap"
 
 namespace lib {
 
@@ -14,6 +15,8 @@ struct VisualOptions {
   QCPScatterStyle::ScatterShape point_form =
       QCPScatterStyle::ScatterShape::ssNone;
   Qt::PenStyle line_type = Qt::SolidLine;
+  static QMap<Qt::PenStyle, QString> line_types;
+  static QMap<QCPScatterStyle::ScatterShape, QString> point_forms;
 };
 
 struct Variable {
