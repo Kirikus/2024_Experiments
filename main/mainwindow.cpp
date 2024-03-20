@@ -6,6 +6,7 @@
 #include "qcustomplot.h"
 #include "strategyIO.h"
 #include "table_models/delegates/color_delegate.h"
+#include "table_models/delegates/combobox_delegate.h"
 #include "table_models/measurements_table.h"
 #include "table_models/naming_table.h"
 #include "table_models/plot_settings_table.h"
@@ -26,6 +27,10 @@ MainWindow::MainWindow(QWidget *parent)
   ui->tableViewPlotsSets->setModel(new lib::PlotSettingsTable);
 
   ui->tableViewPlotsSets->setItemDelegateForColumn(4, new ColorDelegate);
+  ui->tableViewPlotsSets->setItemDelegateForColumn(
+      2, new ComboBoxDelegate(lib::VisualOptions::point_forms.values()));
+  ui->tableViewPlotsSets->setItemDelegateForColumn(
+      3, new ComboBoxDelegate(lib::VisualOptions::line_types.values()));
 
   ui->tableViewMain->horizontalHeader()->setSectionResizeMode(
       QHeaderView::ResizeToContents);
