@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 
 #include "./ui_mainwindow.h"
+#include "QStandardPaths"
 #include "manager.h"
 #include "plot.h"
 #include "qcustomplot.h"
@@ -12,7 +13,7 @@
 #include "table_models/plot_settings_table.h"
 #include "variable.h"
 
-MainWindow::MainWindow(QWidget *parent)
+MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
   ui->setupUi(this);
   lib::Variable a{{1, 2, 3, 4, 5}, "izmerenie_1", "x"};
@@ -47,9 +48,35 @@ MainWindow::MainWindow(QWidget *parent)
   connect(ui->addColumnBtn, SIGNAL(clicked()), this, SLOT(addColumn()));
   connect(ui->deleteRowBtn, SIGNAL(clicked()), this, SLOT(removeRow()));
   connect(ui->deleteColumnBtn, SIGNAL(clicked()), this, SLOT(removeColumn()));
+  connect(ui->LoadDataBtn, SIGNAL(clicked()), this, SLOT(load()));
 }
 
 MainWindow::~MainWindow() { delete ui; }
+
+void MainWindow::load() {
+  QString file_name = QFileDialog::getOpenFileName(
+      this, tr("Select a file"),
+      QStandardPaths::writableLocation(QStandardPaths::DesktopLocation),
+      tr("Open CSV (*.csv);;Open JSON (*.json);;"));
+  if (file_name.isEmpty()) return;
+  if (file_name.endsWith(".csv")) {
+    StrategyIO* loader = new StrategyIO_CSV;
+    loader->load(file_name);
+    delete loader;
+  }
+  if (file_name.endsWith(".json")) {
+    StrategyIO* loader = new StrategyIO_JSON;
+    loader->load(file_name);
+    delete loader;
+  }
+  if (file_name.endsWith(".db")) {
+    StrategyIO* loader = new StrategyIO_DB;
+    loader->load(file_name);
+    delete loader;
+  }
+}
+
+void MainWindow::save() {}
 
 void MainWindow::on_deletePlotBtn_clicked() {
   int index = ui->tabWidgetPlots->currentIndex();
