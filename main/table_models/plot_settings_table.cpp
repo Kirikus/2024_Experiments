@@ -30,6 +30,8 @@ QVariant lib::PlotSettingsTable::data(const QModelIndex &index,
   int column = index.column();
   auto &visual = Manager::getInstance()->getVariable(row).variable_visual;
   switch (role) {
+    case Qt::BackgroundRole:
+      if (column == PlotSettings_shell::data::color) return visual.color;
     case Qt::CheckStateRole:
       if (column == PlotSettings_shell::data::visible)
         return visual.visible ? Qt::Checked : Qt::Unchecked;
@@ -39,12 +41,13 @@ QVariant lib::PlotSettingsTable::data(const QModelIndex &index,
         case PlotSettings_shell::data::width:
           return visual.width;
         case PlotSettings_shell::data::point_form:
-          return QVariant();  // TODO"
+          if (visual.point_form == QCPScatterStyle::ScatterShape::ssNone)
+            return QString("Standart");
+          return QVariant::fromValue(visual.point_form);
         case PlotSettings_shell::data::line_type:
-          return QVariant();  // TODO"
+          return QVariant::fromValue(visual.line_type);
       }
   }
-
   return QVariant();
 }
 
