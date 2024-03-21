@@ -15,9 +15,12 @@ file(GLOB PROJECT_SOURCES "*.h" "*.cpp" "*.ui")
 
 file(GLOB TABLE_SOURCES "table_models/*.h" "table_models/*.cpp")
 
+file(GLOB DELEGATE_SOURCES "table_models/delegates/*.h" "table_models/delegates/*.cpp")
+
 add_executable(main
     ${PROJECT_SOURCES}
     ${TABLE_SOURCES}
+    ${DELEGATE_SOURCES}
 )
 
 target_link_libraries(main PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
