@@ -21,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent)
 
   ui->tableViewMain->setModel(new lib::MeasurementsTable);
   ui->tableViewNaming->setModel(new lib::NamingTable);
+
   ui->tableViewMain->horizontalHeader()->setSectionResizeMode(
       QHeaderView::ResizeToContents);
   ui->tableViewNaming->horizontalHeader()->setSectionResizeMode(
@@ -29,6 +30,8 @@ MainWindow::MainWindow(QWidget *parent)
   ui->tableViewMain->show();
   ui->tableViewNaming->show();
 
+  connect(ui->addPlotBtn, SIGNAL(clicked()), this, SLOT(addPlot()));
+  connect(ui->deletePlotBtn, SIGNAL(clicked()), this, SLOT(deletePlot()));
   connect(ui->addRowBtn, SIGNAL(clicked()), this, SLOT(addRow()));
   connect(ui->addColumnBtn, SIGNAL(clicked()), this, SLOT(addColumn()));
   connect(ui->deleteRowBtn, SIGNAL(clicked()), this, SLOT(removeRow()));
@@ -37,12 +40,12 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow() { delete ui; }
 
-void MainWindow::on_deletePlotBtn_clicked() {
+void MainWindow::deletePlot() {
   int index = ui->tabWidgetPlots->currentIndex();
   ui->tabWidgetPlots->removeTab(index);
 }
 
-void MainWindow::on_addPlotBtn_clicked() {
+void MainWindow::addPlot() {
   int count = ui->tabWidgetPlots->count();
   ui->tabWidgetPlots->addTab(new QCustomPlot,
                              "Plot " + QString::number(count + 1));
@@ -69,18 +72,19 @@ void MainWindow::removeRow() {
       lib::Manager::getInstance()->getMeasurementsCount(), 1);
 }
 
+void MainWindow::addColumn() {
+  lib::Manager::getInstance()->addVariable(lib::Variable());
+  ui->tableViewMain->model()->insertColumns(
+      lib::Manager::getInstance()->getVariablesCount(), 1);
+  ui->tableViewNaming->model()->insertRows(
+      lib::Manager::getInstance()->getVariablesCount(), 1);
+}
+
 void MainWindow::removeColumn() {
   if (lib::Manager::getInstance()->getVariablesCount() == 1) return;
   lib::Manager::getInstance()->deleteVariable();
   ui->tableViewMain->model()->removeColumns(
       lib::Manager::getInstance()->getVariablesCount(), 1);
   ui->tableViewNaming->model()->removeRows(
-      lib::Manager::getInstance()->getVariablesCount(), 1);
-}
-void MainWindow::addColumn() {
-  lib::Manager::getInstance()->addVariable(lib::Variable());
-  ui->tableViewMain->model()->insertColumns(
-      lib::Manager::getInstance()->getVariablesCount(), 1);
-  ui->tableViewNaming->model()->insertRows(
       lib::Manager::getInstance()->getVariablesCount(), 1);
 }
