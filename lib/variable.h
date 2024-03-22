@@ -19,11 +19,20 @@ struct VisualOptions {
   static QMap<QCPScatterStyle::ScatterShape, QString> point_forms;
 };
 
+struct ErrorOptions {
+  double error = 1;
+  bool current_error_type = true;
+  static QMap<bool, QString> error_types;
+};
+
 struct Variable {
   QList<double> measurements;
+
   QString name_full = "NONE";
   QString name_short = "NONE";
+
   VisualOptions variable_visual;
+  ErrorOptions variable_error;
 
   size_t getMeasurementsCount() const { return measurements.size(); }
 

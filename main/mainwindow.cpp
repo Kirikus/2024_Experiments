@@ -10,6 +10,7 @@
 #include "table_models/measurements_table.h"
 #include "table_models/naming_table.h"
 #include "table_models/plot_settings_table.h"
+#include "table_models/errors_table.h"
 #include "variable.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -25,6 +26,7 @@ MainWindow::MainWindow(QWidget *parent)
   ui->tableViewMain->setModel(new lib::MeasurementsTable);
   ui->tableViewNaming->setModel(new lib::NamingTable);
   ui->tableViewPlotsSets->setModel(new lib::PlotSettingsTable);
+  ui->tableViewErrors->setModel(new lib::ErrorsTable);
 
   ui->tableViewPlotsSets->setItemDelegateForColumn(4, new ColorDelegate);
   ui->tableViewPlotsSets->setItemDelegateForColumn(
@@ -32,17 +34,25 @@ MainWindow::MainWindow(QWidget *parent)
   ui->tableViewPlotsSets->setItemDelegateForColumn(
       3, new ComboBoxDelegate(lib::VisualOptions::line_types.values()));
 
+  ui->tableViewErrors->setItemDelegateForColumn(
+      0, new ComboBoxDelegate(lib::ErrorOptions::error_types.values()));
+
   ui->tableViewMain->horizontalHeader()->setSectionResizeMode(
       QHeaderView::ResizeToContents);
   ui->tableViewNaming->horizontalHeader()->setSectionResizeMode(
       QHeaderView::ResizeToContents);
   ui->tableViewPlotsSets->horizontalHeader()->setSectionResizeMode(
       QHeaderView::ResizeToContents);
+  // ui->tableViewErrors->horizontalHeader()->setSectionResizeMode(
+  //     QHeaderView::ResizeToContents);
 
   ui->tableViewMain->show();
   ui->tableViewNaming->show();
   ui->tableViewPlotsSets->show();
+  ui->tableViewErrors->show();
 
+  connect(ui->addPlotBtn, SIGNAL(clicked()), this, SLOT(addPlot()));
+  connect(ui->deletePlotBtn, SIGNAL(clicked()), this, SLOT(deletePlot()));
   connect(ui->addRowBtn, SIGNAL(clicked()), this, SLOT(addRow()));
   connect(ui->addColumnBtn, SIGNAL(clicked()), this, SLOT(addColumn()));
   connect(ui->deleteRowBtn, SIGNAL(clicked()), this, SLOT(removeRow()));
@@ -51,12 +61,12 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow() { delete ui; }
 
-void MainWindow::on_deletePlotBtn_clicked() {
+void MainWindow::deletePlot() {
   int index = ui->tabWidgetPlots->currentIndex();
   ui->tabWidgetPlots->removeTab(index);
 }
 
-void MainWindow::on_addPlotBtn_clicked() {
+void MainWindow::addPlot() {
   int count = ui->tabWidgetPlots->count();
   ui->tabWidgetPlots->addTab(new QCustomPlot,
                              "Plot " + QString::number(count + 1));
@@ -83,6 +93,16 @@ void MainWindow::removeRow() {
       lib::Manager::getInstance()->getMeasurementsCount(), 1);
 }
 
+void MainWindow::addColumn() {
+  lib::Manager::getInstance()->addVariable(lib::Variable());
+  ui->tableViewMain->model()->insertColumns(
+      lib::Manager::getInstance()->getVariablesCount(), 1);
+  ui->tableViewNaming->model()->insertRows(
+      lib::Manager::getInstance()->getVariablesCount(), 1);
+  ui->tableViewErrors->model()->insertRows(
+      lib::Manager::getInstance()->getVariablesCount(), 1);
+}
+
 void MainWindow::removeColumn() {
   if (lib::Manager::getInstance()->getVariablesCount() == 1) return;
   lib::Manager::getInstance()->deleteVariable();
@@ -91,14 +111,5 @@ void MainWindow::removeColumn() {
   ui->tableViewNaming->model()->removeRows(
       lib::Manager::getInstance()->getVariablesCount(), 1);
   ui->tableViewPlotsSets->model()->removeRows(
-      lib::Manager::getInstance()->getVariablesCount(), 1);
-}
-void MainWindow::addColumn() {
-  lib::Manager::getInstance()->addVariable(lib::Variable());
-  ui->tableViewMain->model()->insertColumns(
-      lib::Manager::getInstance()->getVariablesCount(), 1);
-  ui->tableViewNaming->model()->insertRows(
-      lib::Manager::getInstance()->getVariablesCount(), 1);
-  ui->tableViewPlotsSets->model()->insertRows(
       lib::Manager::getInstance()->getVariablesCount(), 1);
 }
