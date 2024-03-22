@@ -10,6 +10,7 @@
 #include "table_models/measurements_table.h"
 #include "table_models/naming_table.h"
 #include "table_models/plot_settings_table.h"
+#include "table_models/errors_table.h"
 #include "variable.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -25,6 +26,7 @@ MainWindow::MainWindow(QWidget *parent)
   ui->tableViewMain->setModel(new lib::MeasurementsTable);
   ui->tableViewNaming->setModel(new lib::NamingTable);
   ui->tableViewPlotsSets->setModel(new lib::PlotSettingsTable);
+  ui->tableViewErrors->setModel(new lib::ErrorsTable);
 
   ui->tableViewPlotsSets->setItemDelegateForColumn(4, new ColorDelegate);
   ui->tableViewPlotsSets->setItemDelegateForColumn(
@@ -32,16 +34,22 @@ MainWindow::MainWindow(QWidget *parent)
   ui->tableViewPlotsSets->setItemDelegateForColumn(
       3, new ComboBoxDelegate(lib::VisualOptions::line_types.values()));
 
+  ui->tableViewErrors->setItemDelegateForColumn(
+      0, new ComboBoxDelegate(lib::ErrorOptions::error_types.values()));
+
   ui->tableViewMain->horizontalHeader()->setSectionResizeMode(
       QHeaderView::ResizeToContents);
   ui->tableViewNaming->horizontalHeader()->setSectionResizeMode(
       QHeaderView::ResizeToContents);
   ui->tableViewPlotsSets->horizontalHeader()->setSectionResizeMode(
       QHeaderView::ResizeToContents);
+  // ui->tableViewErrors->horizontalHeader()->setSectionResizeMode(
+  //     QHeaderView::ResizeToContents);
 
   ui->tableViewMain->show();
   ui->tableViewNaming->show();
   ui->tableViewPlotsSets->show();
+  ui->tableViewErrors->show();
 
   connect(ui->addPlotBtn, SIGNAL(clicked()), this, SLOT(addPlot()));
   connect(ui->deletePlotBtn, SIGNAL(clicked()), this, SLOT(deletePlot()));
@@ -91,6 +99,8 @@ void MainWindow::addColumn() {
       lib::Manager::getInstance()->getVariablesCount(), 1);
   ui->tableViewNaming->model()->insertRows(
       lib::Manager::getInstance()->getVariablesCount(), 1);
+  ui->tableViewErrors->model()->insertRows(
+      lib::Manager::getInstance()->getVariablesCount(), 1);
 }
 
 void MainWindow::removeColumn() {
@@ -102,5 +112,4 @@ void MainWindow::removeColumn() {
       lib::Manager::getInstance()->getVariablesCount(), 1);
   ui->tableViewPlotsSets->model()->removeRows(
       lib::Manager::getInstance()->getVariablesCount(), 1);
-}
 }
