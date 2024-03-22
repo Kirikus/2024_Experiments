@@ -27,16 +27,16 @@ QVariant lib::ErrorsTable::data(const QModelIndex &index, int role) const {
   auto &errors = Manager::getInstance()->getVariable(row).variable_error;
 
   switch (role) {
-  case Qt::DisplayRole:
-    {switch (column) {
-      case Errors_shell::data::error_type:
-        return errors.error_types.value(errors.current_error_type);
-      case Errors_shell::data::error:
-        return Manager::getInstance()->getVariable(row).variable_error.error;
+    case Qt::DisplayRole: {
+      switch (column) {
+        case Errors_shell::data::error_type:
+          return errors.error_types.value(errors.current_error_type);
+        case Errors_shell::data::error:
+          return Manager::getInstance()->getVariable(row).variable_error.error;
       }
     }
-  default:
-    return QVariant();
+    default:
+      return QVariant();
   }
 }
 
@@ -47,22 +47,23 @@ bool lib::ErrorsTable::setData(const QModelIndex &index, const QVariant &value,
   auto &errors = Manager::getInstance()->getVariable(row).variable_error;
 
   switch (role) {
-  case Qt::EditRole:
-    {switch (column) {
-      case Errors_shell::data::error_type:
-        errors.current_error_type = ErrorOptions::error_types.key(value.toString());
-        emit dataChanged(index, index);
-        return true;
-      case Errors_shell::data::error:
-        if (!value.canConvert<double>() or value.toDouble() < 0) return false;
-        Manager::getInstance()->getVariable(row).variable_error.error =
-            value.toDouble();
-        emit dataChanged(index, index);
-        return true;
+    case Qt::EditRole: {
+      switch (column) {
+        case Errors_shell::data::error_type:
+          errors.current_error_type =
+              ErrorOptions::error_types.key(value.toString());
+          emit dataChanged(index, index);
+          return true;
+        case Errors_shell::data::error:
+          if (!value.canConvert<double>() or value.toDouble() < 0) return false;
+          Manager::getInstance()->getVariable(row).variable_error.error =
+              value.toDouble();
+          emit dataChanged(index, index);
+          return true;
       }
     }
-  default:
-    return false;
+    default:
+      return false;
   }
 }
 
