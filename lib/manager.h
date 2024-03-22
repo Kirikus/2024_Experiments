@@ -16,8 +16,6 @@ class Manager : public QObject {
  public:
   static class Manager* getInstance();
 
-  void addVariable(const Variable&);
-  void deleteVariable();
   void augmentVariables();
 
   size_t getVariablesCount() const { return variables.size(); }
@@ -25,13 +23,18 @@ class Manager : public QObject {
 
   Variable& getVariable(size_t Column_index) { return variables[Column_index]; }
 
-  void addMeasurementsRow();
-  void removeMeasurementsRow();
-
   void clearCalculated();
   void addCalculated(Variable&);
+ public slots:
+  void deleteVariable();
+  void addVariable(const Variable& = Variable());
+  void addMeasurements();
+  void deleteMeasurements();
  signals:
   void Variable_is_deleted();
+  void Variable_is_added();
+  void Measurements_is_deleted();
+  void Measurements_is_added();
 };
 
 }  // namespace lib
