@@ -9,6 +9,11 @@ lib::Variable::Variable(QList<double> measurements, QString name_full,
 
 lib::Variable::Variable() {}
 
+QMap<bool, QString> lib::ErrorOptions::error_types = {
+    {false, "Relative"},
+    {true, "Absolute"},
+};
+
 QMap<Qt::PenStyle, QString> lib::VisualOptions::line_types = {
     {Qt::SolidLine, "Solid line"},
     {Qt::DashLine, "Dash line"},
