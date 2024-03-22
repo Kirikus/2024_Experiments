@@ -121,6 +121,8 @@ void MainWindow::addColumn() {
       lib::Manager::getInstance()->getVariablesCount(), 1);
   ui->tableViewNaming->model()->insertRows(
       lib::Manager::getInstance()->getVariablesCount(), 1);
+  ui->tableViewPlotsSets->model()->insertRows(
+      lib::Manager::getInstance()->getVariablesCount(), 1);
   ui->tableViewErrors->model()->insertRows(
       lib::Manager::getInstance()->getVariablesCount(), 1);
 }
@@ -131,6 +133,8 @@ void MainWindow::deleteColumn() {
   ui->tableViewNaming->model()->removeRows(
       lib::Manager::getInstance()->getVariablesCount(), 1);
   ui->tableViewPlotsSets->model()->removeRows(
+      lib::Manager::getInstance()->getVariablesCount(), 1);
+  ui->tableViewErrors->model()->removeRows(
       lib::Manager::getInstance()->getVariablesCount(), 1);
 }
 
