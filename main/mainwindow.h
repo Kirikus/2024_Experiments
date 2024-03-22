@@ -27,9 +27,9 @@ class MainWindow : public QMainWindow {
 
   void save();
 
-  void on_deletePlotBtn_clicked();
+  void deletePlot();
 
-  void on_addPlotBtn_clicked();
+  void addPlot();
 
   void addColumn();
 
