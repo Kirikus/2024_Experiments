@@ -7,7 +7,8 @@
 
 namespace lib {
 
-class Manager {
+class Manager : public QObject {
+  Q_OBJECT
  private:
   QList<Variable> variables;
   QList<Variable> calculated;
@@ -29,6 +30,8 @@ class Manager {
 
   void clearCalculated();
   void addCalculated(Variable&);
+ signals:
+  void Variable_is_deleted();
 };
 
 }  // namespace lib

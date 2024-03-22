@@ -47,8 +47,12 @@ MainWindow::MainWindow(QWidget* parent)
   connect(ui->addRowBtn, SIGNAL(clicked()), this, SLOT(addRow()));
   connect(ui->addColumnBtn, SIGNAL(clicked()), this, SLOT(addColumn()));
   connect(ui->deleteRowBtn, SIGNAL(clicked()), this, SLOT(removeRow()));
-  connect(ui->deleteColumnBtn, SIGNAL(clicked()), this, SLOT(removeColumn()));
+  // connect(ui->deleteColumnBtn, SIGNAL(clicked()), this,
+  // SLOT(removeColumn()));
   connect(ui->LoadDataBtn, SIGNAL(clicked()), this, SLOT(load()));
+
+  connect(lib::Manager::getInstance(),SIGNAL(Variable_is_deleted()),this,SLOT(removeColumn()));
+  connect(ui->deleteColumnBtn,SIGNAL(clicked()),this,SLOT(removeVariable()));
 }
 
 MainWindow::~MainWindow() { delete ui; }
@@ -111,14 +115,17 @@ void MainWindow::removeRow() {
 }
 
 void MainWindow::removeColumn() {
-  if (lib::Manager::getInstance()->getVariablesCount() == 1) return;
-  lib::Manager::getInstance()->deleteVariable();
   ui->tableViewMain->model()->removeColumns(
       lib::Manager::getInstance()->getVariablesCount(), 1);
   ui->tableViewNaming->model()->removeRows(
       lib::Manager::getInstance()->getVariablesCount(), 1);
   ui->tableViewPlotsSets->model()->removeRows(
       lib::Manager::getInstance()->getVariablesCount(), 1);
+}
+
+void MainWindow::removeVariable()
+{
+    lib::Manager::getInstance()->deleteVariable();
 }
 void MainWindow::addColumn() {
   lib::Manager::getInstance()->addVariable(lib::Variable());

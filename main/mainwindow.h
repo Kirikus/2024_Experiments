@@ -39,6 +39,8 @@ class MainWindow : public QMainWindow {
 
   void removeColumn();
 
+  void removeVariable();
+
  private:
   Ui::MainWindow *ui;
 };

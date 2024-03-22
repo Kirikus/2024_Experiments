@@ -12,7 +12,9 @@ void lib::Manager::addVariable(const Variable& CurrentVariable) {
 }
 
 void lib::Manager::deleteVariable() {
-  if (variables.size() != 0) variables.pop_back();
+  if (variables.size() == 1) return;
+  variables.pop_back();
+  emit Variable_is_deleted();
 }
 
 void lib::Manager::augmentVariables() {
