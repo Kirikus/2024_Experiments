@@ -23,17 +23,21 @@ class MainWindow : public QMainWindow {
 
  private slots:
 
+  void load();
+
+  void save();
+
   void deletePlot();
 
   void addPlot();
 
   void addColumn();
 
+  void deleteColumn();
+
   void addRow();
 
-  void removeRow();
-
-  void removeColumn();
+  void deleteRow();
 
  private:
   Ui::MainWindow *ui;
