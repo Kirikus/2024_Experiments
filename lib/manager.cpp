@@ -7,11 +7,17 @@ Q_GLOBAL_STATIC(lib::Manager, instance)
 lib::Manager* lib::Manager::getInstance() { return instance; }
 
 void lib::Manager::addVariable(const Variable& CurrentVariable) {
-  if (lib::Manager::getInstance()->getVariablesCount() == 0 &&
-      CurrentVariable.measurements.size() == 0) {
-    variables.append(CurrentVariable);
-    addMeasurements();
-    emit Variable_is_added();
+  if (lib::Manager::getInstance()->getVariablesCount() == 0) {
+    if (CurrentVariable.measurements.size() == 0) {
+      variables.append(CurrentVariable);
+      addMeasurements();
+      emit Variable_is_added();
+    } else {
+      variables.append(CurrentVariable);
+      for (int i = 0; i < CurrentVariable.getMeasurementsCount(); i++)
+        addMeasurements();
+      emit Variable_is_added();
+    }
   } else {
     variables.append(CurrentVariable);
     augmentVariables();
@@ -65,4 +71,9 @@ size_t lib::Manager::getMeasurementsCount() const {
     if (variables.at(i).measurements.size() > MeasurementsCount)
       MeasurementsCount = variables.at(i).measurements.size();
   return MeasurementsCount;
+}
+
+void lib::Manager::clear() {
+  int test = getVariablesCount();
+  for (int i = 0; i < test; i++) deleteVariable();
 }
