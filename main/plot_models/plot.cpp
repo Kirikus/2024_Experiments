@@ -1,6 +1,6 @@
 #include "plot.h"
 
-void ScatterPlot::draw(QCustomPlot* plot) {
+void LinePlot::draw(QCustomPlot* plot) {
   plot->xAxis->setRange(0, 6);
   plot->yAxis->setRange(0, 15);
 
@@ -11,17 +11,15 @@ void ScatterPlot::draw(QCustomPlot* plot) {
     graph->setPen(
         QColor(colors[3 * i], colors[3 * i + 1], colors[3 * i + 2], 255));
     graph->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDisc, 9));
-    QVector<double> a;
-    for (int j = 0;
-         j < (lib::Manager::getInstance()->getVariableMeasurements(i)).size();
-         ++j) {
-      if ((lib::Manager::getInstance()->getVariableMeasurements(i))[j])
-        a.push_back(
-            (lib::Manager::getInstance()->getVariableMeasurements(i))[j]);
+
+    QVector <double> xs = {1, 2, 3, 4, 5}, ys;
+    auto var = lib::Manager::getInstance()->getVariableMeasurements(i);
+    for (int j = 0; j < var.size(); ++j) {
+        ys.push_back(var[j]);
     }
-    graph->setData({1, 2, 3, 4, 5}, a);
+    graph->setData(xs, ys);
   }
   plot->replot();
 }
 
-void ScatterPlot::setOptions() {}
+void LinePlot::setOptions() {}

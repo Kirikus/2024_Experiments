@@ -14,7 +14,7 @@ class Plot : public QWidget {
   virtual void setOptions() = 0;
 };
 
-class ScatterPlot : public Plot {
+class LinePlot : public Plot {
   Q_OBJECT
  private:
   QString title;

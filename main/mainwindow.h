@@ -40,7 +40,7 @@ class MainWindow : public QMainWindow {
   void Redraw();
 
  private:
-  ScatterPlot *plot = new ScatterPlot;
+  LinePlot *plot = new LinePlot;
   Ui::MainWindow *ui;
 };
 
