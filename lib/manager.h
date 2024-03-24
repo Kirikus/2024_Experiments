@@ -7,7 +7,8 @@
 
 namespace lib {
 
-class Manager {
+class Manager : public QObject {
+  Q_OBJECT
  private:
   QList<Variable> variables;
   QList<Variable> calculated;
@@ -15,8 +16,6 @@ class Manager {
  public:
   static class Manager* getInstance();
 
-  void addVariable(const Variable&);
-  void deleteVariable();
   void augmentVariables();
 
   size_t getVariablesCount() const { return variables.size(); }
@@ -27,11 +26,20 @@ class Manager {
     return variables[Column_index].measurements;
   }
 
-  void addMeasurementsRow();
-  void removeMeasurementsRow();
-
   void clearCalculated();
   void addCalculated(Variable&);
+
+  void clear();
+ public slots:
+  void deleteVariable();
+     void addVariable(const Variable& = Variable({0}));
+  void addMeasurements();
+  void deleteMeasurements();
+ signals:
+  void Variable_is_deleted();
+  void Variable_is_added();
+  void Measurements_is_deleted();
+  void Measurements_is_added();
 };
 
 }  // namespace lib

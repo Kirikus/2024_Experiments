@@ -23,7 +23,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidgetOptionsTabs">
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="MainTab">
        <attribute name="title">
@@ -67,7 +67,14 @@
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_2">
             <item>
-             <widget class="QPushButton" name="loadJSONBtn">
+             <widget class="QPushButton" name="SaveDataBtn">
+              <property name="text">
+               <string>Save data</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="LoadDataBtn">
               <property name="font">
                <font>
                 <pointsize>9</pointsize>
@@ -75,20 +82,13 @@
                </font>
               </property>
               <property name="text">
-               <string>loadJSON</string>
+               <string>Load data</string>
               </property>
               <property name="iconSize">
                <size>
                 <width>12</width>
                 <height>12</height>
                </size>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="downloadJSONBTN">
-              <property name="text">
-               <string>Download JSON</string>
               </property>
              </widget>
             </item>
@@ -619,7 +619,7 @@
      <x>0</x>
      <y>0</y>
      <width>960</width>
-     <height>25</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuSettings">
