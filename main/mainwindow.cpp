@@ -1,9 +1,11 @@
 #include "mainwindow.h"
 
+#include <vector>
+
 #include "./ui_mainwindow.h"
 #include "QStandardPaths"
 #include "manager.h"
-#include "plot.h"
+#include "plot_models/plot.h"
 #include "qcustomplot.h"
 #include "strategyIO.h"
 #include "table_models/delegates/color_delegate.h"
@@ -17,12 +19,18 @@
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
   ui->setupUi(this);
+
   lib::Variable a{{1, 2, 3, 4, 5}, "izmerenie_1", "x"};
   lib::Variable b{{4, 2, 11, 3, 5, 1}, "izmerenie_2"};
-  lib::Variable c{{4, 2, 11}, "izmerenie_3", "z"};
+  lib::Variable c{{5, 3, 12}, "izmerenie_3", "z"};
+  lib::Variable d{{7, 3, 12, 10, 9, 13}, "izmerenie_3", "z"};
+
   lib::Manager::getInstance()->addVariable(c);
   lib::Manager::getInstance()->addVariable(a);
   lib::Manager::getInstance()->addVariable(b);
+  lib::Manager::getInstance()->addVariable(d);
+
+  plot->draw(ui->customPlot);
 
   ui->tableViewMain->setModel(new lib::MeasurementsTable);
   ui->tableViewNaming->setModel(new lib::NamingTable);
@@ -52,9 +60,18 @@ MainWindow::MainWindow(QWidget* parent)
   ui->tableViewPlotsSets->show();
   ui->tableViewErrors->show();
 
+  connect(ui->redrawPlotBtn, SIGNAL(clicked()), this, SLOT(Redraw()));
+      
   connect(ui->addPlotBtn, SIGNAL(clicked()), this, SLOT(addPlot()));
   connect(ui->deletePlotBtn, SIGNAL(clicked()), this, SLOT(deletePlot()));
+      
   connect(ui->LoadDataBtn, SIGNAL(clicked()), this, SLOT(load()));
+
+  connect(ui->addRowBtn, SIGNAL(clicked()), this, SLOT(addRow()));
+  connect(ui->addColumnBtn, SIGNAL(clicked()), this, SLOT(addColumn()));
+  connect(ui->deleteRowBtn, SIGNAL(clicked()), this, SLOT(removeRow()));
+  connect(ui->deleteColumnBtn, SIGNAL(clicked()), this, SLOT(removeColumn()));
+
 
   // delete column
   connect(ui->deleteColumnBtn, SIGNAL(clicked()), lib::Manager::getInstance(),
@@ -132,11 +149,13 @@ void MainWindow::deleteColumn() {
       lib::Manager::getInstance()->getVariablesCount(), 1);
   ui->tableViewNaming->model()->removeRows(
       lib::Manager::getInstance()->getVariablesCount(), 1);
-  ui->tableViewPlotsSets->model()->removeRows(
+   ui->tableViewPlotsSets->model()->removeRows(
       lib::Manager::getInstance()->getVariablesCount(), 1);
   ui->tableViewErrors->model()->removeRows(
       lib::Manager::getInstance()->getVariablesCount(), 1);
 }
+
+void MainWindow::Redraw() { plot->draw(ui->customPlot); }
 
 void MainWindow::addRow() {
   ui->tableViewMain->model()->insertRows(

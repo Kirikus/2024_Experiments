@@ -8,6 +8,8 @@
 #include <QMainWindow>
 #include <QStandardItem>
 
+#include "plot_models/plot.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -39,7 +41,10 @@ class MainWindow : public QMainWindow {
 
   void deleteRow();
 
+  void Redraw();
+
  private:
+  LinePlot *plot = new LinePlot;
   Ui::MainWindow *ui;
 };
 

@@ -22,6 +22,9 @@ class Manager : public QObject {
   size_t getMeasurementsCount() const;
 
   Variable& getVariable(size_t Column_index) { return variables[Column_index]; }
+  QVector<double>& getVariableMeasurements(size_t Column_index) {
+    return variables[Column_index].measurements;
+  }
 
   void clearCalculated();
   void addCalculated(Variable&);
