@@ -13,7 +13,7 @@ void LinePlot::draw(QCustomPlot* plot) {
     graph->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDisc, 9));
 
     QVector <double> xs = {1, 2, 3, 4, 5}, ys;
-    auto var = lib::Manager::getInstance()->getVariableMeasurements(i);
+    auto var = lib::Manager::getInstance()->getVariable(i).measurements;
     for (int j = 0; j < var.size(); ++j) {
         ys.push_back(var[j]);
     }
