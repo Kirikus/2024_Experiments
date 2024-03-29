@@ -61,17 +61,11 @@ MainWindow::MainWindow(QWidget* parent)
   ui->tableViewErrors->show();
 
   connect(ui->redrawPlotBtn, SIGNAL(clicked()), this, SLOT(Redraw()));
-      
+
   connect(ui->addPlotBtn, SIGNAL(clicked()), this, SLOT(addPlot()));
   connect(ui->deletePlotBtn, SIGNAL(clicked()), this, SLOT(deletePlot()));
       
   connect(ui->LoadDataBtn, SIGNAL(clicked()), this, SLOT(load()));
-
-  connect(ui->addRowBtn, SIGNAL(clicked()), this, SLOT(addRow()));
-  connect(ui->addColumnBtn, SIGNAL(clicked()), this, SLOT(addColumn()));
-  connect(ui->deleteRowBtn, SIGNAL(clicked()), this, SLOT(removeRow()));
-  connect(ui->deleteColumnBtn, SIGNAL(clicked()), this, SLOT(removeColumn()));
-
 
   // delete column
   connect(ui->deleteColumnBtn, SIGNAL(clicked()), lib::Manager::getInstance(),
@@ -122,6 +116,8 @@ void MainWindow::load() {
 
 void MainWindow::save() {}
 
+void MainWindow::Redraw() { plot->draw(ui->customPlot); }
+
 void MainWindow::deletePlot() {
   int index = ui->tabWidgetPlots->currentIndex();
   ui->tabWidgetPlots->removeTab(index);
@@ -154,8 +150,6 @@ void MainWindow::deleteColumn() {
   ui->tableViewErrors->model()->removeRows(
       lib::Manager::getInstance()->getVariablesCount(), 1);
 }
-
-void MainWindow::Redraw() { plot->draw(ui->customPlot); }
 
 void MainWindow::addRow() {
   ui->tableViewMain->model()->insertRows(
