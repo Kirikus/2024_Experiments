@@ -189,6 +189,7 @@ void MainWindow::addColumn() {
 
 void MainWindow::deleteColumn() {
   int index_column = ui->tableViewMain->currentIndex().column();
+  if (index_column == -1) index_column = 0;
   ui->tableViewMain->model()->removeColumns(index_column, 1);
   ui->tableViewNaming->model()->removeRows(index_column, 1);
   ui->tableViewPlotsSets->model()->removeRows(index_column, 1);

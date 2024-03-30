@@ -50,8 +50,7 @@ void lib::Manager::deleteMeasurements() {
 void lib::Manager::deleteVariable(int index_column) {
   if (variables.size() == 0) return;
   if (variables.size() == 1) {
-    for (int i = 0; i < lib::Manager::getInstance()->getMeasurementsCount(); ++i) deleteMeasurements();
-    // while (lib::Manager::getInstance()->getMeasurementsCount() != 0) deleteMeasurements();
+    while (lib::Manager::getInstance()->getMeasurementsCount() != 0) deleteMeasurements();
     variables.removeAt(index_column);
     emit Variable_is_deleted();
   } else {
