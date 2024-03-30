@@ -1,10 +1,14 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QDialog>
+#include <QDialogButtonBox>
 #include <QFile>
 #include <QFileDialog>
+#include <QFont>
 #include <QJsonObject>
 #include <QJsonParseError>
+#include <QLabel>
 #include <QMainWindow>
 #include <QStandardItem>
 
@@ -24,6 +28,12 @@ class MainWindow : public QMainWindow {
   ~MainWindow();
 
  private slots:
+
+  bool ConfirmingAction();
+
+  void ConfirmDeleteMeasurments();
+
+  void ConfirmDeleteVariable();
 
   void load();
 
