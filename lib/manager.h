@@ -31,7 +31,7 @@ class Manager : public QObject {
   void deleteVariable(int);
   void addVariable(const Variable& = Variable({0}));
   void addMeasurements();
-  void deleteMeasurements();
+  void deleteMeasurements(int);
  signals:
   void Variable_is_deleted();
   void Variable_is_added();

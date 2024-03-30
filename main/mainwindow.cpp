@@ -98,12 +98,14 @@ void MainWindow::ConfirmDeleteVariable() {
         lib::Manager::getInstance()->deleteVariable(index_column);
       }
     }
-  else return;
 }
 
 void MainWindow::ConfirmDeleteMeasurments() {
-  if (ConfirmingAction()) {
-    lib::Manager::getInstance()->deleteMeasurements();
+  if (ui->tableViewMain->selectionModel()->hasSelection()) {
+    int index_row = ui->tableViewMain->currentIndex().row();
+    if (ConfirmingAction()) {
+      lib::Manager::getInstance()->deleteMeasurements(index_row);
+    }
   }
 }
 
@@ -202,6 +204,7 @@ void MainWindow::addRow() {
 }
 
 void MainWindow::deleteRow() {
-  ui->tableViewMain->model()->removeRows(
-      lib::Manager::getInstance()->getMeasurementsCount(), 1);
+  int index_row = ui->tableViewMain->currentIndex().row();
+  if (index_row == -1) index_row = 0;
+  ui->tableViewMain->model()->removeRows(index_row, 1);
 }
