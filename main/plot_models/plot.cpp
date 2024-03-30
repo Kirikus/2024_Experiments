@@ -1,5 +1,7 @@
 #include "plot.h"
 
+#include <random>
+
 void LinePlot::draw(QCustomPlot* plot) {
   plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
 
@@ -9,7 +11,15 @@ void LinePlot::draw(QCustomPlot* plot) {
 
   for (int i = 0; i < lib::Manager::getInstance()->getVariablesCount(); ++i) {
     auto graph = plot->addGraph(plot->xAxis, plot->yAxis);
-    graph->setPen(QColor(colors[i][0], colors[i][1], colors[i][2]));
+
+    if (i <= 7)
+      graph->setPen(QColor(colors[i][0], colors[i][1], colors[i][2]));
+    else {
+      std::mt19937 gen(i);
+      std::uniform_int_distribution<> dis(0, 204);
+      graph->setPen(QColor(dis(gen), dis(gen), dis(gen)));
+    }
+
     graph->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDisc, 9));
 
     QVector<double> xs, ys;

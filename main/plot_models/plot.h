@@ -17,18 +17,15 @@ class Plot : public QWidget {
 class LinePlot : public Plot {
   Q_OBJECT
  private:
-  std::vector<std::vector<int>> colors{
-      {244, 202, 22}, {240, 116, 39}, {235, 76, 66},  {204, 57, 123},
-      {148, 87, 235}, {49, 140, 231}, {32, 178, 170}, {80, 200, 120}};
-  enum color {
-    yellow,
-    orange,
-    red,
-    fuchsia_purple,
-    purple,
-    blue,
-    light_sea_green,
-    green
+  std::vector<std::vector<int>> colors {
+      {255, 0, 0},    // Красный
+      {0, 255, 0},    // Зелёный
+      {0, 0, 255},    // Синий
+      {128, 0, 128},  // Фиолетовый
+      {255, 255, 0},  // Жёлтый
+      {0, 255, 255},  // Голубой
+      {255, 165, 0},  // Оранжевый
+      {50, 205, 50}   // Салатовый
   };
   QString title;
   QString X_axisname;
