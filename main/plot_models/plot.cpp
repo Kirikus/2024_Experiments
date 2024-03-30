@@ -1,6 +1,9 @@
 #include "plot.h"
 
+#include <iostream>
 #include <random>
+
+#include "manager.h"
 
 void LinePlot::draw(QCustomPlot* plot) {
   plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
@@ -29,7 +32,14 @@ void LinePlot::draw(QCustomPlot* plot) {
       xs.push_back(j + 1);
     }
     graph->setData(xs, ys);
+
+    auto& visual = lib::Manager::getInstance()->getVariable(i).variable_visual;
+
+    QPen graphPen = graph->pen();
+    graphPen.setWidth(visual.width);
+    graph->setPen(graphPen);
   }
+
   plot->replot();
 }
 
