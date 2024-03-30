@@ -3,6 +3,7 @@
 void LinePlot::draw(QCustomPlot* plot) {
   plot->xAxis->setRange(0, 6);
   plot->yAxis->setRange(0, 15);
+  plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
 
   for (int i = 0; i < lib::Manager::getInstance()->getVariablesCount(); ++i) {
     auto graph = plot->addGraph(plot->xAxis, plot->yAxis);
