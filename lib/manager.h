@@ -28,8 +28,8 @@ class Manager : public QObject {
 
   void clear();
  public slots:
-  void deleteVariable();
-     void addVariable(const Variable& = Variable({0}));
+  void deleteVariable(int);
+  void addVariable(const Variable& = Variable({0}));
   void addMeasurements();
   void deleteMeasurements();
  signals:

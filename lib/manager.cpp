@@ -47,14 +47,15 @@ void lib::Manager::deleteMeasurements() {
   emit Measurements_is_deleted();
 }
 
-void lib::Manager::deleteVariable() {
+void lib::Manager::deleteVariable(int index_column) {
   if (variables.size() == 0) return;
   if (variables.size() == 1) {
-    while (variables.first().getMeasurementsCount() != 0) deleteMeasurements();
-    variables.pop_back();
+    for (int i = 0; i < lib::Manager::getInstance()->getMeasurementsCount(); ++i) deleteMeasurements();
+    // while (lib::Manager::getInstance()->getMeasurementsCount() != 0) deleteMeasurements();
+    variables.removeAt(index_column);
     emit Variable_is_deleted();
   } else {
-    variables.pop_back();
+    variables.removeAt(index_column);
     emit Variable_is_deleted();
   }
 }
@@ -75,5 +76,5 @@ size_t lib::Manager::getMeasurementsCount() const {
 
 void lib::Manager::clear() {
   int test = getVariablesCount();
-  for (int i = 0; i < test; i++) deleteVariable();
+  for (int i = 0; i < test; i++) deleteVariable(i);
 }

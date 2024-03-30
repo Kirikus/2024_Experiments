@@ -91,18 +91,18 @@ MainWindow::MainWindow(QWidget* parent)
 
 MainWindow::~MainWindow() { delete ui; }
 
-void MainWindow::ConfirmDeleteVariable()
-{
-  if (ConfirmingAction())
-  {
-    lib::Manager::getInstance()->deleteVariable();
-  }
+void MainWindow::ConfirmDeleteVariable() {
+  if (ui->tableViewMain->selectionModel()->hasSelection()) {
+      int index_column = ui->tableViewMain->currentIndex().column();
+      if (ConfirmingAction()) {
+        lib::Manager::getInstance()->deleteVariable(index_column);
+      }
+    }
+  else return;
 }
 
-void MainWindow::ConfirmDeleteMeasurments()
-{
-  if (ConfirmingAction())
-  {
+void MainWindow::ConfirmDeleteMeasurments() {
+  if (ConfirmingAction()) {
     lib::Manager::getInstance()->deleteMeasurements();
   }
 }
@@ -115,7 +115,7 @@ bool MainWindow::ConfirmingAction() {
   Dialog->setMaximumWidth(180);
   Dialog->setMaximumHeight(90);
   Dialog->setWindowTitle("Confirming window");
-  //Create "Yes" and "No" buttons
+  // Create "Yes" and "No" buttons
   QDialogButtonBox* confirmButtonsBox =
       new QDialogButtonBox(QDialogButtonBox::Yes | QDialogButtonBox::Cancel);
   connect(confirmButtonsBox, SIGNAL(accepted()), Dialog, SLOT(accept()));
@@ -123,7 +123,7 @@ bool MainWindow::ConfirmingAction() {
   confirmButtonsBox->setParent(Dialog);
   confirmButtonsBox->setGeometry(30, 35, 120, 60);
   confirmButtonsBox->show();
-  //Create label
+  // Create label
   QLabel* confirmLabel = new QLabel();
   QFont font(confirmLabel->font());
   font.setBold(false);
@@ -177,30 +177,27 @@ void MainWindow::addPlot() {
 }
 
 void MainWindow::addColumn() {
-    ui->tableViewMain->model()->insertColumns(
-        lib::Manager::getInstance()->getVariablesCount(), 1);
-    ui->tableViewNaming->model()->insertRows(
-        lib::Manager::getInstance()->getVariablesCount(), 1);
-    ui->tableViewPlotsSets->model()->insertRows(
-        lib::Manager::getInstance()->getVariablesCount(), 1);
-    ui->tableViewErrors->model()->insertRows(
-        lib::Manager::getInstance()->getVariablesCount(), 1);
+  ui->tableViewMain->model()->insertColumns(
+      lib::Manager::getInstance()->getVariablesCount(), 1);
+  ui->tableViewNaming->model()->insertRows(
+      lib::Manager::getInstance()->getVariablesCount(), 1);
+  ui->tableViewPlotsSets->model()->insertRows(
+      lib::Manager::getInstance()->getVariablesCount(), 1);
+  ui->tableViewErrors->model()->insertRows(
+      lib::Manager::getInstance()->getVariablesCount(), 1);
 }
 
 void MainWindow::deleteColumn() {
-  ui->tableViewMain->model()->removeColumns(
-      lib::Manager::getInstance()->getVariablesCount(), 1);
-  ui->tableViewNaming->model()->removeRows(
-      lib::Manager::getInstance()->getVariablesCount(), 1);
-  ui->tableViewPlotsSets->model()->removeRows(
-      lib::Manager::getInstance()->getVariablesCount(), 1);
-  ui->tableViewErrors->model()->removeRows(
-      lib::Manager::getInstance()->getVariablesCount(), 1);
+  int index_column = ui->tableViewMain->currentIndex().column();
+  ui->tableViewMain->model()->removeColumns(index_column, 1);
+  ui->tableViewNaming->model()->removeRows(index_column, 1);
+  ui->tableViewPlotsSets->model()->removeRows(index_column, 1);
+  ui->tableViewErrors->model()->removeRows(index_column, 1);
 }
 
 void MainWindow::addRow() {
-    ui->tableViewMain->model()->insertRows(
-        lib::Manager::getInstance()->getMeasurementsCount(), 1);
+  ui->tableViewMain->model()->insertRows(
+      lib::Manager::getInstance()->getMeasurementsCount(), 1);
 }
 
 void MainWindow::deleteRow() {
