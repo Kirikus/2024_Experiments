@@ -34,7 +34,9 @@ void LinePlot::draw(QCustomPlot* plot) {
     graph->setData(xs, ys);
 
     auto& visual = lib::Manager::getInstance()->getVariable(i).variable_visual;
-
+    // visible
+    graph->setVisible(visual.visible);
+    // width
     QPen graphPen = graph->pen();
     graphPen.setWidth(visual.width);
     graph->setPen(graphPen);
