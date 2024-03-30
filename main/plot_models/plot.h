@@ -17,6 +17,11 @@ class Plot : public QWidget {
 class LinePlot : public Plot {
   Q_OBJECT
  private:
+  std::vector<std::vector<int>> colors{{244, 202, 22}, {240, 116, 39},
+                                       {235, 76, 66},  {148, 87, 235},
+                                       {49, 140, 231}, {80, 200, 120}};
+  enum color { yellow, orange, red, purple, blue, green };
+
   QString title;
   QString X_axisname;
   QString Y_axisname;
