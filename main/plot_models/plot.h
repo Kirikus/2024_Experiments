@@ -30,7 +30,6 @@ class LinePlot : public Plot {
     light_sea_green,
     green
   };
-
   QString title;
   QString X_axisname;
   QString Y_axisname;
