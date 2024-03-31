@@ -41,9 +41,9 @@ void lib::Manager::deleteMeasurements(int index_row) {
   size_t count = lib::Manager::getInstance()->getMeasurementsCount();
   if (count == 0) return;
   for (int i = 0; i < lib::Manager::getInstance()->getVariablesCount(); i++)
-    if (count >= index_row)
-      lib::Manager::getInstance()->getVariable(i).measurements.removeAt(
-          index_row);
+    if (count ==
+        lib::Manager::getInstance()->getVariable(i).getMeasurementsCount())
+      lib::Manager::getInstance()->getVariable(i).measurements.removeAt(index_row);
   emit Measurements_is_deleted();
 }
 
@@ -51,7 +51,7 @@ void lib::Manager::deleteVariable(int index_column) {
   if (variables.size() == 0) return;
   if (variables.size() == 1) {
     while (lib::Manager::getInstance()->getMeasurementsCount() != 0)
-      deleteMeasurements(lib::Manager::getInstance()->getMeasurementsCount());
+      deleteMeasurements(lib::Manager::getInstance()->getMeasurementsCount() - 1);
     variables.removeAt(index_column);
     emit Variable_is_deleted();
   } else {
