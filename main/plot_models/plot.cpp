@@ -96,6 +96,9 @@ void LinePlot::customization(auto& visual, auto& graph) {
   // line type
   line_type(visual.line_type, graphPen);
 
+  // color
+  if (visual.color != QColor(0, 0, 0)) graphPen.setColor(visual.color);
+
   graph->setPen(graphPen);
 }
 
