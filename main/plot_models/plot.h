@@ -17,7 +17,7 @@ class Plot : public QWidget {
 class LinePlot : public Plot {
   Q_OBJECT
  private:
-  std::vector<std::vector<int>> colors {
+  std::vector<std::vector<int>> colors{
       {255, 0, 0},    // Красный
       {0, 255, 0},    // Зелёный
       {0, 0, 255},    // Синий
@@ -33,6 +33,7 @@ class LinePlot : public Plot {
 
  public:
   void draw(QCustomPlot*) override;
+  void customization(auto& visual, auto& graph);
   void setOptions() override;
 };
 

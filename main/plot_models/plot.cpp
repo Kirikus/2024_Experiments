@@ -1,9 +1,52 @@
 #include "plot.h"
 
-#include <iostream>
 #include <random>
-
+#include <chrono>
 #include "manager.h"
+
+void LinePlot::customization(auto& visual, auto& graph) {
+    // visible
+    graph->setVisible(visual.visible);
+
+    // width
+    QPen graphPen = graph->pen();
+    graphPen.setWidth(visual.width);
+
+    // type line
+    switch(visual.line_type) {
+    case 1:
+        graphPen.setStyle(Qt::SolidLine);
+        break;
+    case 2:
+        graphPen.setStyle(Qt::DashLine);
+        break;
+    case 3:
+        graphPen.setStyle(Qt::DotLine);
+        break;
+    case 4:
+        graphPen.setStyle(Qt::DashDotLine);
+        break;
+    case 5:
+        graphPen.setStyle(Qt::DashDotDotLine);
+        break;
+    case 6:
+        auto now = std::chrono::system_clock::now();
+        auto seed = std::chrono::duration_cast<std::chrono::seconds>(now.time_since_epoch()).count();
+
+        std::mt19937 gen(seed);
+        std::uniform_int_distribution<> dis(1, 10);
+
+        QVector<qreal> dashes;
+        for (int i = 0; i < 10; ++i) {
+            qreal length = static_cast<qreal>(dis(gen));
+            dashes << length;
+        }
+        graphPen.setDashPattern(dashes);
+    }
+
+
+    graph->setPen(graphPen);
+}
 
 void LinePlot::draw(QCustomPlot* plot) {
   plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
@@ -34,12 +77,7 @@ void LinePlot::draw(QCustomPlot* plot) {
     graph->setData(xs, ys);
 
     auto& visual = lib::Manager::getInstance()->getVariable(i).variable_visual;
-    // visible
-    graph->setVisible(visual.visible);
-    // width
-    QPen graphPen = graph->pen();
-    graphPen.setWidth(visual.width);
-    graph->setPen(graphPen);
+    customization(lib::Manager::getInstance()->getVariable(i).variable_visual, graph);
   }
 
   plot->replot();
