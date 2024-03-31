@@ -34,6 +34,8 @@ class LinePlot : public Plot {
  public:
   void draw(QCustomPlot*) override;
   void customization(auto& visual, auto& graph);
+  void point_form(int form, auto& graph, int width);
+  void line_type(int line, QPen& graphPen);
   void setOptions() override;
 };
 

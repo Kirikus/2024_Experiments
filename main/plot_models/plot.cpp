@@ -1,51 +1,102 @@
 #include "plot.h"
 
-#include <random>
 #include <chrono>
+#include <random>
+
 #include "manager.h"
 
-void LinePlot::customization(auto& visual, auto& graph) {
-    // visible
-    graph->setVisible(visual.visible);
-
-    // width
-    QPen graphPen = graph->pen();
-    graphPen.setWidth(visual.width);
-
-    // type line
-    switch(visual.line_type) {
-    case 1:
-        graphPen.setStyle(Qt::SolidLine);
-        break;
+void LinePlot::point_form(int form, auto& graph, int width) {
+  switch (form) {
+    case 0:
+      graph->setScatterStyle(
+          QCPScatterStyle(QCPScatterStyle::ssDisc, width + 8));
+      break;
     case 2:
-        graphPen.setStyle(Qt::DashLine);
-        break;
-    case 3:
-        graphPen.setStyle(Qt::DotLine);
-        break;
+      graph->setScatterStyle(
+          QCPScatterStyle(QCPScatterStyle::ssCross, width + 8));
+      break;
     case 4:
-        graphPen.setStyle(Qt::DashDotLine);
-        break;
+      graph->setScatterStyle(
+          QCPScatterStyle(QCPScatterStyle::ssCircle, width + 8));
+      break;
     case 5:
-        graphPen.setStyle(Qt::DashDotDotLine);
-        break;
+      graph->setScatterStyle(
+          QCPScatterStyle(QCPScatterStyle::ssDisc, width + 8));
+      break;
     case 6:
-        auto now = std::chrono::system_clock::now();
-        auto seed = std::chrono::duration_cast<std::chrono::seconds>(now.time_since_epoch()).count();
+      graph->setScatterStyle(
+          QCPScatterStyle(QCPScatterStyle::ssSquare, width + 8));
+      break;
+    case 7:
+      graph->setScatterStyle(
+          QCPScatterStyle(QCPScatterStyle::ssDiamond, width + 8));
+      break;
+    case 8:
+      graph->setScatterStyle(
+          QCPScatterStyle(QCPScatterStyle::ssStar, width + 8));
+      break;
+    case 13:
+      graph->setScatterStyle(
+          QCPScatterStyle(QCPScatterStyle::ssCrossCircle, width + 8));
+      break;
+    case 14:
+      graph->setScatterStyle(
+          QCPScatterStyle(QCPScatterStyle::ssPlusCircle, width + 8));
+      break;
+  }
+}
 
-        std::mt19937 gen(seed);
-        std::uniform_int_distribution<> dis(1, 10);
+void LinePlot::line_type(int line, QPen& graphPen) {
+  switch (line) {
+    case 1:
+      graphPen.setStyle(Qt::SolidLine);
+      break;
+    case 2:
+      graphPen.setStyle(Qt::DashLine);
+      break;
+    case 3:
+      graphPen.setStyle(Qt::DotLine);
+      break;
+    case 4:
+      graphPen.setStyle(Qt::DashDotLine);
+      break;
+    case 5:
+      graphPen.setStyle(Qt::DashDotDotLine);
+      break;
+    case 6:
+      auto now = std::chrono::system_clock::now();
+      auto seed = std::chrono::duration_cast<std::chrono::seconds>(
+                      now.time_since_epoch())
+                      .count();
 
-        QVector<qreal> dashes;
-        for (int i = 0; i < 10; ++i) {
-            qreal length = static_cast<qreal>(dis(gen));
-            dashes << length;
-        }
-        graphPen.setDashPattern(dashes);
-    }
+      std::mt19937 gen(seed);
+      std::uniform_int_distribution<> dis(1, 10);
 
+      QVector<qreal> dashes;
+      for (int i = 0; i < 10; ++i) {
+        qreal length = static_cast<qreal>(dis(gen));
+        dashes << length;
+      }
+      graphPen.setDashPattern(dashes);
+      break;
+  }
+}
 
-    graph->setPen(graphPen);
+void LinePlot::customization(auto& visual, auto& graph) {
+  // visible
+  graph->setVisible(visual.visible);
+
+  // width
+  QPen graphPen = graph->pen();
+  graphPen.setWidth(visual.width);
+
+  // point form
+  point_form(visual.point_form, graph, visual.width);
+
+  // line type
+  line_type(visual.line_type, graphPen);
+
+  graph->setPen(graphPen);
 }
 
 void LinePlot::draw(QCustomPlot* plot) {
@@ -76,8 +127,8 @@ void LinePlot::draw(QCustomPlot* plot) {
     }
     graph->setData(xs, ys);
 
-    auto& visual = lib::Manager::getInstance()->getVariable(i).variable_visual;
-    customization(lib::Manager::getInstance()->getVariable(i).variable_visual, graph);
+    customization(lib::Manager::getInstance()->getVariable(i).variable_visual,
+                  graph);
   }
 
   plot->replot();
