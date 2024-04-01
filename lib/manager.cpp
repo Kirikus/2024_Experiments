@@ -37,24 +37,25 @@ void lib::Manager::addMeasurements() {
   }
 }
 
-void lib::Manager::deleteMeasurements() {
+void lib::Manager::deleteMeasurements(int index_row) {
   size_t count = lib::Manager::getInstance()->getMeasurementsCount();
   if (count == 0) return;
   for (int i = 0; i < lib::Manager::getInstance()->getVariablesCount(); i++)
     if (count ==
         lib::Manager::getInstance()->getVariable(i).getMeasurementsCount())
-      lib::Manager::getInstance()->getVariable(i).measurements.pop_back();
+      lib::Manager::getInstance()->getVariable(i).measurements.removeAt(index_row);
   emit Measurements_is_deleted();
 }
 
-void lib::Manager::deleteVariable() {
+void lib::Manager::deleteVariable(int index_column) {
   if (variables.size() == 0) return;
   if (variables.size() == 1) {
-    while (variables.first().getMeasurementsCount() != 0) deleteMeasurements();
-    variables.pop_back();
+    while (lib::Manager::getInstance()->getMeasurementsCount() != 0)
+      deleteMeasurements(lib::Manager::getInstance()->getMeasurementsCount() - 1);
+    variables.removeAt(index_column);
     emit Variable_is_deleted();
   } else {
-    variables.pop_back();
+    variables.removeAt(index_column);
     emit Variable_is_deleted();
   }
 }
@@ -75,5 +76,5 @@ size_t lib::Manager::getMeasurementsCount() const {
 
 void lib::Manager::clear() {
   int test = getVariablesCount();
-  for (int i = 0; i < test; i++) deleteVariable();
+  for (int i = 0; i < test; i++) deleteVariable(i);
 }

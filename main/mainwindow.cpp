@@ -64,12 +64,12 @@ MainWindow::MainWindow(QWidget* parent)
 
   connect(ui->addPlotBtn, SIGNAL(clicked()), this, SLOT(addPlot()));
   connect(ui->deletePlotBtn, SIGNAL(clicked()), this, SLOT(deletePlot()));
-      
+
   connect(ui->LoadDataBtn, SIGNAL(clicked()), this, SLOT(load()));
 
   // delete column
-  connect(ui->deleteColumnBtn, SIGNAL(clicked()), lib::Manager::getInstance(),
-          SLOT(deleteVariable()));
+  connect(ui->deleteColumnBtn, SIGNAL(clicked()), this,
+          SLOT(ConfirmDeleteVariable()));
   connect(lib::Manager::getInstance(), SIGNAL(Variable_is_deleted()), this,
           SLOT(deleteColumn()));
   // add column
@@ -78,8 +78,8 @@ MainWindow::MainWindow(QWidget* parent)
   connect(lib::Manager::getInstance(), SIGNAL(Variable_is_added()), this,
           SLOT(addColumn()));
   // delete row
-  connect(ui->deleteRowBtn, SIGNAL(clicked()), lib::Manager::getInstance(),
-          SLOT(deleteMeasurements()));
+  connect(ui->deleteRowBtn, SIGNAL(clicked()), this,
+          SLOT(ConfirmDeleteMeasurments()));
   connect(lib::Manager::getInstance(), SIGNAL(Measurements_is_deleted()), this,
           SLOT(deleteRow()));
   // add row
@@ -90,6 +90,55 @@ MainWindow::MainWindow(QWidget* parent)
 }
 
 MainWindow::~MainWindow() { delete ui; }
+
+void MainWindow::ConfirmDeleteVariable() {
+  if (ui->tableViewMain->selectionModel()->hasSelection()) {
+      int index_column = ui->tableViewMain->currentIndex().column();
+      if (ConfirmingAction()) {
+        lib::Manager::getInstance()->deleteVariable(index_column);
+      }
+    }
+}
+
+void MainWindow::ConfirmDeleteMeasurments() {
+  if (ui->tableViewMain->selectionModel()->hasSelection()) {
+    int index_row = ui->tableViewMain->currentIndex().row();
+    if (ConfirmingAction()) {
+      lib::Manager::getInstance()->deleteMeasurements(index_row);
+    }
+  }
+}
+
+bool MainWindow::ConfirmingAction() {
+  // Create Dialog Window
+  QDialog* Dialog = new QDialog();
+  Dialog->setMinimumWidth(180);
+  Dialog->setMinimumHeight(90);
+  Dialog->setMaximumWidth(180);
+  Dialog->setMaximumHeight(90);
+  Dialog->setWindowTitle("Confirming window");
+  // Create "Yes" and "No" buttons
+  QDialogButtonBox* confirmButtonsBox =
+      new QDialogButtonBox(QDialogButtonBox::Yes | QDialogButtonBox::Cancel);
+  connect(confirmButtonsBox, SIGNAL(accepted()), Dialog, SLOT(accept()));
+  connect(confirmButtonsBox, SIGNAL(rejected()), Dialog, SLOT(reject()));
+  confirmButtonsBox->setParent(Dialog);
+  confirmButtonsBox->setGeometry(30, 35, 120, 60);
+  confirmButtonsBox->show();
+  // Create label
+  QLabel* confirmLabel = new QLabel();
+  QFont font(confirmLabel->font());
+  font.setBold(false);
+  font.setPointSize(10);
+  confirmLabel->setFont(font);
+  confirmLabel->setText("Are you sure?");
+  confirmLabel->setGeometry(10, 10, 180, 30);
+  confirmLabel->setParent(Dialog);
+  confirmLabel->show();
+
+  if (Dialog->exec() == QDialog::Accepted) return true;
+  return false;
+}
 
 void MainWindow::load() {
   QString file_name = QFileDialog::getOpenFileName(
@@ -141,14 +190,12 @@ void MainWindow::addColumn() {
 }
 
 void MainWindow::deleteColumn() {
-  ui->tableViewMain->model()->removeColumns(
-      lib::Manager::getInstance()->getVariablesCount(), 1);
-  ui->tableViewNaming->model()->removeRows(
-      lib::Manager::getInstance()->getVariablesCount(), 1);
-   ui->tableViewPlotsSets->model()->removeRows(
-      lib::Manager::getInstance()->getVariablesCount(), 1);
-  ui->tableViewErrors->model()->removeRows(
-      lib::Manager::getInstance()->getVariablesCount(), 1);
+  int index_column = ui->tableViewMain->currentIndex().column();
+  if (index_column == -1) index_column = 0;
+  ui->tableViewMain->model()->removeColumns(index_column, 1);
+  ui->tableViewNaming->model()->removeRows(index_column, 1);
+  ui->tableViewPlotsSets->model()->removeRows(index_column, 1);
+  ui->tableViewErrors->model()->removeRows(index_column, 1);
 }
 
 void MainWindow::addRow() {
@@ -157,6 +204,7 @@ void MainWindow::addRow() {
 }
 
 void MainWindow::deleteRow() {
-  ui->tableViewMain->model()->removeRows(
-      lib::Manager::getInstance()->getMeasurementsCount(), 1);
+  int index_row = ui->tableViewMain->currentIndex().row();
+  if (index_row == -1) index_row = 0;
+  ui->tableViewMain->model()->removeRows(index_row, 1);
 }
