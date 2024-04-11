@@ -28,7 +28,7 @@ QVariant lib::PlotSettingsTable::data(const QModelIndex &index,
                                       int role) const {
   int row = index.row();
   int column = index.column();
-  auto &visual = Manager::getInstance()->getVariable(row).variable_visual;
+  auto &visual = Manager::getInstance()->getVariable(row).visual;
   switch (role) {
     case Qt::BackgroundRole:
       if (column == PlotSettings_shell::data::color) return visual.color;
@@ -55,7 +55,7 @@ bool lib::PlotSettingsTable::setData(const QModelIndex &index,
                                      const QVariant &value, int role) {
   int row = index.row();
   int column = index.column();
-  auto &visual = Manager::getInstance()->getVariable(row).variable_visual;
+  auto &visual = Manager::getInstance()->getVariable(row).visual;
   switch (role) {
     case Qt::CheckStateRole:
       if (column == PlotSettings_shell::data::visible) {
@@ -74,11 +74,13 @@ bool lib::PlotSettingsTable::setData(const QModelIndex &index,
           emit dataChanged(index, index);
           return true;
         case PlotSettings_shell::data::point_form:
-          visual.point_form = VisualOptions::point_forms.key(value.toString());
+          visual.point_form =
+              Variable::VisualOptions::point_forms.key(value.toString());
           emit dataChanged(index, index);
           return true;
         case PlotSettings_shell::data::line_type:
-          visual.line_type = VisualOptions::line_types.key(value.toString());
+          visual.line_type =
+              Variable::VisualOptions::line_types.key(value.toString());
           emit dataChanged(index, index);
           return true;
         case PlotSettings_shell::data::color:
@@ -95,7 +97,8 @@ QVariant lib::PlotSettingsTable::headerData(int section,
                                             int role) const {
   if (role != Qt::DisplayRole) return QVariant();
   if (orientation == Qt::Vertical)
-    return QString(Manager::getInstance()->getVariable(section).name_short);
+    return QString(
+        Manager::getInstance()->getVariable(section).naming.name_short);
   switch (section) {
     case PlotSettings_shell::data::visible:
       return QString("Visible");

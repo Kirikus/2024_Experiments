@@ -39,12 +39,12 @@ MainWindow::MainWindow(QWidget* parent)
 
   ui->tableViewPlotsSets->setItemDelegateForColumn(4, new ColorDelegate);
   ui->tableViewPlotsSets->setItemDelegateForColumn(
-      2, new ComboBoxDelegate(lib::VisualOptions::point_forms.values()));
+      2, new ComboBoxDelegate(lib::Variable::VisualOptions::point_forms.values()));
   ui->tableViewPlotsSets->setItemDelegateForColumn(
-      3, new ComboBoxDelegate(lib::VisualOptions::line_types.values()));
+      3, new ComboBoxDelegate(lib::Variable::VisualOptions::line_types.values()));
 
   ui->tableViewErrors->setItemDelegateForColumn(
-      0, new ComboBoxDelegate(lib::ErrorOptions::error_types.values()));
+      0, new ComboBoxDelegate(lib::Variable::ErrorOptions::error_types.values()));
 
   ui->tableViewMain->horizontalHeader()->setSectionResizeMode(
       QHeaderView::ResizeToContents);

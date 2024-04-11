@@ -24,7 +24,7 @@ int lib::ErrorsTable::columnCount(const QModelIndex &parent) const {
 QVariant lib::ErrorsTable::data(const QModelIndex &index, int role) const {
   int row = index.row();
   int column = index.column();
-  auto &errors = Manager::getInstance()->getVariable(row).variable_error;
+  auto &errors = Manager::getInstance()->getVariable(row).errors;
 
   switch (role) {
     case Qt::DisplayRole: {
@@ -32,7 +32,7 @@ QVariant lib::ErrorsTable::data(const QModelIndex &index, int role) const {
         case Errors_shell::data::error_type:
           return errors.error_types.value(errors.current_error_type);
         case Errors_shell::data::error:
-          return Manager::getInstance()->getVariable(row).variable_error.error;
+          return Manager::getInstance()->getVariable(row).errors.error;
       }
     }
     default:
@@ -44,19 +44,19 @@ bool lib::ErrorsTable::setData(const QModelIndex &index, const QVariant &value,
                                int role) {
   int row = index.row();
   int column = index.column();
-  auto &errors = Manager::getInstance()->getVariable(row).variable_error;
+  auto &errors = Manager::getInstance()->getVariable(row).errors;
 
   switch (role) {
     case Qt::EditRole: {
       switch (column) {
         case Errors_shell::data::error_type:
           errors.current_error_type =
-              ErrorOptions::error_types.key(value.toString());
+              Variable::ErrorOptions::error_types.key(value.toString());
           emit dataChanged(index, index);
           return true;
         case Errors_shell::data::error:
           if (!value.canConvert<double>() or value.toDouble() < 0) return false;
-          Manager::getInstance()->getVariable(row).variable_error.error =
+          Manager::getInstance()->getVariable(row).errors.error =
               value.toDouble();
           emit dataChanged(index, index);
           return true;
@@ -72,7 +72,8 @@ QVariant lib::ErrorsTable::headerData(int section, Qt::Orientation orientation,
   if (role != Qt::DisplayRole) return QVariant();
 
   if (orientation == Qt::Vertical)
-    return QString(Manager::getInstance()->getVariable(section).name_full);
+    return QString(
+        Manager::getInstance()->getVariable(section).naming.name_full);
   if (orientation == Qt::Horizontal)
     if (section == 0) return QString("Type of error");
   if (section == 1) return QString("Error");

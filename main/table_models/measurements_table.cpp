@@ -60,9 +60,9 @@ QVariant lib::MeasurementsTable::headerData(int section,
 
   if (orientation == Qt::Vertical) return section + 1;
 
-  return Manager::getInstance()->getVariable(section).name_short != "NONE"
-             ? Manager::getInstance()->getVariable(section).name_short
-             : Manager::getInstance()->getVariable(section).name_full;
+  return Manager::getInstance()->getVariable(section).naming.name_short != "NONE"
+             ? Manager::getInstance()->getVariable(section).naming.name_short
+             : Manager::getInstance()->getVariable(section).naming.name_full;
 }
 
 Qt::ItemFlags lib::MeasurementsTable::flags(const QModelIndex &index) const {

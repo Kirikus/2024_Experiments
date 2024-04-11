@@ -130,7 +130,7 @@ void LinePlot::draw(QCustomPlot* plot) {
     }
     graph->setData(xs, ys);
 
-    customization(lib::Manager::getInstance()->getVariable(i).variable_visual,
+    customization(lib::Manager::getInstance()->getVariable(i).visual,
                   graph);
   }
 
