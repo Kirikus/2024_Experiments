@@ -4,12 +4,13 @@
 #define BOOST_SPIRIT_NO_PREDEFINED_TERMINALS
 
 #include <boost/spirit/include/qi.hpp>
-#include <iostream>
-#include <string>
 #include <boost/variant/recursive_variant.hpp>
 #include <boost/variant/apply_visitor.hpp>
 #include <boost/fusion/include/adapt_struct.hpp>
 #include <boost/foreach.hpp>
+#include <iostream>
+#include <string>
+#include <list>
 
 namespace client
 {
@@ -25,36 +26,36 @@ struct calculator : qi::grammar<Iterator, ascii::space_type>
     qi::lexeme_type lexeme;
     qi::char_type char_;
     qi::uint_type uint_;
+    qi::raw_type raw;
 
     expression =
-        term
-        >> *(   ('+' >> term)
-             |   ('-' >> term)
-             )
+        additive_expr
+        >> *(('+' >> additive_expr)
+        |    ('-' >> additive_expr))
         ;
 
-    term =
-        factor
-        >> *(   ('*' >> factor)
-             |   ('/' >> factor)
-             )
+    additive_expr =
+        multiplicative_expr
+        >> *((char_('+') | char_('-')) > multiplicative_expr)
         ;
 
-    factor =
-        simple
-        |   '(' >> expression >> ')'
-        |   ('-' >> factor)
-        |   ('+' >> factor)
+    multiplicative_expr =
+        primary_expr
+        >> *((char_('*') | char_('/')) > primary_expr)
         ;
 
-    simple = number | varname;
+    primary_expr =
+        number
+        |   varname
+        |   '(' > expression > ')'
+        ;
 
     number = lexeme[double_];
 
-    varname = lexeme[+(char_) >> *(uint_ | '_')];
+    varname = raw[lexeme[+(char_) >> *(uint_ | '_')]];
   }
 
-  qi::rule<Iterator, ascii::space_type> expression, term, factor, number, varname, simple;
+  qi::rule<Iterator, ascii::space_type> expression, additive_expr, multiplicative_expr, primary_expr, number, varname;
 };
 }
 #endif  // FORMULA_PARSER_H
