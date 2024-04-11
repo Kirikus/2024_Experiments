@@ -68,40 +68,30 @@ void StrategyIO_JSON::load(const QString& input_file) {
     lib::Variable variable;
     QJsonObject json_object = json_array[i].toObject();
 
-    // variable.naming =
-    // lib::Variable::Naming(json_object["Naming"].toObject());
+    QJsonArray json_measurements = json_object["Measurements"].toArray();
+    if (json_measurements.empty()) continue;
+    for (const auto& j : json_measurements)
+      variable.measurements.append(j.toDouble());
 
-    // variable.errors =
-    // lib::Variable::ErrorOptions{json_object["Errors"].toObject()};
+    QJsonObject json_naming = json_object["Naming"].toObject();
+    variable.naming =
+        lib::Variable::Naming(json_naming["full_name"].toString("unnamed"),
+                              json_naming["short_name"].toString("unnamed"));
 
-    // QString short_name = main_json_object["short_name"].toString();
-    // QString full_name = main_json_object["full_name"].toString();
-    // if (!full_name.isEmpty()) Variable.name_full = full_name;
-    // if (!short_name.isEmpty()) Variable.name_short = short_name;
+    QJsonObject json_errors = json_object["Errors"].toObject();
+    variable.errors = lib::Variable::ErrorOptions(
+        json_errors["value"].toDouble(), json_errors["type"].toBool());
 
-    // QJsonObject error_options = main_json_object["error_options"].toObject();
-    // QJsonObject visual_options =
-    // main_json_object["visual_options"].toObject();
+    QJsonObject json_visual = json_object["Visual"].toObject();
+    variable.visual = lib::Variable::VisualOptions(
+        json_visual["visible"].toBool(), json_visual["width"].toInt(),
+        QColor(json_visual["color"].toString()),
+        lib::Variable::VisualOptions::point_forms.key(
+            json_visual["point_form"].toString()),
+        lib::Variable::VisualOptions::line_types.key(
+            json_visual["line_type"].toString()));
 
-    // QString error_type = error_options["type"].toString();
-    // double error_value = error_options["value"].toDouble();
-    // if (error_type == "absolute")
-    //     Variable.variable_error.current_error_type = true;
-    // if (error_type == "relative")
-    //     Variable.variable_error.current_error_type = false;
-
-    // bool visual_visible = visual_options["visible"].toBool();
-    // int visual_width = visual_options["width"].toInt();
-
-    // QJsonArray json_measurements =
-    // main_json_object["measurements"].toArray(); for (const auto& j :
-    // json_measurements)
-    //   Variable.measurements.push_back(j.toDouble());
-    // if (Variable.measurements.size() == 0) return;
-    // if (error_value > 0) Variable.variable_error.error = error_value;
-    // Variable.variable_visual.visible = visual_visible;
-    // if (visual_width > 0) Variable.variable_visual.width = visual_width;
-    // Variables.append(Variable);
+    Variables.append(variable);
   }
   if (Variables.size() != 0) {
     lib::Manager::getInstance()->clear();
