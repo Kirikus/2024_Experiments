@@ -38,6 +38,12 @@ void StrategyIO_JSON::save(const QString& output_file) {
                                 [lib::Manager::getInstance()
                                      ->getVariable(i)
                                      .visual.line_type])});
+    QJsonArray json_measurements;
+    for (const auto& j :
+         lib::Manager::getInstance()->getVariable(i).measurements)
+      json_measurements.append(j);
+    json_object["Measurements"] = json_measurements;
+
     json_array.append(json_object);
   }
   QJsonDocument json_document(json_array);
