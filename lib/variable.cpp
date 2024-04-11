@@ -2,9 +2,9 @@
 
 lib::Variable::Variable(QList<double> measurements, QString name_full,
                         QString name_short) {
-  naming.name_full = name_full;
-  naming.name_short = name_short;
-  measurements = measurements;
+  Variable::naming.name_full = name_full;
+  Variable::naming.name_short = name_short;
+  Variable::measurements = measurements;
 }
 
 lib::Variable::Variable() {}
@@ -24,14 +24,15 @@ QMap<Qt::PenStyle, QString> lib::Variable::VisualOptions::line_types = {
 
 };
 
-QMap<QCPScatterStyle::ScatterShape, QString> lib::Variable::VisualOptions::point_forms = {
-    {QCPScatterStyle::ScatterShape::ssNone, "Standart"},
-    {QCPScatterStyle::ScatterShape::ssCross, "Cross"},
-    {QCPScatterStyle::ScatterShape::ssCircle, "Circle"},
-    {QCPScatterStyle::ScatterShape::ssDisc, "Disc"},
-    {QCPScatterStyle::ScatterShape::ssSquare, "Square"},
-    {QCPScatterStyle::ScatterShape::ssDiamond, "Rhombus"},
-    {QCPScatterStyle::ScatterShape::ssStar, "Star"},
-    {QCPScatterStyle::ScatterShape::ssCrossCircle, "Cross circle"},
-    {QCPScatterStyle::ScatterShape::ssPlusCircle, "Plus circle"},
+QMap<QCPScatterStyle::ScatterShape, QString>
+    lib::Variable::VisualOptions::point_forms = {
+        {QCPScatterStyle::ScatterShape::ssNone, "Standart"},
+        {QCPScatterStyle::ScatterShape::ssCross, "Cross"},
+        {QCPScatterStyle::ScatterShape::ssCircle, "Circle"},
+        {QCPScatterStyle::ScatterShape::ssDisc, "Disc"},
+        {QCPScatterStyle::ScatterShape::ssSquare, "Square"},
+        {QCPScatterStyle::ScatterShape::ssDiamond, "Rhombus"},
+        {QCPScatterStyle::ScatterShape::ssStar, "Star"},
+        {QCPScatterStyle::ScatterShape::ssCrossCircle, "Cross circle"},
+        {QCPScatterStyle::ScatterShape::ssPlusCircle, "Plus circle"},
 };
