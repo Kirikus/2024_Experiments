@@ -17,5 +17,6 @@ add_library(core STATIC ${PROJECT_SOURCES})
 
 target_link_libraries(core PRIVATE Qt${QT_VERSION_MAJOR}::Core)
 target_link_libraries(core PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(core PRIVATE ${Boost_LIBRARIES})
 
 target_include_directories(core INTERFACE .)
