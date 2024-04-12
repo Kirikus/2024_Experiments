@@ -75,6 +75,5 @@ size_t lib::Manager::getMeasurementsCount() const {
 }
 
 void lib::Manager::clear() {
-  int test = getVariablesCount();
-  for (int i = 0; i < test; i++) deleteVariable(i);
+  while (getVariablesCount() != 0) deleteVariable(0);
 }
