@@ -39,12 +39,15 @@ MainWindow::MainWindow(QWidget* parent)
 
   ui->tableViewPlotsSets->setItemDelegateForColumn(4, new ColorDelegate);
   ui->tableViewPlotsSets->setItemDelegateForColumn(
-      2, new ComboBoxDelegate(lib::VisualOptions::point_forms.values()));
+      2,
+      new ComboBoxDelegate(lib::Variable::VisualOptions::point_forms.values()));
   ui->tableViewPlotsSets->setItemDelegateForColumn(
-      3, new ComboBoxDelegate(lib::VisualOptions::line_types.values()));
+      3,
+      new ComboBoxDelegate(lib::Variable::VisualOptions::line_types.values()));
 
   ui->tableViewErrors->setItemDelegateForColumn(
-      0, new ComboBoxDelegate(lib::ErrorOptions::error_types.values()));
+      0,
+      new ComboBoxDelegate(lib::Variable::ErrorOptions::error_types.values()));
 
   ui->tableViewMain->horizontalHeader()->setSectionResizeMode(
       QHeaderView::ResizeToContents);
@@ -66,6 +69,7 @@ MainWindow::MainWindow(QWidget* parent)
   connect(ui->deletePlotBtn, SIGNAL(clicked()), this, SLOT(deletePlot()));
 
   connect(ui->LoadDataBtn, SIGNAL(clicked()), this, SLOT(load()));
+  connect(ui->SaveDataBtn, SIGNAL(clicked()), this, SLOT(save()));
 
   // delete column
   connect(ui->deleteColumnBtn, SIGNAL(clicked()), this,
@@ -93,11 +97,11 @@ MainWindow::~MainWindow() { delete ui; }
 
 void MainWindow::ConfirmDeleteVariable() {
   if (ui->tableViewMain->selectionModel()->hasSelection()) {
-      int index_column = ui->tableViewMain->currentIndex().column();
-      if (ConfirmingAction()) {
-        lib::Manager::getInstance()->deleteVariable(index_column);
-      }
+    int index_column = ui->tableViewMain->currentIndex().column();
+    if (ConfirmingAction()) {
+      lib::Manager::getInstance()->deleteVariable(index_column);
     }
+  }
 }
 
 void MainWindow::ConfirmDeleteMeasurments() {
@@ -163,7 +167,28 @@ void MainWindow::load() {
   }
 }
 
-void MainWindow::save() {}
+void MainWindow::save() {
+  QString file_name = QFileDialog::getOpenFileName(
+      this, tr("Select a file"),
+      QStandardPaths::writableLocation(QStandardPaths::DesktopLocation),
+      tr("Open CSV (*.csv);;Open JSON (*.json);;"));
+  if (file_name.isEmpty()) return;
+  if (file_name.endsWith(".csv")) {
+    StrategyIO* saver = new StrategyIO_CSV;
+    saver->save(file_name);
+    delete saver;
+  }
+  if (file_name.endsWith(".json")) {
+    StrategyIO* saver = new StrategyIO_JSON;
+    saver->save(file_name);
+    delete saver;
+  }
+  if (file_name.endsWith(".db")) {
+    StrategyIO* saver = new StrategyIO_DB;
+    saver->save(file_name);
+    delete saver;
+  }
+}
 
 void MainWindow::Redraw() { plot->draw(ui->customPlot); }
 

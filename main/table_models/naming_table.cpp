@@ -21,8 +21,8 @@ QVariant lib::NamingTable::data(const QModelIndex &index, int role) const {
   int column = index.column();
 
   if (role == Qt::DisplayRole) {
-    if (column == 0) return Manager::getInstance()->getVariable(row).name_full;
-    if (column == 1) return Manager::getInstance()->getVariable(row).name_short;
+    if (column == 0) return Manager::getInstance()->getVariable(row).naming.name_full;
+    if (column == 1) return Manager::getInstance()->getVariable(row).naming.name_short;
   }
   return QVariant();
 }
@@ -35,12 +35,12 @@ bool lib::NamingTable::setData(const QModelIndex &index, const QVariant &value,
   if (role == Qt::EditRole) {
     if (value.toString().isEmpty() == true) return false;
     if (column == 0) {
-      Manager::getInstance()->getVariable(row).name_full = value.toString();
+      Manager::getInstance()->getVariable(row).naming.name_full = value.toString();
       emit dataChanged(index, index);
       return true;
     }
     if (column == 1) {
-      Manager::getInstance()->getVariable(row).name_short = value.toString();
+      Manager::getInstance()->getVariable(row).naming.name_short = value.toString();
       emit dataChanged(index, index);
       return true;
     }
