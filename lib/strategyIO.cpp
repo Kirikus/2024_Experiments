@@ -103,6 +103,76 @@ void StrategyIO_DB::save(const QString&) {}
 
 void StrategyIO_DB::load(const QString&) {}
 
-void StrategyIO_CSV::save(const QString&) {}
+void StrategyIO_CSV::save(const QString& output_file) {
+  QFile file;
+  file.setFileName(output_file);
+  file.open(QIODevice::WriteOnly | QIODevice::Text);
 
-void StrategyIO_CSV::load(const QString&) {}
+  QTextStream output_stream(&file);
+
+  for (int i = 0; i < lib::Manager::getInstance()->getVariablesCount(); i++) {
+    for (int j = 0; j < lib::Manager::getInstance()->getMeasurementsCount();
+         j++) {
+      if (j) output_stream << ',';
+      output_stream
+          << lib::Manager::getInstance()->getVariable(i).measurements[j];
+    }
+    output_stream << ',' << '\n';
+    output_stream
+        << lib::Manager::getInstance()->getVariable(i).naming.name_full << ','
+        << lib::Manager::getInstance()->getVariable(i).naming.name_short;
+    output_stream << ',' << '\n';
+    output_stream
+        << lib::Manager::getInstance()->getVariable(i).errors.current_error_type
+        << ',' << lib::Manager::getInstance()->getVariable(i).errors.error;
+    output_stream << ',' << '\n';
+    output_stream
+        << lib::Manager::getInstance()->getVariable(i).visual.visible << ','
+        << lib::Manager::getInstance()->getVariable(i).visual.width << ','
+        << lib::Manager::getInstance()->getVariable(i).visual.color.name()
+        << ','
+        << lib::Variable::VisualOptions::point_forms
+               [lib::Manager::getInstance()->getVariable(i).visual.point_form]
+        << ','
+        << lib::Variable::VisualOptions::line_types
+               [lib::Manager::getInstance()->getVariable(i).visual.line_type];
+    if (i != lib::Manager::getInstance()->getVariablesCount() - 1)
+      output_stream << ',';
+    output_stream << '\n';
+  }
+  file.close();
+}
+
+void StrategyIO_CSV::load(const QString& input_file) {
+  QFile file;
+  file.setFileName(input_file);
+  file.open(QIODevice::ReadOnly | QIODevice::Text);
+
+  lib::Manager::getInstance()->clear();
+
+  QTextStream input_stream(&file);
+
+  while (!input_stream.atEnd()) {
+    lib::Variable variable;
+    QStringList measurements = input_stream.readLine().split(u',');
+    QStringList naming = input_stream.readLine().split(u',');
+    QStringList errors = input_stream.readLine().split(u',');
+    QStringList visual = input_stream.readLine().split(u',');
+
+    for (const QString& i : measurements)
+      variable.measurements.append(i.toDouble());
+
+    variable.naming = lib::Variable::Naming(naming[0], naming[1]);
+
+    variable.errors = lib::Variable::ErrorOptions(errors[1].toDouble(),
+                                                  errors[0].toInt() == 1);
+
+    variable.visual = lib::Variable::VisualOptions(
+        visual[0].toInt(), visual[1].toInt(), QColor(visual[2]),
+        lib::Variable::VisualOptions::point_forms.key(visual[3]),
+        lib::Variable::VisualOptions::line_types.key(visual[4]));
+
+    lib::Manager::getInstance()->addVariable(variable);
+  }
+  file.close();
+}
