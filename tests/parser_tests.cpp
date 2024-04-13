@@ -12,57 +12,44 @@
 namespace tt = boost::test_tools;
 namespace utf = boost::unit_test;
 
-BOOST_AUTO_TEST_SUITE(aboba)
-
-BOOST_AUTO_TEST_CASE(simple_parse1) {
-  typedef std::string::const_iterator iterator_type;
-  typedef client::calculator<iterator_type> calculator;
-
+bool parser_test_func(std::string str, double expected_value)
+{
   boost::spirit::ascii::space_type space;
-  calculator calc;
 
-  std::string str = "2 + nsadfmhf";
+  typedef std::string::const_iterator iterator_type;
+  typedef client::parser<iterator_type> parser;
+  typedef client::ast::program ast_program;
+  typedef client::ast::eval ast_eval;
+
+  parser pars;
+  ast_program program;
+  ast_eval eval;
 
   std::string::const_iterator iter = str.begin();
   std::string::const_iterator end = str.end();
+  bool r = phrase_parse(iter, end, pars, space, program);
 
-  bool r = phrase_parse(iter, end, calc, space);
+  return r && iter == end && eval(program) == expected_value;
+}
 
-  BOOST_CHECK(r && iter == end);
+BOOST_AUTO_TEST_SUITE(parser)
+
+BOOST_AUTO_TEST_CASE(simple_parse1) {
+
+  BOOST_CHECK(parser_test_func("2 + 2", 4));
+
 }
 
 BOOST_AUTO_TEST_CASE(simple_parse2) {
-  typedef std::string::const_iterator iterator_type;
-  typedef client::calculator<iterator_type> calculator;
 
-  boost::spirit::ascii::space_type space;
-  calculator calc;
+  BOOST_CHECK(parser_test_func("((2) * 3 - 4 + 5 / 5)", 3));
 
-  std::string str = "2 + 3*6 - mama";
-
-  std::string::const_iterator iter = str.begin();
-  std::string::const_iterator end = str.end();
-
-  bool r = phrase_parse(iter, end, calc, space);
-
-  BOOST_CHECK(r && iter == end);
 }
 
 BOOST_AUTO_TEST_CASE(simple_parse3) {
-  typedef std::string::const_iterator iterator_type;
-  typedef client::calculator<iterator_type> calculator;
 
-  boost::spirit::ascii::space_type space;
-  calculator calc;
+  BOOST_CHECK(parser_test_func("((((2))))", 2));
 
-  std::string str = "2 + mama_2*4-(mama_0 - 2)";
-
-  std::string::const_iterator iter = str.begin();
-  std::string::const_iterator end = str.end();
-
-  bool r = phrase_parse(iter, end, calc, space);
-
-  BOOST_CHECK(r && iter == end);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
