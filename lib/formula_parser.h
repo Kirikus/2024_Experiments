@@ -7,55 +7,54 @@
 #include <boost/variant/recursive_variant.hpp>
 #include <boost/variant/apply_visitor.hpp>
 #include <boost/fusion/include/adapt_struct.hpp>
+#include <boost/fusion/include/io.hpp>
+#include <boost/optional.hpp>
 #include <boost/foreach.hpp>
 #include <iostream>
+#include <vector>
 #include <string>
 #include <list>
 
-namespace client
-{
+#include "parser_ast.h"
+#include "parser_expression.h"
+
+namespace client {
 namespace qi = boost::spirit::qi;
 namespace ascii = boost::spirit::ascii;
 
 template <typename Iterator>
-struct calculator : qi::grammar<Iterator, ascii::space_type>
+parser<Iterator>::parser() : parser::base_type(expression)
 {
-  calculator() : calculator::base_type(expression)
-  {
-    qi::double_type double_;
-    qi::lexeme_type lexeme;
-    qi::char_type char_;
-    qi::uint_type uint_;
-    qi::raw_type raw;
+  qi::int_type int_;
+  qi::char_type char_;
+  qi::double_type double_;
+  qi::lexeme_type lexeme;
 
-    expression =
-        additive_expr
-        >> *(('+' >> additive_expr)
-        |    ('-' >> additive_expr))
-        ;
+  expression =
+      additive_expr.alias()
+      ;
 
-    additive_expr =
-        multiplicative_expr
-        >> *((char_('+') | char_('-')) > multiplicative_expr)
-        ;
+  additive_expr =
+      multiplicative_expr
+      >> *(   (char_('+') > multiplicative_expr)
+           |   (char_('-') > multiplicative_expr)
+           )
+      ;
 
-    multiplicative_expr =
-        primary_expr
-        >> *((char_('*') | char_('/')) > primary_expr)
-        ;
+  multiplicative_expr =
+      primary_expr
+      >> *(   (char_('*') > primary_expr)
+           |   (char_('/') > primary_expr)
+           )
+      ;
 
-    primary_expr =
-        number
-        |   varname
-        |   '(' > expression > ')'
-        ;
+  primary_expr =
+      double_
+      // |   identifier
+      |   '(' > expression > ')'
+      ;
 
-    number = lexeme[double_];
-
-    varname = raw[lexeme[+(char_) >> *(uint_ | '_')]];
-  }
-
-  qi::rule<Iterator, ascii::space_type> expression, additive_expr, multiplicative_expr, primary_expr, number, varname;
-};
+  // identifier = lexeme[+(char_)];
+}
 }
 #endif  // FORMULA_PARSER_H

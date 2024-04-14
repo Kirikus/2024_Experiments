@@ -7,22 +7,21 @@
 #include "parser_ast.h"
 #include <vector>
 
-namespace client { namespace parser
-{
+namespace client {
   namespace qi = boost::spirit::qi;
   namespace ascii = boost::spirit::ascii;
 
   template <typename Iterator>
-  struct expression : qi::grammar<Iterator, ast::expression(), ascii::space_type>
+  struct parser : qi::grammar<Iterator, ast::program(), ascii::space_type>
   {
-    expression();
+    parser();
 
-    qi::rule<Iterator, ast::expression(), ascii::space_type> expr;
-    qi::rule<Iterator, ast::expression(), ascii::space_type> additive_expr;
-    qi::rule<Iterator, ast::expression(), ascii::space_type> multiplicative_expr;
+    qi::rule<Iterator, ast::program(), ascii::space_type> expression;
+    qi::rule<Iterator, ast::program(), ascii::space_type> additive_expr;
+    qi::rule<Iterator, ast::program(), ascii::space_type> multiplicative_expr;
     qi::rule<Iterator, ast::operand(), ascii::space_type> primary_expr;
-    qi::rule<Iterator, std::string(), ascii::space_type> varname;
+    // qi::rule<Iterator, std::string(), ascii::space_type> identifier;
   };
-}}
+}
 
 #endif  // PARSER_EXPRESSION_H

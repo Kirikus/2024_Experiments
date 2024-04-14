@@ -9,35 +9,24 @@
 
 namespace client { namespace ast
 {
-
   struct nil {};
   struct signed_;
-  struct expression;
+  struct program;
 
-  struct variable
-  {
-    variable(std::string const& name = "") : name(name) {}
-    std::string name;
-  };
+  // struct variable
+  // {
+  //   variable(std::string const& name = "") : name(name) {}
+  //   std::string name;
+  // };
 
   typedef boost::variant<
       nil
+      // , variable
       , double
-      , variable
       , boost::recursive_wrapper<signed_>
-      , boost::recursive_wrapper<expression>
+      , boost::recursive_wrapper<program>
       >
       operand;
-
-  enum optoken
-  {
-    op_plus,
-    op_minus,
-    op_times,
-    op_divide,
-    op_positive,
-    op_negative,
-  };
 
   struct signed_
   {
@@ -47,17 +36,15 @@ namespace client { namespace ast
 
   struct operation
   {
-    optoken operator_;
+    char operator_;
     operand operand_;
   };
 
-  struct expression
+  struct program
   {
     operand first;
     std::list<operation> rest;
   };
-
-  // struct expression_list : std::list<expression> {};
 }}
 
 BOOST_FUSION_ADAPT_STRUCT(
@@ -68,15 +55,65 @@ BOOST_FUSION_ADAPT_STRUCT(
 
 BOOST_FUSION_ADAPT_STRUCT(
     client::ast::operation,
-    (client::ast::optoken, operator_)
+    (char, operator_)
     (client::ast::operand, operand_)
     )
 
 BOOST_FUSION_ADAPT_STRUCT(
-    client::ast::expression,
+    client::ast::program,
     (client::ast::operand, first)
     (std::list<client::ast::operation>, rest)
     )
 
+namespace client { namespace ast
+{
+  struct eval
+  {
+    typedef double result_type;
 
+    double operator()(nil) const { BOOST_ASSERT(0); return 0; }
+    double operator()(double n) const { return n; }
+
+    // double operator()(variable& var) const
+    // {
+    //   return find_var_value(var.name);
+    // }
+
+    double operator()(operation const& x, double lhs) const
+    {
+      double rhs = boost::apply_visitor(*this, x.operand_);
+      switch (x.operator_)
+      {
+      case '+': return lhs + rhs;
+      case '-': return lhs - rhs;
+      case '*': return lhs * rhs;
+      case '/': return lhs / rhs;
+      }
+      BOOST_ASSERT(0);
+      return 0;
+    }
+
+    double operator()(signed_ const& x) const
+    {
+      double rhs = boost::apply_visitor(*this, x.operand_);
+      switch (x.sign)
+      {
+      case '-': return -rhs;
+      case '+': return +rhs;
+      }
+      BOOST_ASSERT(0);
+      return 0;
+    }
+
+    double operator()(program const& x) const
+    {
+      double state = boost::apply_visitor(*this, x.first);
+      BOOST_FOREACH(operation const& oper, x.rest)
+      {
+        state = (*this)(oper, state);
+      }
+      return state;
+    }
+  };
+}}
 #endif  // PARSER_AST_H
