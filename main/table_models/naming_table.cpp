@@ -29,20 +29,18 @@ QVariant NamingTable::data(const QModelIndex &index, int role) const {
 
 bool NamingTable::setData(const QModelIndex &index, const QVariant &value,
                           int role) {
+  Variable::Naming &naming =
+      Manager::GetInstance()->GetVariable(index.row()).naming;
   switch (role) {
     case Qt::EditRole:
       switch (index.column()) {
         case columns_data::kTitle:
-          value.toString().isEmpty()
-              ? Manager::GetInstance()->GetVariable(index.row()).naming.title =
-                    "unnamed"
-              : Manager::GetInstance()->GetVariable(index.row()).naming.title =
-                    value.toString();
+          value.toString().isEmpty() ? naming.title = "unnamed"
+                                     : naming.title = value.toString();
           emit dataChanged(index, index);
           return true;
         case columns_data::kTag:
-          Manager::GetInstance()->GetVariable(index.row()).naming.tag =
-              value.toString();
+          naming.tag = value.toString();
           emit dataChanged(index, index);
           return true;
       }

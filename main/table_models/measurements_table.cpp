@@ -14,15 +14,23 @@ int MeasurementsTable::columnCount(const QModelIndex &parent) const {
 }
 
 QVariant MeasurementsTable::data(const QModelIndex &index, int role) const {
+  const Variable &variable =
+      Manager::GetInstance()->GetVariable(index.column());
   switch (role) {
     case Qt::DisplayRole:
-      return Manager::GetInstance()
-                     ->GetVariable(index.column())
-                     .measurements[index.row()]
-                 ? QVariant(Manager::GetInstance()
-                                ->GetVariable(index.column())
-                                .measurements[index.row()])
-                 : QVariant();
+      if (variable.measurements[index.row()]) {
+        switch (variable.error.type) {
+          case Variable::ErrorOptions::Types::kAbsolute:
+            return QVariant(variable.measurements[index.row()]).toString() +
+                   "±" + QVariant(variable.error.value).toString();
+          case Variable::ErrorOptions::Types::kRelative:
+            return QVariant(variable.measurements[index.row()]).toString() +
+                   "±" +
+                   QVariant(variable.measurements[index.row()] *
+                            variable.error.value * 0.5)
+                       .toString();
+        }
+      }
 
     default:
       return QVariant();
