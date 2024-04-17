@@ -12,7 +12,7 @@
 #include <QMainWindow>
 #include <QStandardItem>
 
-#include "plot_models/plot.h"
+#include "plot_models/abstractplotmodel.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -29,32 +29,29 @@ class MainWindow : public QMainWindow {
 
  private slots:
 
-  bool ConfirmingAction();
-
+  bool ConfirmingAction(QString);
   void ConfirmDeleteMeasurments();
-
   void ConfirmDeleteVariable();
 
-  void load();
+  void Load();
+  void Save();
 
-  void save();
+  void DeletePlot();
+  void AddPlot();
 
-  void deletePlot();
+  void AddColumn();
+  void DeleteColumn();
 
-  void addPlot();
+  void AddRow();
+  void DeleteRow();
 
-  void addColumn();
+  void SetupTables();
 
-  void deleteColumn();
+  void UpdatePlots();
 
-  void addRow();
-
-  void deleteRow();
-
-  void Redraw();
+  void ConnectingAction();
 
  private:
-  LinePlot *plot = new LinePlot;
   Ui::MainWindow *ui;
 };
 
