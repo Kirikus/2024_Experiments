@@ -2,45 +2,39 @@
 
 #include "manager.h"
 
-void StrategyIO_JSON::save(const QString& output_file) {
+namespace lib {
+
+void StrategyIO_JSON::Save(const QString& output_file) {
   QFile file;
   file.setFileName(output_file);
   file.open(QIODevice::WriteOnly | QIODevice::Text);
   QJsonArray json_array;
-  for (int i = 0; i < lib::Manager::getInstance()->getVariablesCount(); i++) {
+  for (int i = 0; i < Manager::GetInstance()->GetVariablesCount(); i++) {
     QJsonObject json_object;
 
     json_object["Naming"] = QJsonObject(
-        {QPair("full_name",
-               lib::Manager::getInstance()->getVariable(i).naming.name_full),
-         QPair("short_name",
-               lib::Manager::getInstance()->getVariable(i).naming.name_short)});
+        {QPair("title", Manager::GetInstance()->GetVariable(i).naming.title),
+         QPair("tag", Manager::GetInstance()->GetVariable(i).naming.tag)});
 
-    json_object["Errors"] = QJsonObject(
-        {QPair("type", lib::Manager::getInstance()
-                           ->getVariable(i)
-                           .errors.current_error_type),
-         QPair("value",
-               lib::Manager::getInstance()->getVariable(i).errors.error)});
+    json_object["Error"] = QJsonObject(
+        {QPair("type", Manager::GetInstance()->GetVariable(i).error.type),
+         QPair("value", Manager::GetInstance()->GetVariable(i).error.value)});
 
     json_object["Visual"] = QJsonObject(
         {QPair("visible",
-               lib::Manager::getInstance()->getVariable(i).visual.visible),
-         QPair("width",
-               lib::Manager::getInstance()->getVariable(i).visual.width),
+               Manager::GetInstance()->GetVariable(i).visual.visible),
+         QPair("width", Manager::GetInstance()->GetVariable(i).visual.width),
          QPair("color",
-               lib::Manager::getInstance()->getVariable(i).visual.color.name()),
-         QPair("point_form", lib::Variable::VisualOptions::point_forms
-                                 [lib::Manager::getInstance()
-                                      ->getVariable(i)
-                                      .visual.point_form]),
-         QPair("line_type", lib::Variable::VisualOptions::line_types
-                                [lib::Manager::getInstance()
-                                     ->getVariable(i)
-                                     .visual.line_type])});
+               Manager::GetInstance()->GetVariable(i).visual.color.name()),
+         QPair("point_shape",
+               Variable::VisualOptions::point_shapes
+                   [Manager::GetInstance()->GetVariable(i).visual.point_shape]),
+         QPair("line_type",
+               Variable::VisualOptions::line_types
+                   [Manager::GetInstance()->GetVariable(i).visual.line_type])});
+
     QJsonArray json_measurements;
-    for (const auto& j :
-         lib::Manager::getInstance()->getVariable(i).measurements)
+    for (const auto& j : Manager::GetInstance()->GetVariable(i).measurements)
       json_measurements.append(j);
     json_object["Measurements"] = json_measurements;
 
@@ -52,127 +46,125 @@ void StrategyIO_JSON::save(const QString& output_file) {
   file.close();
 }
 
-void StrategyIO_JSON::load(const QString& input_file) {
-  QString data;
+void StrategyIO_JSON::Load(const QString& input_file) {
   QFile file;
   file.setFileName(input_file);
   file.open(QIODevice::ReadOnly | QIODevice::Text);
-  data = file.readAll();
+  QString data = file.readAll();
   file.close();
-  QList<lib::Variable> Variables;
+
+  QList<Variable> variables;
   QList<double> measurements;
 
   QJsonDocument document = QJsonDocument::fromJson(data.toUtf8());
   QJsonArray json_array = document.array();
   for (int i = 0; i < json_array.size(); i++) {
-    lib::Variable variable;
+    Variable variable;
     QJsonObject json_object = json_array[i].toObject();
 
     QJsonArray json_measurements = json_object["Measurements"].toArray();
-    if (json_measurements.empty()) continue;
     for (const auto& j : json_measurements)
       variable.measurements.append(j.toDouble());
 
     QJsonObject json_naming = json_object["Naming"].toObject();
-    variable.naming =
-        lib::Variable::Naming(json_naming["full_name"].toString("unnamed"),
-                              json_naming["short_name"].toString("unnamed"));
+    variable.naming = Variable::Naming(json_naming["title"].toString("unnamed"),
+                                       json_naming["tag"].toString(""));
 
-    QJsonObject json_errors = json_object["Errors"].toObject();
-    variable.errors = lib::Variable::ErrorOptions(
-        json_errors["value"].toDouble(), json_errors["type"].toBool());
+    QJsonObject json_error = json_object["Error"].toObject();
+    variable.error = Variable::ErrorOptions(json_error["value"].toDouble(),
+                                            json_error["type"].toInt());
 
     QJsonObject json_visual = json_object["Visual"].toObject();
-    variable.visual = lib::Variable::VisualOptions(
+    variable.visual = Variable::VisualOptions(
         json_visual["visible"].toBool(), json_visual["width"].toInt(),
         QColor(json_visual["color"].toString()),
-        lib::Variable::VisualOptions::point_forms.key(
-            json_visual["point_form"].toString()),
-        lib::Variable::VisualOptions::line_types.key(
+        Variable::VisualOptions::point_shapes.key(
+            json_visual["point_shape"].toString()),
+        Variable::VisualOptions::line_types.key(
             json_visual["line_type"].toString()));
 
-    Variables.append(variable);
+    variables.append(variable);
   }
-  if (Variables.size() != 0) {
-    lib::Manager::getInstance()->clear();
-    for (auto i : Variables) lib::Manager::getInstance()->addVariable(i);
+  if (!variables.isEmpty()) {
+    Manager::GetInstance()->Clear();
+    for (auto i : variables) Manager::GetInstance()->AddVariable(i);
   }
 }
 
-void StrategyIO_DB::save(const QString&) {}
-
-void StrategyIO_DB::load(const QString&) {}
-
-void StrategyIO_CSV::save(const QString& output_file) {
+void StrategyIO_CSV::Save(const QString& output_file) {
   QFile file;
   file.setFileName(output_file);
   file.open(QIODevice::WriteOnly | QIODevice::Text);
 
   QTextStream output_stream(&file);
 
-  for (int i = 0; i < lib::Manager::getInstance()->getVariablesCount(); i++) {
-    for (int j = 0; j < lib::Manager::getInstance()->getMeasurementsCount();
-         j++) {
-      if (j) output_stream << ',';
-      output_stream
-          << lib::Manager::getInstance()->getVariable(i).measurements[j];
-    }
+  for (int i = 0; i < Manager::GetInstance()->GetVariablesCount(); i++) {
+    for (int j = 0; j < Manager::GetInstance()->GetMeasurementsCount(); j++)
+      output_stream << Manager::GetInstance()->GetVariable(i).measurements[j]
+                    << ',';
+    output_stream << '\n';
+
+    output_stream << Manager::GetInstance()->GetVariable(i).naming.title << ','
+                  << Manager::GetInstance()->GetVariable(i).naming.tag;
     output_stream << ',' << '\n';
-    output_stream
-        << lib::Manager::getInstance()->getVariable(i).naming.name_full << ','
-        << lib::Manager::getInstance()->getVariable(i).naming.name_short;
+
+    output_stream << Manager::GetInstance()->GetVariable(i).error.type << ','
+                  << Manager::GetInstance()->GetVariable(i).error.value;
     output_stream << ',' << '\n';
+
     output_stream
-        << lib::Manager::getInstance()->getVariable(i).errors.current_error_type
-        << ',' << lib::Manager::getInstance()->getVariable(i).errors.error;
-    output_stream << ',' << '\n';
-    output_stream
-        << lib::Manager::getInstance()->getVariable(i).visual.visible << ','
-        << lib::Manager::getInstance()->getVariable(i).visual.width << ','
-        << lib::Manager::getInstance()->getVariable(i).visual.color.name()
+        << Manager::GetInstance()->GetVariable(i).visual.visible << ','
+        << Manager::GetInstance()->GetVariable(i).visual.width << ','
+        << Manager::GetInstance()->GetVariable(i).visual.color.name() << ','
+        << Variable::VisualOptions::point_shapes
+               [Manager::GetInstance()->GetVariable(i).visual.point_shape]
         << ','
-        << lib::Variable::VisualOptions::point_forms
-               [lib::Manager::getInstance()->getVariable(i).visual.point_form]
-        << ','
-        << lib::Variable::VisualOptions::line_types
-               [lib::Manager::getInstance()->getVariable(i).visual.line_type];
-    if (i != lib::Manager::getInstance()->getVariablesCount() - 1)
+        << Variable::VisualOptions::line_types
+               [Manager::GetInstance()->GetVariable(i).visual.line_type];
+
+    if (i != Manager::GetInstance()->GetVariablesCount() - 1)
       output_stream << ',';
     output_stream << '\n';
   }
   file.close();
 }
 
-void StrategyIO_CSV::load(const QString& input_file) {
+void StrategyIO_CSV::Load(const QString& input_file) {
   QFile file;
   file.setFileName(input_file);
   file.open(QIODevice::ReadOnly | QIODevice::Text);
 
-  lib::Manager::getInstance()->clear();
+  Manager::GetInstance()->Clear();
 
   QTextStream input_stream(&file);
 
   while (!input_stream.atEnd()) {
-    lib::Variable variable;
+    Variable variable;
     QStringList measurements = input_stream.readLine().split(u',');
     QStringList naming = input_stream.readLine().split(u',');
-    QStringList errors = input_stream.readLine().split(u',');
+    QStringList error = input_stream.readLine().split(u',');
     QStringList visual = input_stream.readLine().split(u',');
 
-    for (const QString& i : measurements)
-      variable.measurements.append(i.toDouble());
+    for (int i = 0; i < measurements.size() - 1; i++)
+      variable.measurements.append(measurements[i].toDouble());
 
-    variable.naming = lib::Variable::Naming(naming[0], naming[1]);
+    variable.naming = Variable::Naming(naming[0], naming[1]);
 
-    variable.errors = lib::Variable::ErrorOptions(errors[1].toDouble(),
-                                                  errors[0].toInt() == 1);
+    variable.error =
+        Variable::ErrorOptions(error[1].toDouble(), error[0].toInt() == 1);
 
-    variable.visual = lib::Variable::VisualOptions(
+    variable.visual = Variable::VisualOptions(
         visual[0].toInt(), visual[1].toInt(), QColor(visual[2]),
-        lib::Variable::VisualOptions::point_forms.key(visual[3]),
-        lib::Variable::VisualOptions::line_types.key(visual[4]));
+        Variable::VisualOptions::point_shapes.key(visual[3]),
+        Variable::VisualOptions::line_types.key(visual[4]));
 
-    lib::Manager::getInstance()->addVariable(variable);
+    Manager::GetInstance()->AddVariable(variable);
   }
   file.close();
 }
+
+void StrategyIO_DB::Save(const QString&) {}
+
+void StrategyIO_DB::Load(const QString&) {}
+
+}  // namespace lib

@@ -8,7 +8,8 @@ namespace lib {
 class NamingTable : public QAbstractTableModel {
   Q_OBJECT
  public:
-  explicit NamingTable(QObject *parent = nullptr);
+  explicit NamingTable(QObject *parent = nullptr)
+      : QAbstractTableModel(parent) {}
 
   int rowCount(const QModelIndex &parent = QModelIndex()) const override;
   int columnCount(const QModelIndex &parent = QModelIndex()) const override;
@@ -21,9 +22,10 @@ class NamingTable : public QAbstractTableModel {
 
   Qt::ItemFlags flags(const QModelIndex &index) const override;
 
-  bool insertRows(int row, int count, const QModelIndex &parent);
+  void insertRow(int);
+  void removeRow(int);
 
-  bool removeRows(int row, int count, const QModelIndex &parent);
+  enum columns_data { kTitle = 0, kTag, kCount };
 };
 
 }  // namespace lib

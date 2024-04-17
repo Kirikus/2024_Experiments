@@ -2,41 +2,43 @@
 #define MANAGER_H
 
 #include "QList"
-#include "formula_parser.h"
 #include "variable.h"
 
 namespace lib {
 
 class Manager : public QObject {
   Q_OBJECT
+
  private:
   QList<Variable> variables;
   QList<Variable> calculated;
 
  public:
-  static class Manager* getInstance();
+  static class Manager* GetInstance();
 
-  void augmentVariables();
+  void AugmentVariables();
 
-  size_t getVariablesCount() const { return variables.size(); }
-  size_t getMeasurementsCount() const;
+  size_t GetVariablesCount() const { return variables.size(); }
+  size_t GetMeasurementsCount() const;
 
-  Variable& getVariable(size_t Column_index) { return variables[Column_index]; }
+  Variable& GetVariable(size_t index) { return variables[index]; }
 
-  void clearCalculated();
-  void addCalculated(Variable&);
+  void ClearCalculated();
+  void AddCalculated(Variable&);
 
-  void clear();
+  void Clear();
+
  public slots:
-  void deleteVariable(int);
-  void addVariable(const Variable& = Variable({0}));
-  void addMeasurements();
-  void deleteMeasurements(int);
+  void DeleteVariable(int index = 0);
+  void AddVariable(const Variable& = Variable());
+  void AddMeasurements();
+  void DeleteMeasurements(int index = 0);
+
  signals:
-  void Variable_is_deleted();
-  void Variable_is_added();
-  void Measurements_is_deleted();
-  void Measurements_is_added();
+  void variable_is_deleted();
+  void variable_is_added();
+  void measurements_is_deleted();
+  void measurements_is_added();
 };
 
 }  // namespace lib

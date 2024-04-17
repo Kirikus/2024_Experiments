@@ -1,7 +1,7 @@
 #ifndef VARIABLE_H
 #define VARIABLE_H
 
-#include "../qcustomplot_lib/qcustomplot.h"
+#include "../qcustomplot/qcustomplot.h"
 #include "QColor"
 #include "QList"
 #include "QMap"
@@ -12,50 +12,56 @@ struct Variable {
   QList<double> measurements;
 
   struct Naming {
-    QString name_full = "unnamed";
-    QString name_short = "unnamed";
+    QString title;
+    QString tag;
 
-    Naming(QString name_full, QString name_short)
-        : name_full(name_full), name_short(name_short) {}
-    Naming() {}
+    Naming(QString title = "unnamed", QString tag = "")
+        : title(title), tag(tag) {}
   } naming;
 
   struct VisualOptions {
-    bool visible = true;
-    int width = 1;
-    QColor color = "black";
-    QCPScatterStyle::ScatterShape point_form =
-        QCPScatterStyle::ScatterShape::ssNone;
-    Qt::PenStyle line_type = Qt::SolidLine;
-    static QMap<Qt::PenStyle, QString> line_types;
-    static QMap<QCPScatterStyle::ScatterShape, QString> point_forms;
+    bool visible;
+    int width;
+    QColor color;
+    QCPScatterStyle::ScatterShape point_shape;
+    Qt::PenStyle line_type;
 
-    VisualOptions(bool visible, int width, QColor color,
-                  QCPScatterStyle::ScatterShape point_form,
-                  Qt::PenStyle line_type)
+    static QMap<Qt::PenStyle, QString> line_types;
+    static QMap<QCPScatterStyle::ScatterShape, QString> point_shapes;
+
+    VisualOptions(bool visible = true, int width = 1, QColor color = "black",
+                  QCPScatterStyle::ScatterShape point_shape =
+                      QCPScatterStyle::ScatterShape::ssNone,
+                  Qt::PenStyle line_type = Qt::SolidLine)
         : visible(visible),
           width(width),
           color(color),
-          point_form(point_form),
+          point_shape(point_shape),
           line_type(line_type) {}
-    VisualOptions() {}
   } visual;
 
   struct ErrorOptions {
-    double error = 1;
-    bool current_error_type = true;
-    static QMap<bool, QString> error_types;
+    int type;
+    double value;
 
-    ErrorOptions(double error, bool current_error_type)
-        : error(error), current_error_type(current_error_type) {}
-    ErrorOptions() {}
-  } errors;
+    ErrorOptions(double value = 1.0, int type = Types::kAbsolute)
+        : value(value), type(type) {}
 
-  size_t getMeasurementsCount() const { return measurements.size(); }
+    enum Types {
+      kAbsolute = 0,
+      kRelative,
+    };
+  } error;
 
-  Variable(QList<double> measurements, QString name_full = "NONE",
-           QString name_short = "NONE");
-  Variable();
+  size_t GetMeasurementsCount() const { return measurements.size(); }
+
+  Variable(QList<double> measurements = {}, Naming naming = Naming(),
+           VisualOptions visual = VisualOptions(),
+           ErrorOptions error = ErrorOptions())
+      : measurements(measurements),
+        naming(naming),
+        visual(visual),
+        error(error) {}
 };
 
 }  // namespace lib

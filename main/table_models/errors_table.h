@@ -8,7 +8,8 @@ namespace lib {
 class ErrorsTable : public QAbstractTableModel {
   Q_OBJECT
  public:
-  explicit ErrorsTable(QObject *parent = nullptr);
+  explicit ErrorsTable(QObject *parent = nullptr)
+      : QAbstractTableModel(parent) {}
 
   int rowCount(const QModelIndex &parent = QModelIndex()) const override;
   int columnCount(const QModelIndex &parent = QModelIndex()) const override;
@@ -21,11 +22,12 @@ class ErrorsTable : public QAbstractTableModel {
 
   Qt::ItemFlags flags(const QModelIndex &index) const override;
 
-  bool insertRows(int position, int rows,
-                   const QModelIndex &parent = QModelIndex());
+  void insertRow(int);
+  void removeRow(int);
 
-  bool removeRows(int position, int rows,
-                   const QModelIndex &parent = QModelIndex());
+  enum columns_data { kType = 0, kValue, kCount };
+
+  static QMap<int, QString> error_types;
 };
 
 }  // namespace lib
