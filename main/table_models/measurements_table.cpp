@@ -3,96 +3,85 @@
 #include "QVariant"
 #include "manager.h"
 
-lib::MeasurementsTable::MeasurementsTable(QObject *parent)
-    : QAbstractTableModel(parent) {}
+namespace lib {
 
-int lib::MeasurementsTable::rowCount(const QModelIndex &parent) const {
-  return lib::Manager::getInstance()->getMeasurementsCount();
+int MeasurementsTable::rowCount(const QModelIndex &parent) const {
+  return Manager::GetInstance()->GetMeasurementsCount();
 }
 
-int lib::MeasurementsTable::columnCount(const QModelIndex &parent) const {
-  return lib::Manager::getInstance()->getVariablesCount();
+int MeasurementsTable::columnCount(const QModelIndex &parent) const {
+  return Manager::GetInstance()->GetVariablesCount();
 }
 
-QVariant lib::MeasurementsTable::data(const QModelIndex &index,
-                                      int role) const {
-  int row = index.row();
-  int column = index.column();
+QVariant MeasurementsTable::data(const QModelIndex &index, int role) const {
+  switch (role) {
+    case Qt::DisplayRole:
+      return Manager::GetInstance()
+                     ->GetVariable(index.column())
+                     .measurements[index.row()]
+                 ? QVariant(Manager::GetInstance()
+                                ->GetVariable(index.column())
+                                .measurements[index.row()])
+                 : QVariant();
 
-  if (Manager::getInstance()->getVariable(column).getMeasurementsCount() <= row)
-    return QVariant();
-  if (role == Qt::DisplayRole) {
-    if (Manager::getInstance()->getVariable(column).measurements[row] == 0)
+    default:
       return QVariant();
-    return QVariant(
-        Manager::getInstance()->getVariable(column).measurements[row]);
   }
-  return QVariant();
 }
 
-bool lib::MeasurementsTable::setData(const QModelIndex &index,
-                                     const QVariant &value, int role) {
-  int row = index.row();
-  int column = index.column();
-
-  if (role == Qt::EditRole) {
-    if (!value.canConvert<double>()) return false;
-
-    if (Manager::getInstance()->getVariable(column).getMeasurementsCount() <=
-        row) {
-      Manager::getInstance()->getVariable(column).measurements.append(
-          value.toDouble());
+bool MeasurementsTable::setData(const QModelIndex &index, const QVariant &value,
+                                int role) {
+  if (!value.canConvert<double>()) return false;
+  switch (role) {
+    case Qt::EditRole:
+      Manager::GetInstance()
+          ->GetVariable(index.column())
+          .measurements[index.row()] = value.toDouble();
       emit dataChanged(index, index);
       return true;
-    }
-    Manager::getInstance()->getVariable(column).measurements[row] =
-        value.toDouble();
-    emit dataChanged(index, index);
-    return true;
+
+    default:
+      return false;
   }
-  return false;
 }
 
-QVariant lib::MeasurementsTable::headerData(int section,
-                                            Qt::Orientation orientation,
-                                            int role) const {
-  if (role != Qt::DisplayRole) return QVariant();
-
-  if (orientation == Qt::Vertical) return section + 1;
-
-  return Manager::getInstance()->getVariable(section).naming.name_short != "NONE"
-             ? Manager::getInstance()->getVariable(section).naming.name_short
-             : Manager::getInstance()->getVariable(section).naming.name_full;
+QVariant MeasurementsTable::headerData(int section, Qt::Orientation orientation,
+                                       int role) const {
+  switch (role) {
+    case Qt::DisplayRole:
+      switch (orientation) {
+        case Qt::Vertical:
+          return section + 1;
+        case Qt::Horizontal:
+          return Manager::GetInstance()->GetVariable(section).naming.title;
+      }
+    default:
+      return QVariant();
+  }
 }
 
-Qt::ItemFlags lib::MeasurementsTable::flags(const QModelIndex &index) const {
+Qt::ItemFlags MeasurementsTable::flags(const QModelIndex &index) const {
   return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
 }
 
-bool lib::MeasurementsTable::insertRows(int position, int rows,
-                                        const QModelIndex &parent) {
-  beginInsertRows(QModelIndex(), position, position + rows - 1);
+void MeasurementsTable::insertRow(int index) {
+  beginInsertRows(QModelIndex(), index, index);
   endInsertRows();
-  return true;
 }
 
-bool lib::MeasurementsTable::insertColumns(int position, int columns,
-                                           const QModelIndex &parent) {
-  beginInsertColumns(QModelIndex(), position, position + columns - 1);
+void MeasurementsTable::insertColumn(int index) {
+  beginInsertColumns(QModelIndex(), index, index);
   endInsertColumns();
-  return true;
 }
 
-bool lib::MeasurementsTable::removeRows(int position, int rows,
-                                        const QModelIndex &parent) {
-  beginRemoveRows(QModelIndex(), position, position + rows - 1);
+void MeasurementsTable::removeRow(int index) {
+  beginRemoveRows(QModelIndex(), index, index);
   endRemoveRows();
-  return true;
 }
 
-bool lib::MeasurementsTable::removeColumns(int position, int columns,
-                                           const QModelIndex &parent) {
-  beginRemoveColumns(QModelIndex(), position, position + columns - 1);
+void MeasurementsTable::removeColumn(int index) {
+  beginRemoveColumns(QModelIndex(), index, index);
   endRemoveColumns();
-  return true;
 }
+
+}  // namespace lib
