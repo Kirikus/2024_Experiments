@@ -4,10 +4,6 @@
 
 #include <QColorDialog>
 
-ColorDelegate::ColorDelegate(QObject *parent) : QStyledItemDelegate(parent) {}
-
-ColorDelegate::~ColorDelegate() {}
-
 QWidget *ColorDelegate::createEditor(QWidget *parent,
                                      const QStyleOptionViewItem &option,
                                      const QModelIndex &index) const {
@@ -17,6 +13,7 @@ QWidget *ColorDelegate::createEditor(QWidget *parent,
 void ColorDelegate::setEditorData(QWidget *editor,
                                   const QModelIndex &index) const {
   QColorDialog *color_dialog = static_cast<QColorDialog *>(editor);
+  color_dialog->move(600, 300);
   QColor color = index.model()->data(index, Qt::BackgroundRole).toString();
   color_dialog->setCurrentColor(color);
 }

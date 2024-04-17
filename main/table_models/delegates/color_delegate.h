@@ -6,8 +6,7 @@
 class ColorDelegate : public QStyledItemDelegate {
   Q_OBJECT
  public:
-  ColorDelegate(QObject* parent = nullptr);
-  ~ColorDelegate();
+  ColorDelegate(QObject* parent = nullptr) : QStyledItemDelegate(parent) {}
 
   QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option,
                         const QModelIndex& index) const override;
