@@ -1,7 +1,7 @@
 #ifndef VARIABLE_H
 #define VARIABLE_H
 
-#include "../qcustomplot_lib/qcustomplot.h"
+#include "../qcustomplot/qcustomplot.h"
 #include "QColor"
 #include "QList"
 #include "QMap"
@@ -29,33 +29,25 @@ struct Variable {
     static QMap<Qt::PenStyle, QString> line_types;
     static QMap<QCPScatterStyle::ScatterShape, QString> point_shapes;
 
-    VisualOptions(bool visible, int width, QColor color,
-                  QCPScatterStyle::ScatterShape point_shape,
-                  Qt::PenStyle line_type)
+    VisualOptions(bool visible = true, int width = 1, QColor color = "black",
+                  QCPScatterStyle::ScatterShape point_shape =
+                      QCPScatterStyle::ScatterShape::ssNone,
+                  Qt::PenStyle line_type = Qt::SolidLine)
         : visible(visible),
           width(width),
           color(color),
           point_shape(point_shape),
           line_type(line_type) {}
-
-    VisualOptions()
-        : visible(true),
-          width(1),
-          color("black"),
-          point_shape(QCPScatterStyle::ScatterShape::ssNone),
-          line_type(Qt::SolidLine) {}
   } visual;
 
   struct ErrorOptions {
     int type;
     double value;
 
-    static QMap<int, QString> types;
-
-    ErrorOptions(double value = 1.0, int type = TypesDesign::kAbsolute)
+    ErrorOptions(double value = 1.0, int type = Types::kAbsolute)
         : value(value), type(type) {}
 
-    enum TypesDesign {
+    enum Types {
       kAbsolute = 0,
       kRelative,
     };

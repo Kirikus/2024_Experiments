@@ -2,11 +2,6 @@
 
 namespace lib {
 
-QMap<int, QString> Variable::ErrorOptions::types = {
-    {Variable::ErrorOptions::TypesDesign::kRelative, "Relative"},
-    {Variable::ErrorOptions::TypesDesign::kAbsolute, "Absolute"},
-};
-
 QMap<Qt::PenStyle, QString> Variable::VisualOptions::line_types = {
     {Qt::SolidLine, "Solid line"},
     {Qt::DashLine, "Dash line"},
