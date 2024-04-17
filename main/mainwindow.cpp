@@ -17,6 +17,9 @@ MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
   ui->setupUi(this);
 
+  setWindowIcon(QIcon("C:/2024_Experiments/images/mainwindow.png"));
+  setWindowTitle("Data Handler");
+
   lib::Variable Foo({1, 2, 3, 4, 5}, lib::Variable::Naming("Foo"),
                     lib::Variable::VisualOptions(true, 4));
   lib::Variable bar({4, 2, 11, 3, 5, 1}, lib::Variable::Naming("bar", "x"));
@@ -67,7 +70,7 @@ bool MainWindow::ConfirmingAction(QString delete_message) {
 
   QLabel icon_label;
   icon_label.setGeometry(16, 8, 32, 32);
-  icon_label.setPixmap(QPixmap("C:/2024_Experiments/main/images/warning.png"));
+  icon_label.setPixmap(QPixmap("C:/2024_Experiments/images/warning.png"));
   icon_label.setParent(&dialog);
   icon_label.show();
 
