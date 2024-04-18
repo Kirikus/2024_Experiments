@@ -243,23 +243,62 @@ void MainWindow::ConnectingAction() {
 }
 
 void MainWindow::on_actionCreate_ODF_triggered() {
-  form = new ODF_Form();
-  form->show();
+  ManagerODF::GetInstance()->form = new ODF_Form;
+  ManagerODF::GetInstance()->form->show();
 
-  connect(form, SIGNAL(textBtn_is_clicked()), this, SLOT(AddTextBlock()));
-  connect(form, SIGNAL(plotBtn_is_clicked()), this, SLOT(AddPlotBlock()));
-  connect(form, SIGNAL(tableBtn_is_clicked()), this, SLOT(AddTableBlock()));
+  connect(ManagerODF::GetInstance()->form, SIGNAL(textBtn_is_clicked()), this,
+          SLOT(AddTextBlock()));
+  connect(ManagerODF::GetInstance()->form, SIGNAL(plotBtn_is_clicked()), this,
+          SLOT(AddPlotBlock()));
+  connect(ManagerODF::GetInstance()->form, SIGNAL(tableBtn_is_clicked()), this,
+          SLOT(AddTableBlock()));
+  connect(ManagerODF::GetInstance()->form, SIGNAL(AssembleBtn_is_clicked()),
+          this, SLOT(AssembleODF()));
 }
 
 void MainWindow::AddTextBlock() {
-  ManagerODF::GetInstance()->AddTextBlock(form->GetLayout());
+  ManagerODF::GetInstance()->AddTextBlock(
+      ManagerODF::GetInstance()->form->GetLayout());
 }
 
 void MainWindow::AddPlotBlock() {
   ManagerODF::GetInstance()->AddPlotBlock(
-      form->GetLayout(), QPixmap(ui->customPlot->toPixmap(256, 256)));
+      ManagerODF::GetInstance()->form->GetLayout(),
+      QPixmap(ui->customPlot->toPixmap(256, 256)));
 }
 
 void MainWindow::AddTableBlock() {
-  ManagerODF::GetInstance()->AddTableBlock(form->GetLayout());
+  QList<int> column_indexes;
+  for (int i = 0; i < lib::Manager::GetInstance()->GetVariablesCount(); i++)
+    if (ui->tableViewMain->selectionModel()->isColumnSelected(i))
+      column_indexes.push_back(i);
+  if (column_indexes.isEmpty()) return;
+  ManagerODF::GetInstance()->AddTableBlock(
+      ManagerODF::GetInstance()->form->GetLayout(), column_indexes);
+}
+
+void MainWindow::AssembleODF() {
+  // QString file_name = QFileDialog::getSaveFileName(
+  //     nullptr, tr("Saving a document"),
+  //     QStandardPaths::writableLocation(QStandardPaths::DesktopLocation),
+  //     tr("Open Document ('''.odf)"));
+  QString file_name = QFileDialog::getSaveFileName(
+      nullptr, QObject::tr("Save File"), "output_file.odf",
+      QObject::tr("Open Document ('''.odf)"));
+  if (file_name.isEmpty()) return;
+
+  QTextDocumentWriter writer(file_name);
+  writer.setFormat("odf");
+
+  QTextDocument* document = new QTextDocument;
+  QTextCursor* cursor = new QTextCursor(document);
+
+  for (auto& block : ManagerODF::GetInstance()->blocks) block->Save(cursor);
+
+  writer.setFormat("odf");
+  writer.write(document);
+}
+
+void MainWindow::closeEvent(QCloseEvent* event) {
+  ManagerODF::GetInstance()->form->close();
 }

@@ -55,14 +55,15 @@ class MainWindow : public QMainWindow {
   void on_actionCreate_ODF_triggered();
 
   void AddTextBlock();
-
   void AddPlotBlock();
-
   void AddTableBlock();
+
+  void AssembleODF();
+
+  void closeEvent(QCloseEvent *event);
 
  private:
   Ui::MainWindow *ui;
-  ODF_Form *form;
 };
 
 #endif  // MAINWINDOW_H
