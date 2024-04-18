@@ -4,6 +4,7 @@
 #include "QStandardPaths"
 #include "manager.h"
 #include "plot_models/line_plot.h"
+#include "plot_models/dot_plot.h"
 #include "qcustomplot.h"
 #include "strategyIO.h"
 #include "table_models/delegates/color_delegate.h"
@@ -209,8 +210,12 @@ void MainWindow::SetupTables() {
 
 void MainWindow::UpdatePlots() {
   LinePlot* line_plot = new LinePlot("x", "y", "test");
-  line_plot->Draw(ui->customPlot);
+  line_plot->Draw(qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(0)));
   delete line_plot;
+
+  DotPlot* dot_plot = new DotPlot("x", "y", "test");
+  dot_plot->Draw(qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(1)));
+  delete dot_plot;
 }
 
 void MainWindow::ConnectingAction() {

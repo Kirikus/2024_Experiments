@@ -23,6 +23,8 @@ add_executable(main
     ${TABLE_SOURCES}
     ${PLOT_SOURCES}
     ${DELEGATE_SOURCES}
+    plot_models/dot_plot.cpp
+    plot_models/dot_plot.h
 )
 
 target_link_libraries(main PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
