@@ -3,6 +3,7 @@
 #include "./ui_mainwindow.h"
 #include "QStandardPaths"
 #include "manager.h"
+#include "manager_odf/manager_odf.h"
 #include "plot_models/line_plot.h"
 #include "qcustomplot.h"
 #include "strategyIO.h"
@@ -239,4 +240,26 @@ void MainWindow::ConnectingAction() {
           SLOT(AddMeasurements()));
   connect(lib::Manager::GetInstance(), SIGNAL(measurements_is_added()), this,
           SLOT(AddRow()));
+}
+
+void MainWindow::on_actionCreate_ODF_triggered() {
+  form = new ODF_Form();
+  form->show();
+
+  connect(form, SIGNAL(textBtn_is_clicked()), this, SLOT(AddTextBlock()));
+  connect(form, SIGNAL(plotBtn_is_clicked()), this, SLOT(AddPlotBlock()));
+  connect(form, SIGNAL(tableBtn_is_clicked()), this, SLOT(AddTableBlock()));
+}
+
+void MainWindow::AddTextBlock() {
+  ManagerODF::GetInstance()->AddTextBlock(form->GetLayout());
+}
+
+void MainWindow::AddPlotBlock() {
+  ManagerODF::GetInstance()->AddPlotBlock(
+      form->GetLayout(), QPixmap(ui->customPlot->toPixmap(400, 400)));
+}
+
+void MainWindow::AddTableBlock() {
+  ManagerODF::GetInstance()->AddTableBlock(form->GetLayout());
 }
