@@ -5,7 +5,7 @@
 
 class TableBlock : public Block {
  public:
-  TableBlock(QVBoxLayout*);
+    TableBlock(QVBoxLayout*, QList<int>);
   ~TableBlock() override;
 
   virtual void Save(QTextCursor*) override;
