@@ -17,6 +17,8 @@ MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
   ui->setupUi(this);
 
+  ui->tabWidgetPlots->addTab(new QCustomPlot, "DotPlot");
+
   setWindowIcon(QIcon("C:/2024_Experiments/images/mainwindow.png"));
   setWindowTitle("Data Handler");
 
