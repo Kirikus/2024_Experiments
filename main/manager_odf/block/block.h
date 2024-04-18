@@ -9,7 +9,8 @@
 #include "QTableWidget"
 #include "QVBoxLayout"
 
-class Block {
+class Block : QObject {
+  Q_OBJECT
  public:
   Block();
   virtual ~Block();
@@ -18,10 +19,17 @@ class Block {
   virtual void RemoveFromBlockChain(QVBoxLayout*) = 0;
   virtual void AddToBlockChain(QVBoxLayout*, int position) = 0;
 
- protected:
+ private slots:
+  void DeleteBlock();
+  void SwapUpBlock();
+  void SwapDownBlock();
+
+ public:
   QPushButton* deleteBtn;
   QPushButton* upBtn;
   QPushButton* downBtn;
+
+ protected:
   QHBoxLayout* layout;
 };
 
