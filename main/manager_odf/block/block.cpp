@@ -8,9 +8,6 @@ Block::Block()
   layout->addWidget(deleteBtn);
   layout->addWidget(upBtn);
   layout->addWidget(downBtn);
-  deleteBtn->show();
-  upBtn->show();
-  downBtn->show();
 }
 
 Block::~Block() {
