@@ -12,8 +12,9 @@ void ManagerODF::AddTextBlock(QVBoxLayout* block_chain) {
   blocks.push_back(new TextBlock(block_chain));
 }
 
-void ManagerODF::AddTableBlock(QVBoxLayout* block_chain) {
-  blocks.push_back(new TableBlock(block_chain));
+void ManagerODF::AddTableBlock(QVBoxLayout* block_chain,
+                               QList<int> column_indexes) {
+  blocks.push_back(new TableBlock(block_chain, column_indexes));
 }
 
 void ManagerODF::AddPlotBlock(QVBoxLayout* block_chain, QPixmap pixmap) {
