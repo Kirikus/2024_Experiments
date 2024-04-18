@@ -16,20 +16,24 @@
   <widget class="QWidget" name="verticalLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>-18</x>
-     <y>130</y>
-     <width>741</width>
-     <height>791</height>
+     <x>10</x>
+     <y>140</y>
+     <width>701</width>
+     <height>771</height>
     </rect>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout"/>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="spacing">
+     <number>30</number>
+    </property>
+   </layout>
   </widget>
   <widget class="QPushButton" name="addtextBtn">
    <property name="geometry">
     <rect>
-     <x>60</x>
+     <x>20</x>
      <y>30</y>
-     <width>111</width>
+     <width>121</width>
      <height>51</height>
     </rect>
    </property>
@@ -40,7 +44,7 @@
   <widget class="QPushButton" name="addplotBtn">
    <property name="geometry">
     <rect>
-     <x>270</x>
+     <x>170</x>
      <y>30</y>
      <width>141</width>
      <height>51</height>
@@ -53,7 +57,7 @@
   <widget class="QPushButton" name="addtableBtn">
    <property name="geometry">
     <rect>
-     <x>520</x>
+     <x>340</x>
      <y>30</y>
      <width>141</width>
      <height>51</height>
@@ -61,6 +65,19 @@
    </property>
    <property name="text">
     <string>Add table block</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="assembleBtn">
+   <property name="geometry">
+    <rect>
+     <x>510</x>
+     <y>30</y>
+     <width>161</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Assemble CSV file</string>
    </property>
   </widget>
  </widget>

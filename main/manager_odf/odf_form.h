@@ -22,6 +22,7 @@ class ODF_Form : public QWidget {
   void textBtn_is_clicked();
   void plotBtn_is_clicked();
   void tableBtn_is_clicked();
+  void AssembleBtn_is_clicked();
 
  private slots:
   void on_addtextBtn_clicked() { emit textBtn_is_clicked(); }
@@ -29,6 +30,8 @@ class ODF_Form : public QWidget {
   void on_addplotBtn_clicked() { emit plotBtn_is_clicked(); }
 
   void on_addtableBtn_clicked() { emit tableBtn_is_clicked(); }
+
+  void on_assembleBtn_clicked() { emit AssembleBtn_is_clicked(); }
 
  private:
   Ui::ODF_Form *ui;
