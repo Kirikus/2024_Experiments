@@ -645,9 +645,16 @@
     <addaction name="actionWhite"/>
     <addaction name="actionDark"/>
    </widget>
+   <widget class="QMenu" name="menuODF">
+    <property name="title">
+     <string>ODF</string>
+    </property>
+    <addaction name="actionCreate_ODF"/>
+   </widget>
    <addaction name="menuSettings"/>
    <addaction name="menuTheme"/>
    <addaction name="menuHelp"/>
+   <addaction name="menuODF"/>
   </widget>
   <action name="actionWhite">
    <property name="text">
@@ -657,6 +664,11 @@
   <action name="actionDark">
    <property name="text">
     <string>Dark</string>
+   </property>
+  </action>
+  <action name="actionCreate_ODF">
+   <property name="text">
+    <string>Create ODF</string>
    </property>
   </action>
  </widget>
