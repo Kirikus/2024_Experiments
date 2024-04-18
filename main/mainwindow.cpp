@@ -257,7 +257,7 @@ void MainWindow::AddTextBlock() {
 
 void MainWindow::AddPlotBlock() {
   ManagerODF::GetInstance()->AddPlotBlock(
-      form->GetLayout(), QPixmap(ui->customPlot->toPixmap(400, 400)));
+      form->GetLayout(), QPixmap(ui->customPlot->toPixmap(256, 256)));
 }
 
 void MainWindow::AddTableBlock() {
