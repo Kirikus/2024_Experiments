@@ -8,20 +8,21 @@
 #include <vector>
 
 namespace client {
-  namespace qi = boost::spirit::qi;
-  namespace ascii = boost::spirit::ascii;
+namespace qi = boost::spirit::qi;
+namespace ascii = boost::spirit::ascii;
 
-  template <typename Iterator>
-  struct parser : qi::grammar<Iterator, ast::program(), ascii::space_type>
-  {
-    parser();
+template <typename Iterator>
+struct parser : qi::grammar<Iterator, ast::program(), ascii::space_type>
+{
+  parser();
 
-    qi::rule<Iterator, ast::program(), ascii::space_type> expression;
-    qi::rule<Iterator, ast::program(), ascii::space_type> additive_expr;
-    qi::rule<Iterator, ast::program(), ascii::space_type> multiplicative_expr;
-    qi::rule<Iterator, ast::operand(), ascii::space_type> primary_expr;
-    // qi::rule<Iterator, std::string(), ascii::space_type> identifier;
-  };
+  qi::rule<Iterator, ast::program(), ascii::space_type> expression;
+  qi::rule<Iterator, ast::program(), ascii::space_type> additive_expr;
+  qi::rule<Iterator, ast::program(), ascii::space_type> multiplicative_expr;
+  qi::rule<Iterator, ast::operand(), ascii::space_type> unary_expr;
+  qi::rule<Iterator, ast::operand(), ascii::space_type> primary_expr;
+  qi::rule<Iterator, std::string(), ascii::space_type> varname;
+};
 }
 
 #endif  // PARSER_EXPRESSION_H
