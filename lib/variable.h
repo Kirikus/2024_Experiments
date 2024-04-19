@@ -1,44 +1,67 @@
 #ifndef VARIABLE_H
 #define VARIABLE_H
 
-#include "../qcustomplot_lib/qcustomplot.h"
+#include "../qcustomplot/qcustomplot.h"
 #include "QColor"
 #include "QList"
 #include "QMap"
 
 namespace lib {
 
-struct VisualOptions {
-  bool visible = true;
-  int width = 1;
-  QColor color = "black";
-  QCPScatterStyle::ScatterShape point_form =
-      QCPScatterStyle::ScatterShape::ssNone;
-  Qt::PenStyle line_type = Qt::SolidLine;
-  static QMap<Qt::PenStyle, QString> line_types;
-  static QMap<QCPScatterStyle::ScatterShape, QString> point_forms;
-};
-
-struct ErrorOptions {
-  double error = 1;
-  bool current_error_type = true;
-  static QMap<bool, QString> error_types;
-};
-
 struct Variable {
   QList<double> measurements;
 
-  QString name_full = "NONE";
-  QString name_short = "NONE";
+  struct Naming {
+    QString title;
+    QString tag;
 
-  VisualOptions variable_visual;
-  ErrorOptions variable_error;
+    Naming(QString title = "unnamed", QString tag = "")
+        : title(title), tag(tag) {}
+  } naming;
 
-  size_t getMeasurementsCount() const { return measurements.size(); }
+  struct VisualOptions {
+    bool visible;
+    int width;
+    QColor color;
+    QCPScatterStyle::ScatterShape point_shape;
+    Qt::PenStyle line_type;
 
-  Variable(QList<double> measurements, QString name_full = "NONE",
-           QString name_short = "NONE");
-  Variable();
+    static QMap<Qt::PenStyle, QString> line_types;
+    static QMap<QCPScatterStyle::ScatterShape, QString> point_shapes;
+
+    VisualOptions(bool visible = true, int width = 1, QColor color = "black",
+                  QCPScatterStyle::ScatterShape point_shape =
+                      QCPScatterStyle::ScatterShape::ssNone,
+                  Qt::PenStyle line_type = Qt::SolidLine)
+        : visible(visible),
+          width(width),
+          color(color),
+          point_shape(point_shape),
+          line_type(line_type) {}
+  } visual;
+
+  struct ErrorOptions {
+    int type;
+    double value;
+
+    ErrorOptions(double value = 1.0, int type = Types::kAbsolute)
+        : value(value), type(type) {}
+
+    enum Types {
+      kAbsolute = 0,
+      kRelative,
+    };
+  } error;
+
+  size_t GetMeasurementsCount() const { return measurements.size(); }
+
+  Variable(QList<double> measurements = {}, Naming naming = Naming(),
+           VisualOptions visual = VisualOptions(),
+           ErrorOptions error = ErrorOptions())
+      : measurements(measurements),
+        naming(naming),
+        visual(visual),
+        error(error) {}
 };
 
 }  // namespace lib

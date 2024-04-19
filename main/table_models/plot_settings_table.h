@@ -8,7 +8,8 @@ namespace lib {
 class PlotSettingsTable : public QAbstractTableModel {
   Q_OBJECT
  public:
-  explicit PlotSettingsTable(QObject *parent = nullptr);
+  explicit PlotSettingsTable(QObject *parent = nullptr)
+      : QAbstractTableModel(parent) {}
 
   int rowCount(const QModelIndex &parent = QModelIndex()) const override;
   int columnCount(const QModelIndex &parent = QModelIndex()) const override;
@@ -21,9 +22,17 @@ class PlotSettingsTable : public QAbstractTableModel {
 
   Qt::ItemFlags flags(const QModelIndex &index) const override;
 
-  bool insertRows(int row, int count, const QModelIndex &parent);
+  void insertRow(int);
+  void removeRow(int);
 
-  bool removeRows(int row, int count, const QModelIndex &parent);
+  enum columns_data {
+    kVisible = 0,
+    kWidth,
+    kPointShape,
+    kLineType,
+    kColor,
+    kCount
+  };
 };
 
 }  // namespace lib

@@ -4,77 +4,62 @@
 
 Q_GLOBAL_STATIC(lib::Manager, instance)
 
-lib::Manager* lib::Manager::getInstance() { return instance; }
+namespace lib {
 
-void lib::Manager::addVariable(const Variable& CurrentVariable) {
-  if (lib::Manager::getInstance()->getVariablesCount() == 0) {
-    if (CurrentVariable.measurements.size() == 0) {
-      variables.append(CurrentVariable);
-      addMeasurements();
-      emit Variable_is_added();
-    } else {
-      variables.append(CurrentVariable);
-      for (int i = 0; i < CurrentVariable.getMeasurementsCount(); i++)
-        addMeasurements();
-      emit Variable_is_added();
-    }
-  } else {
-    variables.append(CurrentVariable);
-    augmentVariables();
-    emit Variable_is_added();
-  }
+Manager* Manager::GetInstance() { return instance; }
+
+void Manager::AddVariable(const Variable& variable) {
+  variables.append(variable);
+  if (variables.size() == 1)
+    if (variable.measurements.isEmpty())
+      AddMeasurements();
+    else
+      for (int i = 0; i < variable.GetMeasurementsCount(); i++)
+        emit measurements_is_added();
+  AugmentVariables();
+  emit variable_is_added();
 }
 
-void lib::Manager::addMeasurements() {
-  size_t count = lib::Manager::getInstance()->getMeasurementsCount();
-  if (lib::Manager::getInstance()->getVariablesCount() == 0) {
-    addVariable(Variable({0}));
-    emit Measurements_is_added();
-  } else {
-    for (int i = 0; i < lib::Manager::getInstance()->getVariablesCount(); i++)
-      lib::Manager::getInstance()->getVariable(i).measurements.push_back(0);
-    emit Measurements_is_added();
-  }
+void Manager::AddMeasurements() {
+  if (variables.isEmpty())
+    AddVariable();
+  else
+    for (int i = 0; i < GetVariablesCount(); i++)
+      GetVariable(i).measurements.push_back(0);
+  emit measurements_is_added();
 }
 
-void lib::Manager::deleteMeasurements(int index_row) {
-  size_t count = lib::Manager::getInstance()->getMeasurementsCount();
-  if (count == 0) return;
-  for (int i = 0; i < lib::Manager::getInstance()->getVariablesCount(); i++)
-    if (count ==
-        lib::Manager::getInstance()->getVariable(i).getMeasurementsCount())
-      lib::Manager::getInstance()->getVariable(i).measurements.removeAt(index_row);
-  emit Measurements_is_deleted();
+void Manager::DeleteMeasurements(int index) {
+  if (GetMeasurementsCount() == 0) return;
+  for (int i = 0; i < GetVariablesCount(); i++)
+    GetVariable(i).measurements.removeAt(index);
+  emit measurements_is_deleted();
 }
 
-void lib::Manager::deleteVariable(int index_column) {
-  if (variables.size() == 0) return;
-  if (variables.size() == 1) {
-    while (lib::Manager::getInstance()->getMeasurementsCount() != 0)
-      deleteMeasurements(lib::Manager::getInstance()->getMeasurementsCount() - 1);
-    variables.removeAt(index_column);
-    emit Variable_is_deleted();
-  } else {
-    variables.removeAt(index_column);
-    emit Variable_is_deleted();
-  }
+void Manager::DeleteVariable(int index) {
+  if (variables.isEmpty()) return;
+  if (variables.size() == 1)
+    while (GetMeasurementsCount() != 0) DeleteMeasurements();
+  variables.removeAt(index);
+  emit variable_is_deleted();
 }
 
-void lib::Manager::augmentVariables() {
-  for (size_t i = 0; i < getVariablesCount(); i++)
-    while (getVariable(i).getMeasurementsCount() != getMeasurementsCount())
+void Manager::AugmentVariables() {
+  for (size_t i = 0; i < GetVariablesCount(); i++)
+    while (GetVariable(i).GetMeasurementsCount() != GetMeasurementsCount())
       variables[i].measurements.push_back(0);
 }
 
-size_t lib::Manager::getMeasurementsCount() const {
+size_t Manager::GetMeasurementsCount() const {
   size_t MeasurementsCount = 0;
-  for (auto i = 0; i < getVariablesCount(); ++i)
-    if (variables.at(i).measurements.size() > MeasurementsCount)
-      MeasurementsCount = variables.at(i).measurements.size();
+  for (size_t i = 0; i < GetVariablesCount(); i++)
+    if (variables[i].measurements.size() > MeasurementsCount)
+      MeasurementsCount = variables[i].measurements.size();
   return MeasurementsCount;
 }
 
-void lib::Manager::clear() {
-  int test = getVariablesCount();
-  for (int i = 0; i < test; i++) deleteVariable(i);
+void Manager::Clear() {
+  while (GetVariablesCount() != 0) DeleteVariable();
 }
+
+}  // namespace lib

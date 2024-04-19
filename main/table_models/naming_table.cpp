@@ -3,74 +3,84 @@
 #include "QVariant"
 #include "manager.h"
 
-#define shortname 1
-#define fullname 1
+namespace lib {
 
-lib::NamingTable::NamingTable(QObject *parent) {}
-
-int lib::NamingTable::rowCount(const QModelIndex &parent) const {
-  return Manager::getInstance()->getVariablesCount();
+int NamingTable::rowCount(const QModelIndex &parent) const {
+  return Manager::GetInstance()->GetVariablesCount();
 }
 
-int lib::NamingTable::columnCount(const QModelIndex &parent) const {
-  return shortname + fullname;
+int NamingTable::columnCount(const QModelIndex &parent) const {
+  return columns_data::kCount;
 }
 
-QVariant lib::NamingTable::data(const QModelIndex &index, int role) const {
-  int row = index.row();
-  int column = index.column();
-
-  if (role == Qt::DisplayRole) {
-    if (column == 0) return Manager::getInstance()->getVariable(row).name_full;
-    if (column == 1) return Manager::getInstance()->getVariable(row).name_short;
+QVariant NamingTable::data(const QModelIndex &index, int role) const {
+  switch (role) {
+    case Qt::DisplayRole:
+      switch (index.column()) {
+        case columns_data::kTitle:
+          return Manager::GetInstance()->GetVariable(index.row()).naming.title;
+        case columns_data::kTag:
+          return Manager::GetInstance()->GetVariable(index.row()).naming.tag;
+      }
+    default:
+      return QVariant();
   }
-  return QVariant();
 }
 
-bool lib::NamingTable::setData(const QModelIndex &index, const QVariant &value,
-                               int role) {
-  int row = index.row();
-  int column = index.column();
-
-  if (role == Qt::EditRole) {
-    if (value.toString().isEmpty() == true) return false;
-    if (column == 0) {
-      Manager::getInstance()->getVariable(row).name_full = value.toString();
-      emit dataChanged(index, index);
-      return true;
-    }
-    if (column == 1) {
-      Manager::getInstance()->getVariable(row).name_short = value.toString();
-      emit dataChanged(index, index);
-      return true;
-    }
+bool NamingTable::setData(const QModelIndex &index, const QVariant &value,
+                          int role) {
+  Variable::Naming &naming =
+      Manager::GetInstance()->GetVariable(index.row()).naming;
+  switch (role) {
+    case Qt::EditRole:
+      switch (index.column()) {
+        case columns_data::kTitle:
+          value.toString().isEmpty() ? naming.title = "unnamed"
+                                     : naming.title = value.toString();
+          emit dataChanged(index, index);
+          return true;
+        case columns_data::kTag:
+          naming.tag = value.toString();
+          emit dataChanged(index, index);
+          return true;
+      }
+    default:
+      return false;
   }
-  return false;
 }
 
-QVariant lib::NamingTable::headerData(int section, Qt::Orientation orientation,
-                                      int role) const {
-  if (role != Qt::DisplayRole) return QVariant();
-  if (orientation == Qt::Vertical) return section + 1;
-  if (section == 0) return QString("Full name");
-  if (section == 1) return QString("Short name");
-  return QVariant();
+QVariant NamingTable::headerData(int section, Qt::Orientation orientation,
+                                 int role) const {
+  switch (role) {
+    case Qt::DisplayRole:
+      switch (orientation) {
+        case Qt::Vertical:
+          return section + 1;
+        case Qt::Horizontal:
+          switch (section) {
+            case kTitle:
+              return QString("Title");
+            case kTag:
+              return QString("Tag");
+          }
+      }
+    default:
+      return QVariant();
+  }
 }
 
-Qt::ItemFlags lib::NamingTable::flags(const QModelIndex &index) const {
+Qt::ItemFlags NamingTable::flags(const QModelIndex &index) const {
   return Qt::ItemIsEditable | QAbstractItemModel::flags(index);
 }
 
-bool lib::NamingTable::insertRows(int row, int count,
-                                  const QModelIndex &parent) {
-  beginInsertRows(parent, row, row + count - 1);
+void NamingTable::insertRow(int index) {
+  beginInsertRows(QModelIndex(), index, index);
   endInsertRows();
-  return true;
 }
 
-bool lib::NamingTable::removeRows(int row, int count,
-                                  const QModelIndex &parent) {
-  beginRemoveRows(parent, row, row + count - 1);
+void NamingTable::removeRow(int index) {
+  beginRemoveRows(QModelIndex(), index, index);
   endRemoveRows();
-  return true;
 }
+
+}  // namespace lib

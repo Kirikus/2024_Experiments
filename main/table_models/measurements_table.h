@@ -8,7 +8,8 @@ namespace lib {
 class MeasurementsTable : public QAbstractTableModel {
   Q_OBJECT
  public:
-  explicit MeasurementsTable(QObject *parent = nullptr);
+  explicit MeasurementsTable(QObject *parent = nullptr)
+      : QAbstractTableModel(parent) {}
 
   int rowCount(const QModelIndex &parent = QModelIndex()) const override;
   int columnCount(const QModelIndex &parent = QModelIndex()) const override;
@@ -21,14 +22,11 @@ class MeasurementsTable : public QAbstractTableModel {
 
   Qt::ItemFlags flags(const QModelIndex &index) const override;
 
-  bool insertRows(int position, int rows,
-                  const QModelIndex &parent = QModelIndex());
-  bool insertColumns(int position, int columns,
-                     const QModelIndex &parent = QModelIndex());
-  bool removeRows(int position, int rows,
-                  const QModelIndex &parent = QModelIndex());
-  bool removeColumns(int position, int columns,
-                     const QModelIndex &parent = QModelIndex());
+  void insertRow(int);
+  void removeRow(int);
+
+  void insertColumn(int);
+  void removeColumn(int);
 };
 
 }  // namespace lib

@@ -3,36 +3,30 @@
 #include "QVariant"
 #include "manager.h"
 
-namespace Errors_shell {
-enum data : int {
-  columnCount = 2,
-  error_type = 0,
-  error = 1,
+namespace lib {
+
+QMap<int, QString> ErrorsTable::error_types = {
+    {Variable::ErrorOptions::Types::kRelative, "Relative"},
+    {Variable::ErrorOptions::Types::kAbsolute, "Absolute"},
 };
-}  // namespace Errors_shell
 
-lib::ErrorsTable::ErrorsTable(QObject *parent) : QAbstractTableModel(parent) {}
-
-int lib::ErrorsTable::rowCount(const QModelIndex &parent) const {
-  return Manager::getInstance()->getVariablesCount();
+int ErrorsTable::rowCount(const QModelIndex &parent) const {
+  return Manager::GetInstance()->GetVariablesCount();
 }
 
-int lib::ErrorsTable::columnCount(const QModelIndex &parent) const {
-  return Errors_shell::data::columnCount;
+int ErrorsTable::columnCount(const QModelIndex &parent) const {
+  return columns_data::kCount;
 }
 
-QVariant lib::ErrorsTable::data(const QModelIndex &index, int role) const {
-  int row = index.row();
-  int column = index.column();
-  auto &errors = Manager::getInstance()->getVariable(row).variable_error;
-
+QVariant ErrorsTable::data(const QModelIndex &index, int role) const {
   switch (role) {
     case Qt::DisplayRole: {
-      switch (column) {
-        case Errors_shell::data::error_type:
-          return errors.error_types.value(errors.current_error_type);
-        case Errors_shell::data::error:
-          return Manager::getInstance()->getVariable(row).variable_error.error;
+      switch (index.column()) {
+        case columns_data::kType:
+          return error_types.value(
+              Manager::GetInstance()->GetVariable(index.row()).error.type);
+        case columns_data::kValue:
+          return Manager::GetInstance()->GetVariable(index.row()).error.value;
       }
     }
     default:
@@ -40,23 +34,19 @@ QVariant lib::ErrorsTable::data(const QModelIndex &index, int role) const {
   }
 }
 
-bool lib::ErrorsTable::setData(const QModelIndex &index, const QVariant &value,
-                               int role) {
-  int row = index.row();
-  int column = index.column();
-  auto &errors = Manager::getInstance()->getVariable(row).variable_error;
-
+bool ErrorsTable::setData(const QModelIndex &index, const QVariant &value,
+                          int role) {
   switch (role) {
     case Qt::EditRole: {
-      switch (column) {
-        case Errors_shell::data::error_type:
-          errors.current_error_type =
-              ErrorOptions::error_types.key(value.toString());
+      switch (index.column()) {
+        case columns_data::kType:
+          Manager::GetInstance()->GetVariable(index.row()).error.type =
+              error_types.key(value.toString());
           emit dataChanged(index, index);
           return true;
-        case Errors_shell::data::error:
-          if (!value.canConvert<double>() or value.toDouble() < 0) return false;
-          Manager::getInstance()->getVariable(row).variable_error.error =
+        case columns_data::kValue:
+          if (!value.canConvert<double>() || value.toDouble() < 0) return false;
+          Manager::GetInstance()->GetVariable(index.row()).error.value =
               value.toDouble();
           emit dataChanged(index, index);
           return true;
@@ -67,32 +57,39 @@ bool lib::ErrorsTable::setData(const QModelIndex &index, const QVariant &value,
   }
 }
 
-QVariant lib::ErrorsTable::headerData(int section, Qt::Orientation orientation,
-                                      int role) const {
-  if (role != Qt::DisplayRole) return QVariant();
-
-  if (orientation == Qt::Vertical)
-    return QString(Manager::getInstance()->getVariable(section).name_full);
-  if (orientation == Qt::Horizontal)
-    if (section == 0) return QString("Type of error");
-  if (section == 1) return QString("Error");
-  return QVariant();
+QVariant ErrorsTable::headerData(int section, Qt::Orientation orientation,
+                                 int role) const {
+  switch (role) {
+    case Qt::DisplayRole:
+      switch (orientation) {
+        case Qt::Vertical:
+          return QString(
+              Manager::GetInstance()->GetVariable(section).naming.title);
+        case Qt::Horizontal:
+          switch (section) {
+            case columns_data::kType:
+              return QString("Type of error");
+            case columns_data::kValue:
+              return QString("Error");
+          }
+      }
+    default:
+      return QVariant();
+  }
 }
 
-Qt::ItemFlags lib::ErrorsTable::flags(const QModelIndex &index) const {
+Qt::ItemFlags ErrorsTable::flags(const QModelIndex &index) const {
   return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
 }
 
-bool lib::ErrorsTable::insertRows(int position, int rows,
-                                  const QModelIndex &parent) {
-  beginInsertRows(QModelIndex(), position, position + rows - 1);
+void ErrorsTable::insertRow(int index) {
+  beginInsertRows(QModelIndex(), index, index);
   endInsertRows();
-  return true;
 }
 
-bool lib::ErrorsTable::removeRows(int position, int rows,
-                                  const QModelIndex &parent) {
-  beginRemoveRows(QModelIndex(), position, position + rows - 1);
+void ErrorsTable::removeRow(int index) {
+  beginRemoveRows(QModelIndex(), index, index);
   endRemoveRows();
-  return true;
 }
+
+}  // namespace lib

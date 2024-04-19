@@ -2,15 +2,10 @@
 
 #include "QComboBox"
 
-ComboBoxDelegate::ComboBoxDelegate(QStringList options, QObject *parent)
-    : options(options) {}
-
-ComboBoxDelegate::~ComboBoxDelegate() {}
-
 QWidget *ComboBoxDelegate::createEditor(QWidget *parent,
                                         const QStyleOptionViewItem &option,
                                         const QModelIndex &index) const {
-  return new QComboBox;
+  return new QComboBox(parent);
 }
 
 void ComboBoxDelegate::setEditorData(QWidget *editor,

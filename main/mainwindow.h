@@ -12,7 +12,8 @@
 #include <QMainWindow>
 #include <QStandardItem>
 
-#include "plot_models/plot.h"
+#include "manager_odf/odf_form.h"
+#include "plot_models/abstractplotmodel.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -29,32 +30,39 @@ class MainWindow : public QMainWindow {
 
  private slots:
 
-  bool ConfirmingAction();
-
+  bool ConfirmingAction(QString);
   void ConfirmDeleteMeasurments();
-
   void ConfirmDeleteVariable();
 
-  void load();
+  void Load();
+  void Save();
 
-  void save();
+  void DeletePlot();
+  void AddPlot();
 
-  void deletePlot();
+  void AddColumn();
+  void DeleteColumn();
 
-  void addPlot();
+  void AddRow();
+  void DeleteRow();
 
-  void addColumn();
+  void SetupTables();
 
-  void deleteColumn();
+  void UpdatePlots();
 
-  void addRow();
+  void ConnectingAction();
 
-  void deleteRow();
+  void on_actionCreate_ODF_triggered();
 
-  void Redraw();
+  void AddTextBlock();
+  void AddPlotBlock();
+  void AddTableBlock();
+
+  void AssembleODF();
+
+  void closeEvent(QCloseEvent *event);
 
  private:
-  LinePlot *plot = new LinePlot;
   Ui::MainWindow *ui;
 };
 
