@@ -1,31 +1,37 @@
 #include "column_plot.h"
+
 #include "manager.h"
-
 void ColumnPlot::Draw(QCustomPlot* plot) {
-    // Предположим, что 'customPlot' это указатель на твой объект QCustomPlot.
+  int n = lib::Manager::GetInstance()->GetVariablesCount();
+  // QCPBars *bars = new QCPBars(plot->xAxis, plot->yAxis);
+  // bars->setWidth(0.9/n);
+  QCPBars* bars = new QCPBars(plot->xAxis, plot->yAxis);
+  for (int i = 0; i < n; ++i) {
+    const lib::Variable& variable = lib::Manager::GetInstance()->GetVariable(i);
 
-    // Создаём объект QCPBars для гистограммы.
-    QCPBars *bars = new QCPBars(plot->xAxis, plot->yAxis);
+    QVector<double> xAxis_data;
+    QVector<double> yAxis_data;
+    for (int j = 0; j < variable.GetMeasurementsCount(); j++) {
+      if (variable.measurements[j]) {
+        xAxis_data.push_back((j + 0.55 + i * (0.9 / n) + 0.9 / (2 * n)));
+        yAxis_data.push_back(variable.measurements[j]);
+      }
+    }
+    bars->setWidth(0.9 / n);
+    bars->addData(xAxis_data, yAxis_data);
+    // bars->setData(emptyData);
+    // delete bars;
+  }
 
-    // Подготавливаем данные для гистограммы.
-    QVector<double> xData{1, 2, 3}, yData{2, 2, 3}; // xData - координаты по оси X, yData - высоты столбцов (частоты).
+  plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
+  plot->replot();
 
-    // Устанавливаем данные для гистограммы.
-    bars->setData(xData, yData);
+  QSharedPointer<QCPBarsDataContainer> emptyData =
+      QSharedPointer<QCPBarsDataContainer>::create();
+  // Присвоение пустого контейнера данных объекту QCPBars
+  bars->setData(emptyData);
 
-    // Устанавливаем ширину столбцов.
-    bars->setWidth(0.9);
-
-    // Настраиваем оформление осей, если нужно.
-    plot->xAxis->setLabel("Номер измерения");
-    plot->yAxis->setLabel("Значение величины");
-
-    // Настраиваем легенду, если нужно.
-    bars->setName("Данные");
-    plot->legend->setVisible(true);
-
-    // Перерисовываем график.
-    plot->replot();
+  // delete bars;
 }
 
 void ColumnPlot::SetOptions() {}

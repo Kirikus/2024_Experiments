@@ -3,9 +3,9 @@
 #include "./ui_mainwindow.h"
 #include "QStandardPaths"
 #include "manager.h"
-#include "plot_models/line_plot.h"
-#include "plot_models/dot_plot.h"
 #include "plot_models/column_plot.h"
+#include "plot_models/dot_plot.h"
+#include "plot_models/line_plot.h"
 #include "qcustomplot.h"
 #include "strategyIO.h"
 #include "table_models/delegates/color_delegate.h"
@@ -28,9 +28,11 @@ MainWindow::MainWindow(QWidget* parent)
   lib::Variable Foo({1, 2, 3, 4, 5}, lib::Variable::Naming("Foo"),
                     lib::Variable::VisualOptions(true, 4));
   lib::Variable bar({4, 2, 11, 3, 5, 1}, lib::Variable::Naming("bar", "x"));
+  lib::Variable var({5, 3, 3, 2, 6, 1}, lib::Variable::Naming("var", "x"));
 
   lib::Manager::GetInstance()->AddVariable(Foo);
   lib::Manager::GetInstance()->AddVariable(bar);
+  lib::Manager::GetInstance()->AddVariable(var);
 
   SetupTables();
 
