@@ -5,6 +5,7 @@
 #include "manager.h"
 #include "plot_models/line_plot.h"
 #include "plot_models/dot_plot.h"
+#include "plot_models/column_plot.h"
 #include "qcustomplot.h"
 #include "strategyIO.h"
 #include "table_models/delegates/color_delegate.h"
@@ -19,6 +20,7 @@ MainWindow::MainWindow(QWidget* parent)
   ui->setupUi(this);
 
   ui->tabWidgetPlots->addTab(new QCustomPlot, "DotPlot");
+  ui->tabWidgetPlots->addTab(new QCustomPlot, "ColumnPlot");
 
   setWindowIcon(QIcon("C:/2024_Experiments/images/mainwindow.png"));
   setWindowTitle("Data Handler");
@@ -216,6 +218,10 @@ void MainWindow::UpdatePlots() {
   DotPlot* dot_plot = new DotPlot("x", "y", "test");
   dot_plot->Draw(qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(1)));
   delete dot_plot;
+
+  ColumnPlot* column_plot = new ColumnPlot("x", "y", "test");
+  column_plot->Draw(qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(2)));
+  delete column_plot;
 }
 
 void MainWindow::ConnectingAction() {
