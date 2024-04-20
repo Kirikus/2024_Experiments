@@ -6,6 +6,8 @@
 #include "manager_odf/manager_odf.h"
 #include "plot_models/line_plot.h"
 #include "qcustomplot.h"
+#include "sqlite_database/db_form.h"
+#include "sqlite_database/sqlite.h"
 #include "strategyIO.h"
 #include "table_models/delegates/color_delegate.h"
 #include "table_models/delegates/combobox_delegate.h"
@@ -240,6 +242,9 @@ void MainWindow::ConnectingAction() {
           SLOT(AddMeasurements()));
   connect(lib::Manager::GetInstance(), SIGNAL(measurements_is_added()), this,
           SLOT(AddRow()));
+
+  connect(ui->uploadToDatabaseBtn, SIGNAL(clicked()), this,
+          SLOT(AddToDatabase()));
 }
 
 void MainWindow::on_actionCreate_ODF_triggered() {
@@ -301,4 +306,20 @@ void MainWindow::AssembleODF() {
 
 void MainWindow::closeEvent(QCloseEvent* event) {
   ManagerODF::GetInstance()->form->close();
+  lib::Manager::GetInstance()->GetSQLite().form->close();
+}
+
+void MainWindow::on_actionOpen_data_base_triggered() {
+  lib::Manager::GetInstance()->GetSQLite().form->show();
+}
+
+void MainWindow::AddToDatabase() {
+  QList<int> column_indexes;
+  for (int i = 0; i < lib::Manager::GetInstance()->GetVariablesCount(); i++)
+    if (ui->tableViewMain->selectionModel()->isColumnSelected(i))
+      column_indexes.push_back(i);
+  if (column_indexes.isEmpty()) return;
+  for (int i : column_indexes)
+    lib::Manager::GetInstance()->GetSQLite().AddToDatabase(
+        lib::Manager::GetInstance()->GetVariable(i));
 }
