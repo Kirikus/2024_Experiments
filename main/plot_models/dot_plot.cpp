@@ -4,7 +4,6 @@
 
 void DotPlot::Draw(QCustomPlot* plot) {
   plot->clearGraphs();
-  plot->legend->setVisible(true);
 
   for (int i = 0; i < lib::Manager::GetInstance()->GetVariablesCount(); ++i) {
     const lib::Variable& variable = lib::Manager::GetInstance()->GetVariable(i);
