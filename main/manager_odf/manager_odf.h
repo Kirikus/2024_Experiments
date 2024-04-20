@@ -13,7 +13,7 @@ struct ManagerODF {
 
   QList<Block*> blocks;
 
-  ODF_Form* form = nullptr;
+  ODF_Form* form = new ODF_Form;
 };
 
 #endif  // MANAGER_ODF_H
