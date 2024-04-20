@@ -248,7 +248,6 @@ void MainWindow::ConnectingAction() {
 }
 
 void MainWindow::on_actionCreate_ODF_triggered() {
-  ManagerODF::GetInstance()->form = new ODF_Form;
   ManagerODF::GetInstance()->form->show();
 
   connect(ManagerODF::GetInstance()->form, SIGNAL(textBtn_is_clicked()), this,
@@ -283,10 +282,6 @@ void MainWindow::AddTableBlock() {
 }
 
 void MainWindow::AssembleODF() {
-  // QString file_name = QFileDialog::getSaveFileName(
-  //     nullptr, tr("Saving a document"),
-  //     QStandardPaths::writableLocation(QStandardPaths::DesktopLocation),
-  //     tr("Open Document ('''.odf)"));
   QString file_name = QFileDialog::getSaveFileName(
       nullptr, QObject::tr("Save File"), "output_file.odf",
       QObject::tr("Open Document ('''.odf)"));
@@ -302,10 +297,14 @@ void MainWindow::AssembleODF() {
 
   writer.setFormat("odf");
   writer.write(document);
+
+  delete document;
+  delete cursor;
 }
 
 void MainWindow::closeEvent(QCloseEvent* event) {
-  ManagerODF::GetInstance()->form->close();
+  if (ManagerODF::GetInstance()->form != nullptr)
+    ManagerODF::GetInstance()->form->close();
   lib::Manager::GetInstance()->GetSQLite().form->close();
 }
 
