@@ -1,11 +1,22 @@
 #include "column_plot.h"
 
 #include "manager.h"
+
+QCPBars* glob_bar = nullptr;
+
 void ColumnPlot::Draw(QCustomPlot* plot) {
+  if (glob_bar != nullptr) {
+    QSharedPointer<QCPBarsDataContainer> emptyData =
+        QSharedPointer<QCPBarsDataContainer>::create();
+    // Присвоение пустого контейнера данных объекту QCPBars
+    glob_bar->setData(emptyData);
+    // delete glob_bar;
+  }
+
   int n = lib::Manager::GetInstance()->GetVariablesCount();
   // QCPBars *bars = new QCPBars(plot->xAxis, plot->yAxis);
   // bars->setWidth(0.9/n);
-  QCPBars* bars = new QCPBars(plot->xAxis, plot->yAxis);
+  QCPBars* bar = new QCPBars(plot->xAxis, plot->yAxis); // нет delete
   for (int i = 0; i < n; ++i) {
     const lib::Variable& variable = lib::Manager::GetInstance()->GetVariable(i);
 
@@ -17,8 +28,8 @@ void ColumnPlot::Draw(QCustomPlot* plot) {
         yAxis_data.push_back(variable.measurements[j]);
       }
     }
-    bars->setWidth(0.9 / n);
-    bars->addData(xAxis_data, yAxis_data);
+    bar->setWidth(0.9 / n);
+    bar->addData(xAxis_data, yAxis_data);
     // bars->setData(emptyData);
     // delete bars;
   }
@@ -26,11 +37,7 @@ void ColumnPlot::Draw(QCustomPlot* plot) {
   plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
   plot->replot();
 
-  QSharedPointer<QCPBarsDataContainer> emptyData =
-      QSharedPointer<QCPBarsDataContainer>::create();
-  // Присвоение пустого контейнера данных объекту QCPBars
-  bars->setData(emptyData);
-
+  glob_bar = bar;
   // delete bars;
 }
 
