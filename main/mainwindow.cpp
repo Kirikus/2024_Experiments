@@ -5,9 +5,12 @@
 #include "manager.h"
 #include "plot_models/column_plot.h"
 #include "plot_models/dot_plot.h"
+#include "manager_odf/manager_odf.h"
 #include "plot_models/line_plot.h"
 #include "plot_models/combo_plot.h"
 #include "qcustomplot.h"
+#include "sqlite_database/db_form.h"
+#include "sqlite_database/sqlite.h"
 #include "strategyIO.h"
 #include "table_models/delegates/color_delegate.h"
 #include "table_models/delegates/combobox_delegate.h"
@@ -260,4 +263,84 @@ void MainWindow::ConnectingAction() {
           SLOT(AddMeasurements()));
   connect(lib::Manager::GetInstance(), SIGNAL(measurements_is_added()), this,
           SLOT(AddRow()));
+
+  connect(ui->uploadToDatabaseBtn, SIGNAL(clicked()), this,
+          SLOT(AddToDatabase()));
+}
+
+void MainWindow::on_actionCreate_ODF_triggered() {
+  ManagerODF::GetInstance()->form = new ODF_Form;
+  ManagerODF::GetInstance()->form->show();
+
+  connect(ManagerODF::GetInstance()->form, SIGNAL(textBtn_is_clicked()), this,
+          SLOT(AddTextBlock()));
+  connect(ManagerODF::GetInstance()->form, SIGNAL(plotBtn_is_clicked()), this,
+          SLOT(AddPlotBlock()));
+  connect(ManagerODF::GetInstance()->form, SIGNAL(tableBtn_is_clicked()), this,
+          SLOT(AddTableBlock()));
+  connect(ManagerODF::GetInstance()->form, SIGNAL(AssembleBtn_is_clicked()),
+          this, SLOT(AssembleODF()));
+}
+
+void MainWindow::AddTextBlock() {
+  ManagerODF::GetInstance()->AddTextBlock(
+      ManagerODF::GetInstance()->form->GetLayout());
+}
+
+void MainWindow::AddPlotBlock() {
+  ManagerODF::GetInstance()->AddPlotBlock(
+      ManagerODF::GetInstance()->form->GetLayout(),
+      QPixmap(ui->customPlot->toPixmap(256, 256)));
+}
+
+void MainWindow::AddTableBlock() {
+  QList<int> column_indexes;
+  for (int i = 0; i < lib::Manager::GetInstance()->GetVariablesCount(); i++)
+    if (ui->tableViewMain->selectionModel()->isColumnSelected(i))
+      column_indexes.push_back(i);
+  if (column_indexes.isEmpty()) return;
+  ManagerODF::GetInstance()->AddTableBlock(
+      ManagerODF::GetInstance()->form->GetLayout(), column_indexes);
+}
+
+void MainWindow::AssembleODF() {
+  // QString file_name = QFileDialog::getSaveFileName(
+  //     nullptr, tr("Saving a document"),
+  //     QStandardPaths::writableLocation(QStandardPaths::DesktopLocation),
+  //     tr("Open Document ('''.odf)"));
+  QString file_name = QFileDialog::getSaveFileName(
+      nullptr, QObject::tr("Save File"), "output_file.odf",
+      QObject::tr("Open Document ('''.odf)"));
+  if (file_name.isEmpty()) return;
+
+  QTextDocumentWriter writer(file_name);
+  writer.setFormat("odf");
+
+  QTextDocument* document = new QTextDocument;
+  QTextCursor* cursor = new QTextCursor(document);
+
+  for (auto& block : ManagerODF::GetInstance()->blocks) block->Save(cursor);
+
+  writer.setFormat("odf");
+  writer.write(document);
+}
+
+void MainWindow::closeEvent(QCloseEvent* event) {
+  ManagerODF::GetInstance()->form->close();
+  lib::Manager::GetInstance()->GetSQLite().form->close();
+}
+
+void MainWindow::on_actionOpen_data_base_triggered() {
+  lib::Manager::GetInstance()->GetSQLite().form->show();
+}
+
+void MainWindow::AddToDatabase() {
+  QList<int> column_indexes;
+  for (int i = 0; i < lib::Manager::GetInstance()->GetVariablesCount(); i++)
+    if (ui->tableViewMain->selectionModel()->isColumnSelected(i))
+      column_indexes.push_back(i);
+  if (column_indexes.isEmpty()) return;
+  for (int i : column_indexes)
+    lib::Manager::GetInstance()->GetSQLite().AddToDatabase(
+        lib::Manager::GetInstance()->GetVariable(i));
 }

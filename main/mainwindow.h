@@ -12,6 +12,7 @@
 #include <QMainWindow>
 #include <QStandardItem>
 
+#include "manager_odf/odf_form.h"
 #include "plot_models/abstractplotmodel.h"
 
 QT_BEGIN_NAMESPACE
@@ -50,6 +51,20 @@ class MainWindow : public QMainWindow {
   void UpdatePlots();
 
   void ConnectingAction();
+
+  void on_actionCreate_ODF_triggered();
+
+  void AddTextBlock();
+  void AddPlotBlock();
+  void AddTableBlock();
+
+  void AssembleODF();
+
+  void closeEvent(QCloseEvent *event);
+
+  void on_actionOpen_data_base_triggered();
+
+  void AddToDatabase();
 
  private:
   Ui::MainWindow *ui;
