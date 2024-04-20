@@ -18,7 +18,5 @@ void ManagerODF::AddTableBlock(QVBoxLayout* block_chain,
 }
 
 void ManagerODF::AddPlotBlock(QVBoxLayout* block_chain, QPixmap pixmap) {
-  // QPixmap pixmap = plot->toPixmap(400, 400);
-
   blocks.push_back(new PlotBlock(block_chain, pixmap));
 }
