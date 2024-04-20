@@ -8,11 +8,9 @@ std::vector<QCPBars*> glob_bars;
 
 void ColumnPlot::Draw(QCustomPlot* plot) {
   for (int i = 0; i < glob_bars.size(); ++i) {
-    QSharedPointer<QCPBarsDataContainer> emptyData =
-        QSharedPointer<QCPBarsDataContainer>::create();
-    glob_bars[i]->setData(emptyData);
+      plot->clearPlottables();
   }
-
+  plot->legend->setVisible(true);
   int n = lib::Manager::GetInstance()->GetVariablesCount();
 
   for (int i = 0; i < n; ++i) {

@@ -8,9 +8,7 @@ std::vector<QCPBars*> glob_bars2;
 
 void ComboPlot::Draw(QCustomPlot* plot) {
     for (int i = 0; i < glob_bars2.size(); ++i) {
-        QSharedPointer<QCPBarsDataContainer> emptyData =
-            QSharedPointer<QCPBarsDataContainer>::create();
-        glob_bars2[i]->setData(emptyData);
+        plot->clearPlottables();
     }
 
     plot->clearGraphs();
