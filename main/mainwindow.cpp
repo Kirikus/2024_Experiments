@@ -3,11 +3,12 @@
 #include "./ui_mainwindow.h"
 #include "QStandardPaths"
 #include "manager.h"
-#include "plot_models/column_plot.h"
-#include "plot_models/scatter_plot.h"
 #include "manager_odf/manager_odf.h"
-#include "plot_models/line_plot.h"
+#include "plot_models/column_plot.h"
 #include "plot_models/histogram.h"
+#include "plot_models/line_plot.h"
+#include "plot_models/options.h"
+#include "plot_models/scatter_plot.h"
 #include "qcustomplot.h"
 #include "sqlite_database/db_form.h"
 #include "sqlite_database/sqlite.h"
@@ -18,8 +19,6 @@
 #include "table_models/measurements_table.h"
 #include "table_models/naming_table.h"
 #include "table_models/plot_settings_table.h"
-
-#include "options.h"
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
@@ -230,35 +229,36 @@ void MainWindow::UpdatePlots() {
 }
 
 void MainWindow::OptionsPlot() {
-    int index = ui->tabWidgetPlots->currentIndex();
+  int index = ui->tabWidgetPlots->currentIndex();
 
-    switch(index) {
+  switch (index) {
     case 0:
-        // nothing
-        break;
+      // nothing
+      break;
     case 1:
-        // nothing
-        break;
+      // nothing
+      break;
     case 2:
-        // nothing
-        break;
+      // nothing
+      break;
     case 3:
 
-        Options a;
-        a.exec();
-        // QDialog dialog;
-        // dialog.setWindowTitle("Модальное окно");
+      Options a;
+      a.exec();
+      // QDialog dialog;
+      // dialog.setWindowTitle("Модальное окно");
 
-        // QVBoxLayout layout(&dialog);
+      // QVBoxLayout layout(&dialog);
 
-        // QPushButton button("Закрыть");
-        // layout.addWidget(&button);
+      // QPushButton button("Закрыть");
+      // layout.addWidget(&button);
 
-        // QObject::connect(&button, &QPushButton::clicked, &dialog, &QDialog::accept);
+      // QObject::connect(&button, &QPushButton::clicked, &dialog,
+      // &QDialog::accept);
 
-        // dialog.exec();
-        break;
-    }
+      // dialog.exec();
+      break;
+  }
 }
 
 void MainWindow::ConnectingAction() {

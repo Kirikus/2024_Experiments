@@ -4,14 +4,14 @@
 #include "ui_options.h"
 
 class Options : public QDialog {
-    Q_OBJECT
+  Q_OBJECT
 
-public:
-    Options(QWidget *parent = nullptr);
-    ~Options();
+ public:
+  Options(QWidget *parent = nullptr);
+  ~Options();
 
-private:
-    Ui::Dialog *ui;
+ private:
+  Ui::Dialog *ui;
 };
 
 #endif  // OPTIONS_H

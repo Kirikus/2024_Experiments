@@ -14,7 +14,7 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Widgets REQUIRED)
 file(GLOB PROJECT_SOURCES "*.h" "*.cpp" "*.ui")
 
 file(GLOB TABLE_SOURCES "table_models/*.h" "table_models/*.cpp")
-file(GLOB PLOT_SOURCES "plot_models/*.h" "plot_models/*.cpp")
+file(GLOB PLOT_SOURCES "plot_models/*.h" "plot_models/*.cpp" "plot_models/*.ui")
 
 file(GLOB DELEGATE_SOURCES "table_models/delegates/*.h" "table_models/delegates/*.cpp")
 
