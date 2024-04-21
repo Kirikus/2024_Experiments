@@ -29,7 +29,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidgetOptionsTabs">
       <property name="currentIndex">
-       <number>0</number>
+       <number>4</number>
       </property>
       <widget class="QWidget" name="MainTab">
        <attribute name="title">
@@ -574,37 +574,14 @@
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="addPlotBtn">
+         <widget class="QPushButton" name="OptionsPlotBtn">
           <property name="text">
-           <string>Add plot</string>
+           <string>Options</string>
           </property>
          </widget>
         </item>
         <item>
          <spacer name="horizontalSpacer_2">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Maximum</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>10</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="QPushButton" name="deletePlotBtn">
-          <property name="text">
-           <string>Delete plot</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer_4">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>

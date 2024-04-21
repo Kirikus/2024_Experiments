@@ -37,8 +37,7 @@ class MainWindow : public QMainWindow {
   void Load();
   void Save();
 
-  void DeletePlot();
-  void AddPlot();
+  void OptionsPlot();
 
   void AddColumn();
   void DeleteColumn();

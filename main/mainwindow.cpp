@@ -138,14 +138,6 @@ void MainWindow::Save() {
   }
 }
 
-void MainWindow::DeletePlot() {
-  ui->tabWidgetPlots->removeTab(ui->tabWidgetPlots->currentIndex());
-}
-
-void MainWindow::AddPlot() {
-  ui->tabWidgetPlots->addTab(new QCustomPlot, "Plot");
-}
-
 void MainWindow::AddColumn() {
   dynamic_cast<lib::MeasurementsTable*>(ui->tableViewMain->model())
       ->insertColumn(lib::Manager::GetInstance()->GetVariablesCount());
@@ -235,11 +227,14 @@ void MainWindow::UpdatePlots() {
   delete histogram;
 }
 
+void MainWindow::OptionsPlot() {
+
+}
+
 void MainWindow::ConnectingAction() {
   connect(ui->redrawPlotBtn, SIGNAL(clicked()), this, SLOT(UpdatePlots()));
 
-  connect(ui->addPlotBtn, SIGNAL(clicked()), this, SLOT(AddPlot()));
-  connect(ui->deletePlotBtn, SIGNAL(clicked()), this, SLOT(DeletePlot()));
+  connect(ui->OptionsPlotBtn, SIGNAL(clicked()), this, SLOT(OptionsPlot()));
 
   connect(ui->LoadDataBtn, SIGNAL(clicked()), this, SLOT(Load()));
   connect(ui->SaveDataBtn, SIGNAL(clicked()), this, SLOT(Save()));
