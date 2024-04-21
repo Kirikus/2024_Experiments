@@ -7,9 +7,8 @@
 std::vector<QCPBars*> glob_bars;
 
 void ColumnPlot::Draw(QCustomPlot* plot) {
-  for (int i = 0; i < glob_bars.size(); ++i) {
-      plot->clearPlottables();
-  }
+  plot->clearPlottables();
+
   plot->legend->setVisible(true);
   int n = lib::Manager::GetInstance()->GetVariablesCount();
 
