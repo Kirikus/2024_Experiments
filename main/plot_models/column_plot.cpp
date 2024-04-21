@@ -4,8 +4,6 @@
 
 #include "manager.h"
 
-std::vector<QCPBars*> glob_bars;
-
 void ColumnPlot::Draw(QCustomPlot* plot) {
   plot->clearPlottables();
 
@@ -30,7 +28,6 @@ void ColumnPlot::Draw(QCustomPlot* plot) {
     bar->setWidth(0.9 / n);
     bar->setData(xAxis_data, yAxis_data);
     bar->setBrush(QBrush(variable.visual.color));
-    glob_bars.push_back(bar);
   }
 
   plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
