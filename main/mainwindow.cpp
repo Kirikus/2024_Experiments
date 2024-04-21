@@ -23,9 +23,9 @@ MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
   ui->setupUi(this);
 
-  ui->tabWidgetPlots->addTab(new QCustomPlot, "DotPlot");
+  ui->tabWidgetPlots->addTab(new QCustomPlot, "ScatterPlot");
   ui->tabWidgetPlots->addTab(new QCustomPlot, "ColumnPlot");
-  ui->tabWidgetPlots->addTab(new QCustomPlot, "ComboPlot");
+  ui->tabWidgetPlots->addTab(new QCustomPlot, "Histogram");
 
   setWindowIcon(QIcon("C:/2024_Experiments/images/mainwindow.png"));
   setWindowTitle("Data Handler");
@@ -228,7 +228,22 @@ void MainWindow::UpdatePlots() {
 }
 
 void MainWindow::OptionsPlot() {
+    int index = ui->tabWidgetPlots->currentIndex();
 
+    switch(index) {
+    case 0:
+        // nothing
+        break;
+    case 1:
+        // nothing
+        break;
+    case 2:
+        // nothing
+        break;
+    case 4:
+        // histoghram
+        break;
+    }
 }
 
 void MainWindow::ConnectingAction() {
