@@ -1,8 +1,8 @@
-#include "dot_plot.h"
+#include "scatter_plot.h"
 
 #include "manager.h"
 
-void DotPlot::Draw(QCustomPlot* plot) {
+void ScatterPlot::Draw(QCustomPlot* plot) {
   plot->clearGraphs();
   plot->legend->setVisible(true);
 
@@ -34,4 +34,4 @@ void DotPlot::Draw(QCustomPlot* plot) {
   plot->replot();
 }
 
-void DotPlot::SetOptions() {}
+void ScatterPlot::SetOptions() {}

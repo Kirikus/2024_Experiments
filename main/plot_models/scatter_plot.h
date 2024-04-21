@@ -1,12 +1,12 @@
-#ifndef DOT_PLOT_H
-#define DOT_PLOT_H
+#ifndef SCATTER_PLOT_H
+#define SCATTER_PLOT_H
 
 #include "abstractplotmodel.h"
 
-class DotPlot : public AbstractPlotModel {
+class ScatterPlot : public AbstractPlotModel {
     Q_OBJECT
 public:
-    DotPlot(QString x_label, QString y_label, QString title = "",
+    ScatterPlot(QString x_label, QString y_label, QString title = "",
              QWidget* parent = nullptr)
         : AbstractPlotModel(parent),
         x_label(x_label),
@@ -21,4 +21,4 @@ private:
     QString title;
 };
 
-#endif // DOT_PLOT_H
+#endif // SCATTER_PLOT_H

@@ -1,12 +1,12 @@
-#ifndef COMBO_PLOT_H
-#define COMBO_PLOT_H
+#ifndef HISTOGRAM_H
+#define HISTOGRAM_H
 
 #include "abstractplotmodel.h"
 
-class ComboPlot : public AbstractPlotModel {
+class Histogram : public AbstractPlotModel {
     Q_OBJECT
 public:
-    ComboPlot(QString x_label, QString y_label, QString title = "",
+    Histogram(QString x_label, QString y_label, QString title = "",
                QWidget* parent = nullptr)
         : AbstractPlotModel(parent),
         x_label(x_label),
@@ -21,4 +21,4 @@ private:
     QString title;
 };
 
-#endif // COMBO_PLOT_H
+#endif // HISTOGRAM_H

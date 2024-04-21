@@ -1,4 +1,4 @@
-#include "combo_plot.h"
+#include "histogram.h"
 
 #include <vector>
 
@@ -6,7 +6,7 @@
 
 std::vector<QCPBars*> glob_bars2;
 
-void ComboPlot::Draw(QCustomPlot* plot) {
+void Histogram::Draw(QCustomPlot* plot) {
     for (int i = 0; i < glob_bars2.size(); ++i) {
         plot->clearPlottables();
     }
@@ -51,4 +51,4 @@ void ComboPlot::Draw(QCustomPlot* plot) {
     plot->replot();
 }
 
-void ComboPlot::SetOptions() {}
+void Histogram::SetOptions() {}

@@ -4,10 +4,10 @@
 #include "QStandardPaths"
 #include "manager.h"
 #include "plot_models/column_plot.h"
-#include "plot_models/dot_plot.h"
+#include "plot_models/scatter_plot.h"
 #include "manager_odf/manager_odf.h"
 #include "plot_models/line_plot.h"
-#include "plot_models/combo_plot.h"
+#include "plot_models/histogram.h"
 #include "qcustomplot.h"
 #include "sqlite_database/db_form.h"
 #include "sqlite_database/sqlite.h"
@@ -222,17 +222,17 @@ void MainWindow::UpdatePlots() {
   line_plot->Draw(qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(0)));
   delete line_plot;
 
-  DotPlot* dot_plot = new DotPlot("x", "y", "test");
-  dot_plot->Draw(qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(1)));
-  delete dot_plot;
+  ScatterPlot* scatter_plot = new ScatterPlot("x", "y", "test");
+  scatter_plot->Draw(qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(1)));
+  delete scatter_plot;
 
   ColumnPlot* column_plot = new ColumnPlot("x", "y", "test");
   column_plot->Draw(qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(2)));
   delete column_plot;
 
-  ComboPlot* combo_plot = new ComboPlot("x", "y", "test");
-  combo_plot->Draw(qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(3)));
-  delete combo_plot;
+  Histogram* histogram = new Histogram("x", "y", "test");
+  histogram->Draw(qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(3)));
+  delete histogram;
 }
 
 void MainWindow::ConnectingAction() {
