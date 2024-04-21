@@ -19,6 +19,8 @@
 #include "table_models/naming_table.h"
 #include "table_models/plot_settings_table.h"
 
+#include "options.h"
+
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
   ui->setupUi(this);
@@ -240,8 +242,21 @@ void MainWindow::OptionsPlot() {
     case 2:
         // nothing
         break;
-    case 4:
-        // histoghram
+    case 3:
+
+        Options a;
+        a.exec();
+        // QDialog dialog;
+        // dialog.setWindowTitle("Модальное окно");
+
+        // QVBoxLayout layout(&dialog);
+
+        // QPushButton button("Закрыть");
+        // layout.addWidget(&button);
+
+        // QObject::connect(&button, &QPushButton::clicked, &dialog, &QDialog::accept);
+
+        // dialog.exec();
         break;
     }
 }
