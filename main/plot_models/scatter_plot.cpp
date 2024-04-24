@@ -33,5 +33,3 @@ void ScatterPlot::Draw(QCustomPlot* plot) {
   plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
   plot->replot();
 }
-
-void ScatterPlot::SetOptions() {}

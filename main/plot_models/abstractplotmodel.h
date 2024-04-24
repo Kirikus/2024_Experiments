@@ -10,9 +10,6 @@ class AbstractPlotModel : public QWidget {
   Q_OBJECT
  public:
   AbstractPlotModel(QWidget* parent = nullptr) : QWidget(parent) {}
-
-  virtual void Draw(QCustomPlot*) = 0;
-  virtual void SetOptions() = 0;
 };
 
 #endif  // ABSTRACTPLOTMODEL_H

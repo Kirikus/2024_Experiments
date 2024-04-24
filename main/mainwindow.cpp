@@ -33,14 +33,18 @@ MainWindow::MainWindow(QWidget* parent)
 
   lib::Variable Foo({1, 2, 3, 4, 5}, lib::Variable::Naming("Foo"),
                     lib::Variable::VisualOptions(true, 3, {255, 0, 0}));
-  lib::Variable bar({4, 2, 11, 3, 5, 1}, lib::Variable::Naming("bar", "x"),
-                    lib::Variable::VisualOptions(true, 3, {0, 255, 0}));
-  lib::Variable var({5, 3, 3, 2, 6, 1}, lib::Variable::Naming("var", "x"),
-                    lib::Variable::VisualOptions(true, 3, {0, 0, 255}));
+  lib::Variable bar({4, 2, 11, 3, 5, 1}, lib::Variable::Naming("bar"),
+                    lib::Variable::VisualOptions(true, 3, {83, 204, 101}));
+  lib::Variable var({5, 3, 3, 2, 6, 1}, lib::Variable::Naming("var"),
+                    lib::Variable::VisualOptions(true, 3, {42, 182, 204}));
 
   lib::Manager::GetInstance()->AddVariable(Foo);
   lib::Manager::GetInstance()->AddVariable(bar);
   lib::Manager::GetInstance()->AddVariable(var);
+
+  lib::Manager::GetInstance()->names_of_variables.push_back("Foo");
+  lib::Manager::GetInstance()->names_of_variables.push_back("bar");
+  lib::Manager::GetInstance()->names_of_variables.push_back("var");
 
   SetupTables();
 
@@ -226,9 +230,11 @@ void MainWindow::UpdatePlots() {
   delete column_plot;
 
   Histogram* histogram = new Histogram("x", "y", "test");
-  histogram->Draw(qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(3)));
+  histogram->Draw(qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(3)), choose_var);
   delete histogram;
 }
+
+#include <iostream>
 
 void MainWindow::OptionsPlot() {
   int index = ui->tabWidgetPlots->currentIndex();
@@ -247,18 +253,7 @@ void MainWindow::OptionsPlot() {
 
       Options a;
       a.exec();
-      // QDialog dialog;
-      // dialog.setWindowTitle("Модальное окно");
-
-      // QVBoxLayout layout(&dialog);
-
-      // QPushButton button("Закрыть");
-      // layout.addWidget(&button);
-
-      // QObject::connect(&button, &QPushButton::clicked, &dialog,
-      // &QDialog::accept);
-
-      // dialog.exec();
+      choose_var = a.choose_variable();
       break;
   }
 }

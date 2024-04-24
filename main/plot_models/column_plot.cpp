@@ -30,5 +30,3 @@ void ColumnPlot::Draw(QCustomPlot* plot) {
   plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
   plot->replot();
 }
-
-void ColumnPlot::SetOptions() {}

@@ -13,8 +13,7 @@ class ScatterPlot : public AbstractPlotModel {
         y_label(y_label),
         title(title) {}
 
-  void Draw(QCustomPlot*) override;
-  void SetOptions() override;
+  void Draw(QCustomPlot*);
 
  private:
   QString x_label;

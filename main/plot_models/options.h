@@ -10,6 +10,10 @@ class Options : public QDialog {
   Options(QWidget *parent = nullptr);
   ~Options();
 
+  int choose_variable();
+  int choose_column_size();
+  void ok();
+
  private:
   Ui::Dialog *ui;
 };

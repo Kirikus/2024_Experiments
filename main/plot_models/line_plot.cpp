@@ -46,5 +46,3 @@ void LinePlot::Draw(QCustomPlot* plot) {
   plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
   plot->replot();
 }
-
-void LinePlot::SetOptions() {}
