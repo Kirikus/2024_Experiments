@@ -32,9 +32,11 @@ MainWindow::MainWindow(QWidget* parent)
   setWindowTitle("Data Handler");
 
   lib::Variable Foo({1, 2, 3, 4, 5}, lib::Variable::Naming("Foo"),
-                    lib::Variable::VisualOptions(true, 4));
-  lib::Variable bar({4, 2, 11, 3, 5, 1}, lib::Variable::Naming("bar", "x"));
-  lib::Variable var({5, 3, 3, 2, 6, 1}, lib::Variable::Naming("var", "x"));
+                    lib::Variable::VisualOptions(true, 3, {255, 0, 0}));
+  lib::Variable bar({4, 2, 11, 3, 5, 1}, lib::Variable::Naming("bar", "x"),
+                    lib::Variable::VisualOptions(true, 3, {0, 255, 0}));
+  lib::Variable var({5, 3, 3, 2, 6, 1}, lib::Variable::Naming("var", "x"),
+                    lib::Variable::VisualOptions(true, 3, {0, 0, 255}));
 
   lib::Manager::GetInstance()->AddVariable(Foo);
   lib::Manager::GetInstance()->AddVariable(bar);

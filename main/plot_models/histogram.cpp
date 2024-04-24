@@ -5,8 +5,6 @@
 void Histogram::Draw(QCustomPlot* plot) {
     plot->clearPlottables();
 
-    plot->legend->setVisible(true);
-
     const lib::Variable& variable = lib::Manager::GetInstance()->GetVariable(0);
 
     double max_value = 0;

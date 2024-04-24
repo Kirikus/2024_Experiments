@@ -5,7 +5,6 @@
 void ColumnPlot::Draw(QCustomPlot* plot) {
   plot->clearPlottables();
 
-  plot->legend->setVisible(true);
   int n = lib::Manager::GetInstance()->GetVariablesCount();
 
   for (int i = 0; i < n; ++i) {
