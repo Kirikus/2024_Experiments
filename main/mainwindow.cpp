@@ -3,9 +3,14 @@
 #include "./ui_mainwindow.h"
 #include "QStandardPaths"
 #include "manager.h"
+#include "plot_models/column_plot.h"
+#include "plot_models/dot_plot.h"
 #include "manager_odf/manager_odf.h"
 #include "plot_models/line_plot.h"
+#include "plot_models/combo_plot.h"
 #include "qcustomplot.h"
+#include "sqlite_database/db_form.h"
+#include "sqlite_database/sqlite.h"
 #include "strategyIO.h"
 #include "table_models/delegates/color_delegate.h"
 #include "table_models/delegates/combobox_delegate.h"
@@ -18,15 +23,21 @@ MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
   ui->setupUi(this);
 
+  ui->tabWidgetPlots->addTab(new QCustomPlot, "DotPlot");
+  ui->tabWidgetPlots->addTab(new QCustomPlot, "ColumnPlot");
+  ui->tabWidgetPlots->addTab(new QCustomPlot, "ComboPlot");
+
   setWindowIcon(QIcon("C:/2024_Experiments/images/mainwindow.png"));
   setWindowTitle("Data Handler");
 
   lib::Variable Foo({1, 2, 3, 4, 5}, lib::Variable::Naming("Foo"),
                     lib::Variable::VisualOptions(true, 4));
   lib::Variable bar({4, 2, 11, 3, 5, 1}, lib::Variable::Naming("bar", "x"));
+  lib::Variable var({5, 3, 3, 2, 6, 1}, lib::Variable::Naming("var", "x"));
 
   lib::Manager::GetInstance()->AddVariable(Foo);
   lib::Manager::GetInstance()->AddVariable(bar);
+  lib::Manager::GetInstance()->AddVariable(var);
 
   SetupTables();
 
@@ -213,8 +224,20 @@ void MainWindow::SetupTables() {
 
 void MainWindow::UpdatePlots() {
   LinePlot* line_plot = new LinePlot("x", "y", "test");
-  line_plot->Draw(ui->customPlot);
+  line_plot->Draw(qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(0)));
   delete line_plot;
+
+  DotPlot* dot_plot = new DotPlot("x", "y", "test");
+  dot_plot->Draw(qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(1)));
+  delete dot_plot;
+
+  ColumnPlot* column_plot = new ColumnPlot("x", "y", "test");
+  column_plot->Draw(qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(2)));
+  delete column_plot;
+
+  ComboPlot* combo_plot = new ComboPlot("x", "y", "test");
+  combo_plot->Draw(qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(3)));
+  delete combo_plot;
 }
 
 void MainWindow::ConnectingAction() {
@@ -247,10 +270,12 @@ void MainWindow::ConnectingAction() {
           SLOT(AddRow()));
 
   connect(ui->ClearDataBtn, SIGNAL(clicked()), this, SLOT(ClearData()));
+
+  connect(ui->uploadToDatabaseBtn, SIGNAL(clicked()), this,
+          SLOT(AddToDatabase()));
 }
 
 void MainWindow::on_actionCreate_ODF_triggered() {
-  ManagerODF::GetInstance()->form = new ODF_Form;
   ManagerODF::GetInstance()->form->show();
 
   connect(ManagerODF::GetInstance()->form, SIGNAL(textBtn_is_clicked()), this,
@@ -300,6 +325,9 @@ void MainWindow::AssembleODF() {
 
   writer.setFormat("odf");
   writer.write(document);
+
+  delete document;
+  delete cursor;
 }
 
 void MainWindow::closeEvent(QCloseEvent* event) {
@@ -310,4 +338,18 @@ void MainWindow::closeEvent(QCloseEvent* event) {
       ManagerODF::GetInstance()->form->close();
   } else
     event->ignore();
+
+void MainWindow::on_actionOpen_data_base_triggered() {
+  lib::Manager::GetInstance()->GetSQLite().form->show();
+}
+
+void MainWindow::AddToDatabase() {
+  QList<int> column_indexes;
+  for (int i = 0; i < lib::Manager::GetInstance()->GetVariablesCount(); i++)
+    if (ui->tableViewMain->selectionModel()->isColumnSelected(i))
+      column_indexes.push_back(i);
+  if (column_indexes.isEmpty()) return;
+  for (int i : column_indexes)
+    lib::Manager::GetInstance()->GetSQLite().AddToDatabase(
+        lib::Manager::GetInstance()->GetVariable(i));
 }

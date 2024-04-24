@@ -8,6 +8,9 @@ ODF_Form::ODF_Form(QWidget *parent) : QWidget(parent), ui(new Ui::ODF_Form) {
   ODF_Form::QWidget::setWindowTitle("Open Document Format"); // doesn't work
   ODF_Form::QWidget::setFixedSize(860, 800);
   ui->setupUi(this);
+
+  setWindowIcon(QIcon("C:/2024_Experiments/images/mainwindow.png"));
+  setWindowTitle("Data Handler");
 }
 
 ODF_Form::~ODF_Form() {

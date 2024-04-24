@@ -112,6 +112,13 @@
              </spacer>
             </item>
             <item>
+             <widget class="QPushButton" name="uploadToDatabaseBtn">
+              <property name="text">
+               <string>Upload to data base</string>
+              </property>
+             </widget>
+            </item>
+            <item>
              <widget class="QPushButton" name="ClearDataBtn">
               <property name="text">
                <string>Clear</string>
@@ -521,7 +528,7 @@
         </property>
         <widget class="QCustomPlot" name="customPlot">
          <attribute name="title">
-          <string>Plot 1</string>
+          <string>LinePlot</string>
          </attribute>
         </widget>
        </widget>
@@ -649,8 +656,8 @@
     <property name="title">
      <string>Theme</string>
     </property>
-    <addaction name="actionWhite"/>
-    <addaction name="actionDark"/>
+    <addaction name="lightThemeAction"/>
+    <addaction name="darkThemeAction"/>
    </widget>
    <widget class="QMenu" name="menuODF">
     <property name="title">
@@ -658,17 +665,24 @@
     </property>
     <addaction name="actionCreate_ODF"/>
    </widget>
+   <widget class="QMenu" name="menuData_base">
+    <property name="title">
+     <string>Data base</string>
+    </property>
+    <addaction name="actionOpen_data_base"/>
+   </widget>
    <addaction name="menuSettings"/>
    <addaction name="menuTheme"/>
    <addaction name="menuHelp"/>
    <addaction name="menuODF"/>
+   <addaction name="menuData_base"/>
   </widget>
-  <action name="actionWhite">
+  <action name="lightThemeAction">
    <property name="text">
     <string>Light</string>
    </property>
   </action>
-  <action name="actionDark">
+  <action name="darkThemeAction">
    <property name="text">
     <string>Dark</string>
    </property>
@@ -676,6 +690,11 @@
   <action name="actionCreate_ODF">
    <property name="text">
     <string>Create ODF</string>
+   </property>
+  </action>
+  <action name="actionOpen_data_base">
+   <property name="text">
+    <string>Open data base</string>
    </property>
   </action>
  </widget>
