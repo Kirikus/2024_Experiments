@@ -21,7 +21,7 @@ void ColumnPlot::Draw(QCustomPlot* plot) {
       }
     }
 
-    QCPBars* bar = new QCPBars(plot->xAxis, plot->yAxis);  // нет delete
+    QCPBars* bar = new QCPBars(plot->xAxis, plot->yAxis);
 
     bar->setWidth(0.9 / n);
     bar->setData(xAxis_data, yAxis_data);
