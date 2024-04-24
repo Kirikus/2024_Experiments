@@ -51,6 +51,12 @@ void MainWindow::ConfirmDeleteMeasurments() {
   }
 }
 
+void MainWindow::ClearData() {
+  if (lib::Manager::GetInstance()->GetMeasurementsCount() > 0 &&
+      ConfirmingAction("Are you sure to clear all data?"))
+    lib::Manager::GetInstance()->Clear();
+}
+
 bool MainWindow::ConfirmingAction(QString delete_message) {
   QDialog dialog;
   dialog.setFixedSize(380, 90);
@@ -167,7 +173,6 @@ void MainWindow::AddRow() {
 void MainWindow::DeleteRow() {
   int index_row = ui->tableViewMain->currentIndex().row();
   if (index_row == -1) index_row = 0;
-  qDebug() << index_row;
   dynamic_cast<lib::MeasurementsTable*>(ui->tableViewMain->model())
       ->removeRow(index_row);
 }
@@ -240,6 +245,8 @@ void MainWindow::ConnectingAction() {
           SLOT(AddMeasurements()));
   connect(lib::Manager::GetInstance(), SIGNAL(measurements_is_added()), this,
           SLOT(AddRow()));
+
+  connect(ui->ClearDataBtn, SIGNAL(clicked()), this, SLOT(ClearData()));
 }
 
 void MainWindow::on_actionCreate_ODF_triggered() {
@@ -278,10 +285,6 @@ void MainWindow::AddTableBlock() {
 }
 
 void MainWindow::AssembleODF() {
-  // QString file_name = QFileDialog::getSaveFileName(
-  //     nullptr, tr("Saving a document"),
-  //     QStandardPaths::writableLocation(QStandardPaths::DesktopLocation),
-  //     tr("Open Document ('''.odf)"));
   QString file_name = QFileDialog::getSaveFileName(
       nullptr, QObject::tr("Save File"), "output_file.odf",
       QObject::tr("Open Document ('''.odf)"));
@@ -300,5 +303,11 @@ void MainWindow::AssembleODF() {
 }
 
 void MainWindow::closeEvent(QCloseEvent* event) {
-  ManagerODF::GetInstance()->form->close();
+  if (lib::Manager::GetInstance()->GetVariablesCount() == 0 ||
+      ConfirmingAction("Are you sure to close programm?")) {
+    event->accept();
+    if (ManagerODF::GetInstance()->form != NULL)
+      ManagerODF::GetInstance()->form->close();
+  } else
+    event->ignore();
 }

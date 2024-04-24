@@ -62,7 +62,9 @@ class MainWindow : public QMainWindow {
 
   void closeEvent(QCloseEvent *event);
 
- private:
+  void ClearData();
+
+private:
   Ui::MainWindow *ui;
 };
 
