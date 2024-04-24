@@ -7,13 +7,13 @@ Block::Block()
       upBtn(new QPushButton("up")),
       downBtn(new QPushButton("down")),
       layout(new QHBoxLayout) {
-  deleteBtn->setFixedSize(90, 45);
-  upBtn->setFixedSize(90, 45);
-  downBtn->setFixedSize(90, 45);
+  deleteBtn->setFixedSize(70, 50);
+  upBtn->setFixedSize(70, 50);
+  downBtn->setFixedSize(70, 50);
   layout->addWidget(deleteBtn);
   layout->addWidget(upBtn);
   layout->addWidget(downBtn);
-  layout->setSpacing(60);
+  layout->setSpacing(20);
 
   connect(deleteBtn, SIGNAL(clicked()), this, SLOT(DeleteBlock()));
   connect(upBtn, SIGNAL(clicked()), this, SLOT(SwapUpBlock()));
