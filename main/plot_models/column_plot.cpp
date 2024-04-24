@@ -1,7 +1,5 @@
 #include "column_plot.h"
 
-#include <vector>
-
 #include "manager.h"
 
 void ColumnPlot::Draw(QCustomPlot* plot) {
