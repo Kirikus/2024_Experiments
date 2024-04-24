@@ -8,10 +8,7 @@
 int main(int argc, char *argv[]) {
   QApplication a(argc, argv);
 
-  QFile styleSheetFile("C:/2024_Experiments/main/Theme.qss");
-  styleSheetFile.open(QFile::ReadOnly);
-  QString styleSheet = QLatin1String(styleSheetFile.readAll());
-  a.setStyleSheet(styleSheet);
+  qApp->setStyle(QStyleFactory::create("Fusion"));
 
   MainWindow w;
   w.show();

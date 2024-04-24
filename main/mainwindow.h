@@ -68,6 +68,9 @@ class MainWindow : public QMainWindow {
 
   void AddToDatabase();
 
+  void DarkThemeOn();
+  void LightThemeOn();
+
  private:
   Ui::MainWindow *ui;
 };

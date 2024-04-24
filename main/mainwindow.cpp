@@ -3,11 +3,11 @@
 #include "./ui_mainwindow.h"
 #include "QStandardPaths"
 #include "manager.h"
-#include "plot_models/column_plot.h"
-#include "plot_models/dot_plot.h"
 #include "manager_odf/manager_odf.h"
-#include "plot_models/line_plot.h"
+#include "plot_models/column_plot.h"
 #include "plot_models/combo_plot.h"
+#include "plot_models/dot_plot.h"
+#include "plot_models/line_plot.h"
 #include "qcustomplot.h"
 #include "sqlite_database/db_form.h"
 #include "sqlite_database/sqlite.h"
@@ -42,6 +42,8 @@ MainWindow::MainWindow(QWidget* parent)
   SetupTables();
 
   ConnectingAction();
+
+  UpdatePlots();
 }
 
 MainWindow::~MainWindow() { delete ui; }
@@ -273,6 +275,10 @@ void MainWindow::ConnectingAction() {
 
   connect(ui->uploadToDatabaseBtn, SIGNAL(clicked()), this,
           SLOT(AddToDatabase()));
+
+  connect(ui->darkThemeAction, SIGNAL(triggered()), this, SLOT(DarkThemeOn()));
+
+  connect(ui->lightThemeAction, SIGNAL(triggered()), this, SLOT(LightThemeOn()));
 }
 
 void MainWindow::on_actionCreate_ODF_triggered() {
@@ -338,6 +344,7 @@ void MainWindow::closeEvent(QCloseEvent* event) {
       ManagerODF::GetInstance()->form->close();
   } else
     event->ignore();
+}
 
 void MainWindow::on_actionOpen_data_base_triggered() {
   lib::Manager::GetInstance()->GetSQLite().form->show();
@@ -352,4 +359,39 @@ void MainWindow::AddToDatabase() {
   for (int i : column_indexes)
     lib::Manager::GetInstance()->GetSQLite().AddToDatabase(
         lib::Manager::GetInstance()->GetVariable(i));
+}
+
+void MainWindow::DarkThemeOn() {
+  QPalette darkPalette;
+
+  darkPalette.setColor(QPalette::Window, QColor(53, 53, 53));
+  darkPalette.setColor(QPalette::WindowText, Qt::white);
+  darkPalette.setColor(QPalette::Base, QColor(25, 25, 25));
+  darkPalette.setColor(QPalette::AlternateBase, QColor(53, 53, 53));
+  darkPalette.setColor(QPalette::ToolTipBase, Qt::white);
+  darkPalette.setColor(QPalette::ToolTipText, Qt::white);
+  darkPalette.setColor(QPalette::Text, Qt::white);
+  darkPalette.setColor(QPalette::Button, QColor(53, 53, 53));
+  darkPalette.setColor(QPalette::ButtonText, Qt::white);
+  darkPalette.setColor(QPalette::BrightText, Qt::red);
+  darkPalette.setColor(QPalette::Link, QColor(42, 130, 218));
+  darkPalette.setColor(QPalette::Highlight, QColor(42, 130, 218));
+  darkPalette.setColor(QPalette::HighlightedText, Qt::black);
+
+  AbstractPlotModel::SetDarkTheme(qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(0)));
+  AbstractPlotModel::SetDarkTheme(qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(1)));
+  AbstractPlotModel::SetDarkTheme(qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(2)));
+  AbstractPlotModel::SetDarkTheme(qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(3)));
+
+  qApp->setPalette(darkPalette);
+}
+
+void MainWindow::LightThemeOn() {
+
+  AbstractPlotModel::SetLightTheme(qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(0)));
+  AbstractPlotModel::SetLightTheme(qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(1)));
+  AbstractPlotModel::SetLightTheme(qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(2)));
+  AbstractPlotModel::SetLightTheme(qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(3)));
+
+  qApp->setPalette(style()->standardPalette());
 }
