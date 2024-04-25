@@ -32,7 +32,7 @@ class MainWindow : public QMainWindow {
 
   bool ConfirmingAction(QString);
   void ConfirmDeleteMeasurments();
-  void ConfirmDeleteVariable();
+  void ConfirmDeleteVariables();
 
   void Load();
   void Save();
@@ -41,7 +41,7 @@ class MainWindow : public QMainWindow {
   void AddPlot();
 
   void AddColumn();
-  void DeleteColumn();
+  void DeleteColumns();
 
   void AddRow();
   void DeleteRow();

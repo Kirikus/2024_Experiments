@@ -48,11 +48,19 @@ MainWindow::MainWindow(QWidget* parent)
 
 MainWindow::~MainWindow() { delete ui; }
 
-void MainWindow::ConfirmDeleteVariable() {
-  if (ui->tableViewMain->selectionModel()->hasSelection() &&
-      ConfirmingAction("Are you sure you want to delete this variable?")) {
-    lib::Manager::GetInstance()->DeleteVariable(
-        ui->tableViewMain->currentIndex().column());
+void MainWindow::ConfirmDeleteVariables() {
+  QList<int> column_indexes;
+  for (int i = lib::Manager::GetInstance()->GetVariablesCount(); i > -1; i--) {
+    if (ui->tableViewMain->selectionModel()->isColumnSelected(i)) {
+      column_indexes.push_back(i);
+    }
+  }
+  if (column_indexes.size() != 0 &&
+      ConfirmingAction("Are you sure you want to delete this variables?")) {
+    DeleteColumns();
+    for (int i : column_indexes) {
+      lib::Manager::GetInstance()->DeleteVariable(i);
+    }
   }
 }
 
@@ -165,17 +173,19 @@ void MainWindow::AddColumn() {
       ->insertRow(lib::Manager::GetInstance()->GetVariablesCount());
 }
 
-void MainWindow::DeleteColumn() {
-  int index_column = ui->tableViewMain->currentIndex().column();
-  if (index_column == -1) index_column = 0;
-  dynamic_cast<lib::MeasurementsTable*>(ui->tableViewMain->model())
-      ->removeColumn(index_column);
-  dynamic_cast<lib::NamingTable*>(ui->tableViewNaming->model())
-      ->removeRow(index_column);
-  dynamic_cast<lib::PlotSettingsTable*>(ui->tableViewPlotsSets->model())
-      ->removeRow(index_column);
-  dynamic_cast<lib::ErrorsTable*>(ui->tableViewErrors->model())
-      ->removeRow(index_column);
+void MainWindow::DeleteColumns() {
+  for (int i = lib::Manager::GetInstance()->GetVariablesCount(); i > -1; i--) {
+    if (ui->tableViewMain->selectionModel()->isColumnSelected(i)) {
+      dynamic_cast<lib::MeasurementsTable*>(ui->tableViewMain->model())
+          ->removeColumn(i);
+      dynamic_cast<lib::NamingTable*>(ui->tableViewNaming->model())
+          ->removeRow(i);
+      dynamic_cast<lib::PlotSettingsTable*>(ui->tableViewPlotsSets->model())
+          ->removeRow(i);
+      dynamic_cast<lib::ErrorsTable*>(ui->tableViewErrors->model())
+          ->removeRow(i);
+    }
+  }
 }
 
 void MainWindow::AddRow() {
@@ -252,9 +262,7 @@ void MainWindow::ConnectingAction() {
   connect(ui->SaveDataBtn, SIGNAL(clicked()), this, SLOT(Save()));
 
   connect(ui->deleteColumnBtn, SIGNAL(clicked()), this,
-          SLOT(ConfirmDeleteVariable()));
-  connect(lib::Manager::GetInstance(), SIGNAL(variable_is_deleted()), this,
-          SLOT(DeleteColumn()));
+          SLOT(ConfirmDeleteVariables()));
 
   connect(ui->addColumnBtn, SIGNAL(clicked()), lib::Manager::GetInstance(),
           SLOT(AddVariable()));
@@ -278,7 +286,8 @@ void MainWindow::ConnectingAction() {
 
   connect(ui->darkThemeAction, SIGNAL(triggered()), this, SLOT(DarkThemeOn()));
 
-  connect(ui->lightThemeAction, SIGNAL(triggered()), this, SLOT(LightThemeOn()));
+  connect(ui->lightThemeAction, SIGNAL(triggered()), this,
+          SLOT(LightThemeOn()));
 }
 
 void MainWindow::on_actionCreate_ODF_triggered() {
@@ -378,20 +387,27 @@ void MainWindow::DarkThemeOn() {
   darkPalette.setColor(QPalette::Highlight, QColor(42, 130, 218));
   darkPalette.setColor(QPalette::HighlightedText, Qt::black);
 
-  AbstractPlotModel::SetDarkTheme(qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(0)));
-  AbstractPlotModel::SetDarkTheme(qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(1)));
-  AbstractPlotModel::SetDarkTheme(qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(2)));
-  AbstractPlotModel::SetDarkTheme(qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(3)));
+  AbstractPlotModel::SetDarkTheme(
+      qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(0)));
+  AbstractPlotModel::SetDarkTheme(
+      qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(1)));
+  AbstractPlotModel::SetDarkTheme(
+      qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(2)));
+  AbstractPlotModel::SetDarkTheme(
+      qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(3)));
 
   qApp->setPalette(darkPalette);
 }
 
 void MainWindow::LightThemeOn() {
-
-  AbstractPlotModel::SetLightTheme(qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(0)));
-  AbstractPlotModel::SetLightTheme(qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(1)));
-  AbstractPlotModel::SetLightTheme(qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(2)));
-  AbstractPlotModel::SetLightTheme(qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(3)));
+  AbstractPlotModel::SetLightTheme(
+      qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(0)));
+  AbstractPlotModel::SetLightTheme(
+      qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(1)));
+  AbstractPlotModel::SetLightTheme(
+      qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(2)));
+  AbstractPlotModel::SetLightTheme(
+      qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(3)));
 
   qApp->setPalette(style()->standardPalette());
 }

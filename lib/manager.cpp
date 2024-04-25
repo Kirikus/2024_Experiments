@@ -41,7 +41,6 @@ void Manager::DeleteVariable(int index) {
   if (variables.size() == 1)
     while (GetMeasurementsCount() != 0) DeleteMeasurements();
   variables.removeAt(index);
-  emit variable_is_deleted();
 }
 
 void Manager::AugmentVariables() {

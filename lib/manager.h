@@ -39,7 +39,6 @@ class Manager : public QObject {
   void DeleteMeasurements(int index = 0);
 
  signals:
-  void variable_is_deleted();
   void variable_is_added();
   void measurements_is_deleted();
   void measurements_is_added();

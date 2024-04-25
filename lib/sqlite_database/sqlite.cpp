@@ -6,10 +6,8 @@
 SQLite::SQLite() {
   measurements_db = QSqlDatabase::addDatabase("QSQLITE");
   measurements_db.setDatabaseName("./measurements_db.db");
-  if (measurements_db.open())
-    qDebug("data base has been successfully opened");
-  else
-    qDebug("data base hasn't opened");
+
+  measurements_db.open();
 
   form = new DB_Form();
 
