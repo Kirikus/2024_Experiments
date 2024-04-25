@@ -1,5 +1,4 @@
 #include "scatter_plot_2d.h"
-// #include "C:\2024_Experiments\main\plot_models\scatter_plot_2d.h"
 
 #include "manager.h"
 
