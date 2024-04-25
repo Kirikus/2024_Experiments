@@ -50,18 +50,13 @@ MainWindow::~MainWindow() { delete ui; }
 
 void MainWindow::ConfirmDeleteVariables() {
   QList<int> column_indexes;
-  for (int i = lib::Manager::GetInstance()->GetVariablesCount(); i > -1; i--) {
-    if (ui->tableViewMain->selectionModel()->isColumnSelected(i)) {
+  for (int i = lib::Manager::GetInstance()->GetVariablesCount(); i > -1; i--)
+    if (ui->tableViewMain->selectionModel()->isColumnSelected(i))
       column_indexes.push_back(i);
-    }
-  }
-  if (column_indexes.size() != 0 &&
-      ConfirmingAction("Are you sure you want to delete this variables?")) {
-    DeleteColumns();
-    for (int i : column_indexes) {
-      lib::Manager::GetInstance()->DeleteVariable(i);
-    }
-  }
+  if (!column_indexes.isEmpty() &&
+      ConfirmingAction("Are you sure you want to delete this variables?"))
+    for (int i : column_indexes) lib::Manager::GetInstance()->DeleteVariable(i);
+
 }
 
 void MainWindow::ConfirmDeleteMeasurments() {
@@ -173,19 +168,17 @@ void MainWindow::AddColumn() {
       ->insertRow(lib::Manager::GetInstance()->GetVariablesCount());
 }
 
-void MainWindow::DeleteColumns() {
-  for (int i = lib::Manager::GetInstance()->GetVariablesCount(); i > -1; i--) {
-    if (ui->tableViewMain->selectionModel()->isColumnSelected(i)) {
-      dynamic_cast<lib::MeasurementsTable*>(ui->tableViewMain->model())
-          ->removeColumn(i);
-      dynamic_cast<lib::NamingTable*>(ui->tableViewNaming->model())
-          ->removeRow(i);
-      dynamic_cast<lib::PlotSettingsTable*>(ui->tableViewPlotsSets->model())
-          ->removeRow(i);
-      dynamic_cast<lib::ErrorsTable*>(ui->tableViewErrors->model())
-          ->removeRow(i);
-    }
-  }
+void MainWindow::DeleteColumn() {
+  int index_column = ui->tableViewMain->currentIndex().column();
+  if (index_column == -1) index_column = 0;
+  dynamic_cast<lib::MeasurementsTable*>(ui->tableViewMain->model())
+      ->removeColumn(index_column);
+  dynamic_cast<lib::NamingTable*>(ui->tableViewNaming->model())
+      ->removeRow(index_column);
+  dynamic_cast<lib::PlotSettingsTable*>(ui->tableViewPlotsSets->model())
+      ->removeRow(index_column);
+  dynamic_cast<lib::ErrorsTable*>(ui->tableViewErrors->model())
+      ->removeRow(index_column);
 }
 
 void MainWindow::AddRow() {
@@ -263,6 +256,8 @@ void MainWindow::ConnectingAction() {
 
   connect(ui->deleteColumnBtn, SIGNAL(clicked()), this,
           SLOT(ConfirmDeleteVariables()));
+  connect(lib::Manager::GetInstance(), SIGNAL(variable_is_deleted()), this,
+          SLOT(DeleteColumn()));
 
   connect(ui->addColumnBtn, SIGNAL(clicked()), lib::Manager::GetInstance(),
           SLOT(AddVariable()));

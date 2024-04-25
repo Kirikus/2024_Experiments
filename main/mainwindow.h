@@ -41,7 +41,7 @@ class MainWindow : public QMainWindow {
   void AddPlot();
 
   void AddColumn();
-  void DeleteColumns();
+  void DeleteColumn();
 
   void AddRow();
   void DeleteRow();
