@@ -2,7 +2,7 @@
 
 #include "manager.h"
 
-void Histogram::Draw(QCustomPlot* plot, int var, double column_size) {
+void Histogram::Draw(QCustomPlot* plot, int var, int column_size) {
   plot->clearPlottables();
 
   const lib::Variable& variable = lib::Manager::GetInstance()->GetVariable(var);

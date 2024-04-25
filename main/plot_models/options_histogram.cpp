@@ -1,8 +1,8 @@
-#include "options.h"
+#include "options_histogram.h"
 
 #include "manager.h"
 
-Options::Options(QWidget *parent) : QDialog(parent), ui(new Ui::Dialog) {
+OptionsHistogram::OptionsHistogram(QWidget *parent) : QDialog(parent), ui(new Ui::Dialog) {
   ui->setupUi(this);
 
   for (int i = 0; i < lib::Manager::GetInstance()->names_of_variables.size();
@@ -18,10 +18,10 @@ Options::Options(QWidget *parent) : QDialog(parent), ui(new Ui::Dialog) {
   connect(ui->okPushButton, &QPushButton::clicked, this, &QDialog::close);
 }
 
-int Options::choose_variable() { return ui->VariableComboBox->currentIndex(); }
+int OptionsHistogram::choose_variable() { return ui->VariableComboBox->currentIndex(); }
 
-double Options::choose_column_size() {
+int OptionsHistogram::choose_column_size() {
   return ui->ColumnSizeComboBox->currentIndex() + 1;
 }
 
-Options::~Options() { delete ui; }
+OptionsHistogram::~OptionsHistogram() { delete ui; }

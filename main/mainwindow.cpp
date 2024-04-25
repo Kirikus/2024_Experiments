@@ -7,7 +7,7 @@
 #include "plot_models/column_plot.h"
 #include "plot_models/histogram.h"
 #include "plot_models/line_plot.h"
-#include "plot_models/options.h"
+#include "plot_models/options_histogram.h"
 #include "plot_models/scatter_plot.h"
 #include "qcustomplot.h"
 #include "sqlite_database/db_form.h"
@@ -249,14 +249,13 @@ void MainWindow::OptionsPlot() {
       // nothing
       break;
     case 3: {
-      Options a;
+      OptionsHistogram a;
       a.exec();
       var = a.choose_variable();
       column_size = a.choose_column_size();
       break;
     }
     case 4:
-
       break;
   }
 }
