@@ -15,7 +15,7 @@ class OptionsHistogram : public QDialog {
   void ok();
 
  private:
-  Ui::Dialog *ui;
+  Ui::DialogHistogram *ui;
 };
 
 #endif  // OPTIONS_HISTOGRAM_H

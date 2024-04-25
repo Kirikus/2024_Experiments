@@ -8,7 +8,10 @@
 #include "plot_models/histogram.h"
 #include "plot_models/line_plot.h"
 #include "plot_models/options_histogram.h"
+#include "plot_models/options_scatter_2d.h"
 #include "plot_models/scatter_plot.h"
+// #include "plot_models/scatter_plot_2d.h"
+#include "C:\2024_Experiments\main\plot_models\scatter_plot_2d.h"
 #include "qcustomplot.h"
 #include "sqlite_database/db_form.h"
 #include "sqlite_database/sqlite.h"
@@ -27,6 +30,7 @@ MainWindow::MainWindow(QWidget* parent)
   ui->tabWidgetPlots->addTab(new QCustomPlot, "ScatterPlot");
   ui->tabWidgetPlots->addTab(new QCustomPlot, "ColumnPlot");
   ui->tabWidgetPlots->addTab(new QCustomPlot, "Histogram");
+  ui->tabWidgetPlots->addTab(new QCustomPlot, "ScatterPlot2D");
 
   setWindowIcon(QIcon("C:/2024_Experiments/images/mainwindow.png"));
   setWindowTitle("Data Handler");
@@ -233,6 +237,11 @@ void MainWindow::UpdatePlots() {
   histogram->Draw(qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(3)),
                   var, column_size);
   delete histogram;
+
+  ScatterPlot2D* scatter_plot_2d = new ScatterPlot2D("x", "y", "test");
+  scatter_plot_2d->Draw(
+      qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(4)), AxisX, AxisY);
+  delete scatter_plot_2d;
 }
 
 void MainWindow::OptionsPlot() {
@@ -255,8 +264,13 @@ void MainWindow::OptionsPlot() {
       column_size = a.choose_column_size();
       break;
     }
-    case 4:
+    case 4: {
+      OptionsScatter2D a;
+      a.exec();
+      AxisX = a.choose_AxisX();
+      AxisY = a.choose_AxisY();
       break;
+    }
   }
 }
 

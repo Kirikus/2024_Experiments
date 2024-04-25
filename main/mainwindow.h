@@ -70,6 +70,8 @@ class MainWindow : public QMainWindow {
 
   int var = 0;
   int column_size = 1;
+  int AxisX = 0;
+  int AxisY = 0;
 };
 
 #endif  // MAINWINDOW_H

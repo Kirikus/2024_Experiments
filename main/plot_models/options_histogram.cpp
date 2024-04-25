@@ -2,7 +2,7 @@
 
 #include "manager.h"
 
-OptionsHistogram::OptionsHistogram(QWidget *parent) : QDialog(parent), ui(new Ui::Dialog) {
+OptionsHistogram::OptionsHistogram(QWidget *parent) : QDialog(parent), ui(new Ui::DialogHistogram) {
   ui->setupUi(this);
 
   for (int i = 0; i < lib::Manager::GetInstance()->names_of_variables.size();

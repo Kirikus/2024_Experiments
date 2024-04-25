@@ -1,5 +1,5 @@
-#ifndef SCTATTER_PLOT_2D_H
-#define SCTATTER_PLOT_2D_H
+#ifndef SCATTER_PLOT_2D_H
+#define SCATTER_PLOT_2D_H
 
 #include "abstractplotmodel.h"
 
@@ -13,7 +13,7 @@ public:
         y_label(y_label),
         title(title) {}
 
-    void Draw(QCustomPlot*);
+    void Draw(QCustomPlot*, int, int);
 
 private:
     QString x_label;
@@ -21,4 +21,4 @@ private:
     QString title;
 };
 
-#endif // SCTATTER_PLOT_2D_H
+#endif // SCATTER_PLOT_2D_H
