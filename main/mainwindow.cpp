@@ -230,11 +230,10 @@ void MainWindow::UpdatePlots() {
   delete column_plot;
 
   Histogram* histogram = new Histogram("x", "y", "test");
-  histogram->Draw(qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(3)), choose_var);
+  histogram->Draw(qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(3)),
+                  var, column_size);
   delete histogram;
 }
-
-#include <iostream>
 
 void MainWindow::OptionsPlot() {
   int index = ui->tabWidgetPlots->currentIndex();
@@ -249,11 +248,15 @@ void MainWindow::OptionsPlot() {
     case 2:
       // nothing
       break;
-    case 3:
-
+    case 3: {
       Options a;
       a.exec();
-      choose_var = a.choose_variable();
+      var = a.choose_variable();
+      column_size = a.choose_column_size();
+      break;
+    }
+    case 4:
+
       break;
   }
 }

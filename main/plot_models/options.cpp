@@ -10,19 +10,18 @@ Options::Options(QWidget *parent) : QDialog(parent), ui(new Ui::Dialog) {
     ui->VariableComboBox->addItem(
         lib::Manager::GetInstance()->names_of_variables[i]);
   }
-  // ui->ColumnSizeComboBox->addItem(
-  //     lib::Manager::GetInstance()->QString("0.5"));
-  // ui->ColumnSizeComboBox->addItem(
-  //     lib::Manager::GetInstance()->QString("1"));
-  // ui->ColumnSizeComboBox->addItem(
-  //     lib::Manager::GetInstance()->QString("2"));
 
-  connect(ui->okPushButton, SIGNAL(clicked()), this, SLOT(ok()));
+  ui->ColumnSizeComboBox->addItem(QString("1"));
+  ui->ColumnSizeComboBox->addItem(QString("2"));
+  ui->ColumnSizeComboBox->addItem(QString("3"));
+
+  connect(ui->okPushButton, &QPushButton::clicked, this, &QDialog::close);
 }
 
-void Options::ok() { this->close(); }
-
 int Options::choose_variable() { return ui->VariableComboBox->currentIndex(); }
-int Options::choose_column_size() { return ui->ColumnSizeComboBox->currentIndex(); }
+
+double Options::choose_column_size() {
+  return ui->ColumnSizeComboBox->currentIndex() + 1;
+}
 
 Options::~Options() { delete ui; }

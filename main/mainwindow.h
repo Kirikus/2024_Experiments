@@ -68,7 +68,8 @@ class MainWindow : public QMainWindow {
  private:
   Ui::MainWindow *ui;
 
-  int choose_var = 0;
+  int var = 0;
+  int column_size = 1;
 };
 
 #endif  // MAINWINDOW_H
