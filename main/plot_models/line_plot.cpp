@@ -42,7 +42,6 @@ void LinePlot::Draw(QCustomPlot* plot) {
     yError_bar->setData(yError_data);
     graph->setData(xAxis_data, yAxis_data);
   }
-  plot->rescaleAxes();
   plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
   plot->replot();
 }

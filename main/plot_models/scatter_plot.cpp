@@ -15,7 +15,7 @@ void ScatterPlot::Draw(QCustomPlot* plot) {
 
     graph->setLineStyle(QCPGraph::lsNone);
 
-    graph->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle));
+    graph->setScatterStyle(variable.visual.point_shape);
     graph->setPen(QPen(QBrush(variable.visual.color), variable.visual.width,
                        variable.visual.line_type));
 
@@ -29,7 +29,6 @@ void ScatterPlot::Draw(QCustomPlot* plot) {
     }
     graph->setData(xAxis_data, yAxis_data);
   }
-  plot->rescaleAxes();
   plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
   plot->replot();
 }
