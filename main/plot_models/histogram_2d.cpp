@@ -1,0 +1,42 @@
+#include "histogram_2d.h"
+
+#include "manager.h"
+
+void Histogram2D::Draw(QCustomPlot* plot, int x, int y, int square_size) {
+    plot->clearGraphs();
+    plot->legend->setVisible(true);
+
+    QVector<int> var{x, y};
+
+    for (int i = 0; i < 2; ++i) {
+        const lib::Variable& variable =
+            lib::Manager::GetInstance()->GetVariable(var[i]);
+        QCPGraph* graph = plot->addGraph();
+        graph->setName(variable.naming.title);
+        plot->setFont(QFont("Helvetica", 9));
+
+        graph->setLineStyle(QCPGraph::lsNone);
+
+        graph->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle));
+        graph->setPen(QPen(QBrush(variable.visual.color), variable.visual.width,
+                           variable.visual.line_type));
+
+        QVector<double> xAxis_data;
+        QVector<double> yAxis_data;
+        for (int j = 0; j < variable.GetMeasurementsCount(); j++) {
+            if (variable.measurements[j]) {
+                if (i == 1) {
+                    xAxis_data.push_back(variable.measurements[j]);
+                    yAxis_data.push_back(j + 1);
+
+                } else {
+                    xAxis_data.push_back(j + 1);
+                    yAxis_data.push_back(variable.measurements[j]);
+                }
+            }
+        }
+        graph->setData(xAxis_data, yAxis_data);
+    }
+    plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
+    plot->replot();
+}

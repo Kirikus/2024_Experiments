@@ -6,8 +6,10 @@
 #include "manager_odf/manager_odf.h"
 #include "plot_models/column_plot.h"
 #include "plot_models/histogram.h"
+#include "plot_models/histogram_2d.h"
 #include "plot_models/line_plot.h"
 #include "plot_models/options_histogram.h"
+#include "plot_models/options_histogram_2d.h"
 #include "plot_models/options_scatter_2d.h"
 #include "plot_models/scatter_plot.h"
 #include "plot_models/scatter_plot_2d.h"
@@ -30,16 +32,20 @@ MainWindow::MainWindow(QWidget* parent)
   ui->tabWidgetPlots->addTab(new QCustomPlot, "ColumnPlot");
   ui->tabWidgetPlots->addTab(new QCustomPlot, "Histogram");
   ui->tabWidgetPlots->addTab(new QCustomPlot, "ScatterPlot2D");
+  ui->tabWidgetPlots->addTab(new QCustomPlot, "Histogram2D");
 
   setWindowIcon(QIcon("C:/2024_Experiments/images/mainwindow.png"));
   setWindowTitle("Data Handler");
 
   lib::Variable Foo({1, 2, 3, 4, 5}, lib::Variable::Naming("Foo"),
-                    lib::Variable::VisualOptions(true, 1, {255, 0, 0}, QCPScatterStyle::ssCircle));
+                    lib::Variable::VisualOptions(true, 1, {255, 0, 0},
+                                                 QCPScatterStyle::ssCircle));
   lib::Variable bar({4, 2, 11, 3, 5, 1}, lib::Variable::Naming("bar"),
-                    lib::Variable::VisualOptions(true, 1, {83, 204, 101}, QCPScatterStyle::ssCircle));
+                    lib::Variable::VisualOptions(true, 1, {83, 204, 101},
+                                                 QCPScatterStyle::ssCircle));
   lib::Variable var({5, 3, 3, 2, 6, 1}, lib::Variable::Naming("var"),
-                    lib::Variable::VisualOptions(true, 1, {42, 182, 204}, QCPScatterStyle::ssCircle));
+                    lib::Variable::VisualOptions(true, 1, {42, 182, 204},
+                                                 QCPScatterStyle::ssCircle));
 
   lib::Manager::GetInstance()->AddVariable(Foo);
   lib::Manager::GetInstance()->AddVariable(bar);
@@ -241,6 +247,11 @@ void MainWindow::UpdatePlots() {
   scatter_plot_2d->Draw(
       qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(4)), AxisX, AxisY);
   delete scatter_plot_2d;
+
+  Histogram2D* histogram_2d = new Histogram2D("x", "y", "test");
+  histogram_2d->Draw(qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(5)),
+                     HAxisX, HAxisY, SquareSize);
+  delete histogram_2d;
 }
 
 void MainWindow::OptionsPlot() {
@@ -268,6 +279,14 @@ void MainWindow::OptionsPlot() {
       a.exec();
       AxisX = a.choose_AxisX();
       AxisY = a.choose_AxisY();
+      break;
+    }
+    case 5: {
+      OptionsHistogram2D a;
+      a.exec();
+      HAxisX = a.choose_AxisX();
+      HAxisY = a.choose_AxisY();
+
       break;
     }
   }
