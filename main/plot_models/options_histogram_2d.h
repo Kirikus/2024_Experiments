@@ -4,18 +4,18 @@
 #include "ui_options_histogram_2d.h"
 
 class OptionsHistogram2D : public QDialog {
-    Q_OBJECT
+  Q_OBJECT
 
-public:
-    OptionsHistogram2D(QWidget *parent = nullptr);
-    ~OptionsHistogram2D();
+ public:
+  OptionsHistogram2D(QWidget *parent = nullptr);
+  ~OptionsHistogram2D();
 
-    int choose_AxisX();
-    int choose_AxisY();
-    void ok();
+  int choose_AxisX();
+  int choose_AxisY();
+  void ok();
 
-private:
-    Ui::DialogHistogram2D *ui;
+ private:
+  Ui::DialogHistogram2D *ui;
 };
 
-#endif // OPTIONS_HISTOGRAM_2D_H
+#endif  // OPTIONS_HISTOGRAM_2D_H
