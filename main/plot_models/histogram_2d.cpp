@@ -2,7 +2,7 @@
 
 #include "manager.h"
 
-void Histogram2D::Draw(QCustomPlot* plot, int x, int y, int square_size) {
+void Histogram2D::Draw(QCustomPlot* plot, int x, int y) {
   plot->clearGraphs();
   plot->clearPlottables();
   plot->legend->setVisible(true);

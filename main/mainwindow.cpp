@@ -250,7 +250,7 @@ void MainWindow::UpdatePlots() {
 
   Histogram2D* histogram_2d = new Histogram2D("x", "y", "test");
   histogram_2d->Draw(qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(5)),
-                     HAxisX, HAxisY, SquareSize);
+                     HAxisX, HAxisY);
   delete histogram_2d;
 }
 

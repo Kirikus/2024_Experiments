@@ -12,7 +12,6 @@ public:
 
     int choose_AxisX();
     int choose_AxisY();
-    // добавить еще выбора размера квадрата
     void ok();
 
 private:

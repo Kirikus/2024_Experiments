@@ -13,7 +13,7 @@ class Histogram2D : public AbstractPlotModel {
         y_label(y_label),
         title(title) {}
 
-  void Draw(QCustomPlot*, int, int, int);
+  void Draw(QCustomPlot*, int, int);
 
  private:
   QString x_label;
