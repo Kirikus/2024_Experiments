@@ -56,14 +56,16 @@ void MainWindow::ConfirmDeleteVariables() {
   if (!column_indexes.isEmpty() &&
       ConfirmingAction("Are you sure you want to delete this variables?"))
     for (int i : column_indexes) lib::Manager::GetInstance()->DeleteVariable(i);
-
 }
 
 void MainWindow::ConfirmDeleteMeasurments() {
-  if (ui->tableViewMain->selectionModel()->hasSelection() &&
+  QList<int> rows_indexes;
+  for (int i = lib::Manager::GetInstance()->GetMeasurementsCount(); i > -1; i--)
+    if (ui->tableViewMain->selectionModel()->isRowSelected(i))
+      rows_indexes.push_back(i);
+  if (!rows_indexes.isEmpty() &&
       ConfirmingAction("Are you sure you want to delete these measurements?")) {
-    lib::Manager::GetInstance()->DeleteMeasurements(
-        ui->tableViewMain->currentIndex().row());
+    for (int i : rows_indexes) lib::Manager::GetInstance()->DeleteMeasurements(i);
   }
 }
 
@@ -170,6 +172,7 @@ void MainWindow::AddColumn() {
 
 void MainWindow::DeleteColumn() {
   int index_column = ui->tableViewMain->currentIndex().column();
+  qDebug() << index_column;
   if (index_column == -1) index_column = 0;
   dynamic_cast<lib::MeasurementsTable*>(ui->tableViewMain->model())
       ->removeColumn(index_column);
@@ -188,6 +191,7 @@ void MainWindow::AddRow() {
 
 void MainWindow::DeleteRow() {
   int index_row = ui->tableViewMain->currentIndex().row();
+  qDebug() << index_row;
   if (index_row == -1) index_row = 0;
   dynamic_cast<lib::MeasurementsTable*>(ui->tableViewMain->model())
       ->removeRow(index_row);
