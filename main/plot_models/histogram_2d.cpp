@@ -69,7 +69,8 @@ void Histogram2D::Draw(QCustomPlot* plot, int x, int y) {
 
   for (int i = 0; i < mx - mn; ++i) {
     for (int j = 0; j < mx - mn; ++j) {
-      colorMap->data()->setCell(i + 100 + int(mn), j + 100 + int(mn), density[i][j]);
+      colorMap->data()->setCell(i + 100 + int(mn), j + 100 + int(mn),
+                                density[i][j]);
     }
   }
 
@@ -81,7 +82,9 @@ void Histogram2D::Draw(QCustomPlot* plot, int x, int y) {
   colorMap->setGradient(gradient);
 
   colorMap->rescaleDataRange(false);
-    plot->moveLayer(plot->layer("grid"), plot->layer("main"), QCustomPlot::limAbove);
+
+  plot->moveLayer(plot->layer("grid"), plot->layer("main"),
+                  QCustomPlot::limAbove);
 
   plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
   plot->replot();
