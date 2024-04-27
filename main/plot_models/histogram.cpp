@@ -7,16 +7,17 @@ void Histogram::Draw(QCustomPlot* plot, int var, int column_size) {
 
   const lib::Variable& variable = lib::Manager::GetInstance()->GetVariable(var);
 
-  double max_value = 0;
+  double max_value = -1e9, min_value = 1e9;
 
   for (int j = 0; j < variable.GetMeasurementsCount(); j++) {
     max_value = std::max(max_value, variable.measurements[j]);
+    min_value = std::min(min_value, variable.measurements[j]);
   }
 
   QVector<double> xAxis_data;
   QVector<double> yAxis_data;
 
-  for (int i = 0; i <= max_value; i += column_size) {
+  for (int i = min_value; i <= max_value; i += column_size) {
     int count = 0;
     for (int j = 0; j < variable.GetMeasurementsCount(); ++j) {
       if (i <= variable.measurements[j] &&
