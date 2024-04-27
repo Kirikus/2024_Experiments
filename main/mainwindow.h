@@ -71,6 +71,8 @@ class MainWindow : public QMainWindow {
   void DarkThemeOn();
   void LightThemeOn();
 
+  void CreateHelpWindow();
+
  private:
   Ui::MainWindow *ui;
 };

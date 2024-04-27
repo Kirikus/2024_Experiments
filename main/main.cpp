@@ -1,9 +1,8 @@
 #include <QApplication>
+#include <QFile>
 
 #include "mainwindow.h"
 #include "manager.h"
-
-#include <QFile>
 
 int main(int argc, char *argv[]) {
   QApplication a(argc, argv);

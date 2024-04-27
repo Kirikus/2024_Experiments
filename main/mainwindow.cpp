@@ -65,7 +65,8 @@ void MainWindow::ConfirmDeleteMeasurments() {
       rows_indexes.push_back(i);
   if (!rows_indexes.isEmpty() &&
       ConfirmingAction("Are you sure you want to delete these measurements?")) {
-    for (int i : rows_indexes) lib::Manager::GetInstance()->DeleteMeasurements(i);
+    for (int i : rows_indexes)
+      lib::Manager::GetInstance()->DeleteMeasurements(i);
   }
 }
 
@@ -172,7 +173,6 @@ void MainWindow::AddColumn() {
 
 void MainWindow::DeleteColumn() {
   int index_column = ui->tableViewMain->currentIndex().column();
-  qDebug() << index_column;
   if (index_column == -1) index_column = 0;
   dynamic_cast<lib::MeasurementsTable*>(ui->tableViewMain->model())
       ->removeColumn(index_column);
@@ -191,7 +191,6 @@ void MainWindow::AddRow() {
 
 void MainWindow::DeleteRow() {
   int index_row = ui->tableViewMain->currentIndex().row();
-  qDebug() << index_row;
   if (index_row == -1) index_row = 0;
   dynamic_cast<lib::MeasurementsTable*>(ui->tableViewMain->model())
       ->removeRow(index_row);
@@ -283,10 +282,12 @@ void MainWindow::ConnectingAction() {
   connect(ui->uploadToDatabaseBtn, SIGNAL(clicked()), this,
           SLOT(AddToDatabase()));
 
-  connect(ui->darkThemeAction, SIGNAL(triggered()), this, SLOT(DarkThemeOn()));
+  connect(ui->actionDarkTheme, SIGNAL(triggered()), this, SLOT(DarkThemeOn()));
 
-  connect(ui->lightThemeAction, SIGNAL(triggered()), this,
+  connect(ui->actionLightTheme, SIGNAL(triggered()), this,
           SLOT(LightThemeOn()));
+
+  connect(ui->actionHelp, SIGNAL(triggered()), this, SLOT(CreateHelpWindow()));
 }
 
 void MainWindow::on_actionCreate_ODF_triggered() {
@@ -374,7 +375,7 @@ void MainWindow::DarkThemeOn() {
 
   darkPalette.setColor(QPalette::Window, QColor(53, 53, 53));
   darkPalette.setColor(QPalette::WindowText, Qt::white);
-  darkPalette.setColor(QPalette::Base, QColor(25, 25, 25));
+  darkPalette.setColor(QPalette::Base, QColor(40, 40, 40));
   darkPalette.setColor(QPalette::AlternateBase, QColor(53, 53, 53));
   darkPalette.setColor(QPalette::ToolTipBase, Qt::white);
   darkPalette.setColor(QPalette::ToolTipText, Qt::white);
@@ -409,4 +410,15 @@ void MainWindow::LightThemeOn() {
       qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(3)));
 
   qApp->setPalette(style()->standardPalette());
+}
+
+void MainWindow::CreateHelpWindow() {
+  QMessageBox message;
+  QPixmap pix(QSize(720, 560));
+  pix.fill(QColor(255, 255, 255));
+  message.setIconPixmap(pix);
+  message.setWindowFlag(Qt::Window);
+  message.setWindowIcon(QIcon("C:/2024_Experiments/images/mainwindow.png"));
+  message.setWindowTitle(" Data Handler");
+  message.exec();
 }
