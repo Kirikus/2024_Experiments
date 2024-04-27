@@ -81,6 +81,7 @@ void Histogram2D::Draw(QCustomPlot* plot, int x, int y) {
   colorMap->setGradient(gradient);
 
   colorMap->rescaleDataRange(false);
+    plot->moveLayer(plot->layer("grid"), plot->layer("main"), QCustomPlot::limAbove);
 
   plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
   plot->replot();
