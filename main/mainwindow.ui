@@ -651,13 +651,14 @@
     <property name="title">
      <string>Help</string>
     </property>
+    <addaction name="actionHelp"/>
    </widget>
    <widget class="QMenu" name="menuTheme">
     <property name="title">
      <string>Theme</string>
     </property>
-    <addaction name="lightThemeAction"/>
-    <addaction name="darkThemeAction"/>
+    <addaction name="actionLightTheme"/>
+    <addaction name="actionDarkTheme"/>
    </widget>
    <widget class="QMenu" name="menuODF">
     <property name="title">
@@ -677,12 +678,12 @@
    <addaction name="menuODF"/>
    <addaction name="menuData_base"/>
   </widget>
-  <action name="lightThemeAction">
+  <action name="actionLightTheme">
    <property name="text">
     <string>Light</string>
    </property>
   </action>
-  <action name="darkThemeAction">
+  <action name="actionDarkTheme">
    <property name="text">
     <string>Dark</string>
    </property>
@@ -695,6 +696,11 @@
   <action name="actionOpen_data_base">
    <property name="text">
     <string>Open data base</string>
+   </property>
+  </action>
+  <action name="actionHelp">
+   <property name="text">
+    <string>Help</string>
    </property>
   </action>
  </widget>

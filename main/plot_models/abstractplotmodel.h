@@ -17,11 +17,13 @@ class AbstractPlotModel : public QWidget {
     plot->setBackground(QBrush(QColor("#454545")));
     plot->yAxis->setTickLabelColor(Qt::white);
     plot->xAxis->setTickLabelColor(Qt::white);
+    plot->replot();
   }
   static void SetLightTheme(QCustomPlot* plot) {
     plot->setBackground(QBrush(QColor("#ffffff")));
     plot->yAxis->setTickLabelColor(Qt::black);
     plot->xAxis->setTickLabelColor(Qt::black);
+    plot->replot();
   }
 
 };

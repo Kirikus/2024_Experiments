@@ -15,11 +15,6 @@ QTableWidget *DB_Form::GetMeasurementsTableWidget() {
   return ui->measurements_table;
 }
 
-QTableWidget *DB_Form::GetVisualTableWidget() { return ui->visual_table; }
-
-QTableWidget *DB_Form::GetNamingTableWidget() { return ui->naming_table; }
-
-QTableWidget *DB_Form::GetErrorTableWidget() { return ui->error_table; }
 
 void DB_Form::on_uploadBtn_clicked() { emit uploadBtn_is_clicked(); }
 
