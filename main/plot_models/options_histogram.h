@@ -12,7 +12,6 @@ class OptionsHistogram : public QDialog {
 
   int choose_variable();
   int choose_column_size();
-  void ok();
 
  private:
   Ui::DialogHistogram *ui;

@@ -12,7 +12,6 @@ class OptionsScatter2D : public QDialog {
 
   int choose_AxisX();
   int choose_AxisY();
-  void ok();
 
  private:
   Ui::DialogScattetPlot2D *ui;
