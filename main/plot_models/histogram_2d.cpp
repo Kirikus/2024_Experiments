@@ -5,7 +5,6 @@
 void Histogram2D::Draw(QCustomPlot* plot, int x, int y) {
   plot->clearGraphs();
   plot->clearPlottables();
-  plot->legend->setVisible(true);
 
   int size_box = 200;
 
@@ -51,6 +50,8 @@ void Histogram2D::Draw(QCustomPlot* plot, int x, int y) {
   plot->moveLayer(plot->layer("grid"), plot->layer("main"),
                   QCustomPlot::limAbove);
 
+  plot->xAxis->setLabel("Axis " + variable_x.naming.title);
+  plot->yAxis->setLabel("Axis " + variable_y.naming.title);
   plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
   plot->replot();
 }
