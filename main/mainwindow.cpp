@@ -51,10 +51,6 @@ MainWindow::MainWindow(QWidget* parent)
   lib::Manager::GetInstance()->AddVariable(bar);
   lib::Manager::GetInstance()->AddVariable(var);
 
-  lib::Manager::GetInstance()->names_of_variables.push_back("Foo");
-  lib::Manager::GetInstance()->names_of_variables.push_back("bar");
-  lib::Manager::GetInstance()->names_of_variables.push_back("var");
-
   SetupTables();
 
   ConnectingAction();

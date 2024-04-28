@@ -18,8 +18,6 @@ class Manager : public QObject {
  public:
   static class Manager* GetInstance();
 
-  QList<QString> names_of_variables;
-
   void AugmentVariables();
 
   size_t GetVariablesCount() const { return variables.size(); }
