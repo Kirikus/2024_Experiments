@@ -2,13 +2,16 @@
 
 #include "manager.h"
 
-void Histogram2D::Draw(QCustomPlot* plot, int x, int y) {
+void Histogram2D::Draw(QCustomPlot* plot, int x, int y, int square_size) {
+  // The color scheme automatically adjusts to the set of values
+
   plot->clearGraphs();
   plot->clearPlottables();
 
   int size_box = 200;
 
-  QVector<QVector<int>> density(size_box, QVector<int>(size_box));
+  QVector<QVector<double>> density(size_box, QVector<double>(size_box));
+  QVector<QVector<bool>> flags(size_box, QVector<bool>(size_box, true));
 
   const lib::Variable& variable_x = lib::Manager::GetInstance()->GetVariable(x);
   QCPGraph* graph = plot->addGraph();
@@ -34,7 +37,24 @@ void Histogram2D::Draw(QCustomPlot* plot, int x, int y) {
 
   for (int i = 0; i < size_box; ++i) {
     for (int j = 0; j < size_box; ++j) {
-      colorMap->data()->setCell(i, j, density[i][j]);
+      if (flags[i][j]) {
+        double med = 0;
+        for (int l1 = 0; l1 < square_size; ++l1) {
+          for (int l2 = 0; l2 < square_size; ++l2) {
+            med += density[std::min(i + l1, size_box - 1)]
+                          [std::min(j + l2, size_box - 1)];
+            flags[std::min(i + l1, size_box - 1)]
+                 [std::min(j + l2, size_box - 1)] = false;
+          }
+        }
+        for (int l1 = 0; l1 < square_size; ++l1) {
+          for (int l2 = 0; l2 < square_size; ++l2) {
+            colorMap->data()->setCell(std::min(i + l1, size_box - 1),
+                                      std::min(j + l2, size_box - 1),
+                                      med / square_size * square_size);
+          }
+        }
+      }
     }
   }
 

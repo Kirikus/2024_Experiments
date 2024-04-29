@@ -16,7 +16,15 @@ OptionsHistogram2D::OptionsHistogram2D(QWidget *parent)
         lib::Manager::GetInstance()->GetVariable(i).naming.title);
   }
 
+  ui->SquareSizeComboBox->addItem("1");
+  ui->SquareSizeComboBox->addItem("2");
+  ui->SquareSizeComboBox->addItem("3");
+
   connect(ui->okPushButton, &QPushButton::clicked, this, &QDialog::close);
+}
+
+int OptionsHistogram2D::choose_square_size() {
+    return ui->SquareSizeComboBox->currentIndex();
 }
 
 int OptionsHistogram2D::choose_AxisX() {

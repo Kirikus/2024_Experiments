@@ -17,7 +17,7 @@
    <property name="geometry">
     <rect>
      <x>100</x>
-     <y>50</y>
+     <y>30</y>
      <width>63</width>
      <height>20</height>
     </rect>
@@ -35,7 +35,7 @@
    <property name="geometry">
     <rect>
      <x>100</x>
-     <y>80</y>
+     <y>60</y>
      <width>61</width>
      <height>31</height>
     </rect>
@@ -53,7 +53,7 @@
    <property name="geometry">
     <rect>
      <x>170</x>
-     <y>50</y>
+     <y>30</y>
      <width>82</width>
      <height>28</height>
     </rect>
@@ -63,7 +63,7 @@
    <property name="geometry">
     <rect>
      <x>170</x>
-     <y>90</y>
+     <y>70</y>
      <width>82</width>
      <height>28</height>
     </rect>
@@ -72,7 +72,7 @@
   <widget class="QPushButton" name="okPushButton">
    <property name="geometry">
     <rect>
-     <x>130</x>
+     <x>120</x>
      <y>150</y>
      <width>83</width>
      <height>29</height>
@@ -85,6 +85,34 @@
    </property>
    <property name="text">
     <string>ok</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>110</y>
+     <width>101</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Square size</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="SquareSizeComboBox">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>110</y>
+     <width>82</width>
+     <height>28</height>
+    </rect>
    </property>
   </widget>
  </widget>

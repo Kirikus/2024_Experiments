@@ -12,6 +12,7 @@ class OptionsHistogram2D : public QDialog {
 
   int choose_AxisX();
   int choose_AxisY();
+  int choose_square_size();
 
  private:
   Ui::DialogHistogram2D *ui;
