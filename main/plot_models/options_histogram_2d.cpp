@@ -18,13 +18,13 @@ OptionsHistogram2D::OptionsHistogram2D(QWidget *parent)
 
   ui->SquareSizeComboBox->addItem("1");
   ui->SquareSizeComboBox->addItem("2");
-  ui->SquareSizeComboBox->addItem("3");
+  ui->SquareSizeComboBox->addItem("4");
 
   connect(ui->okPushButton, &QPushButton::clicked, this, &QDialog::close);
 }
 
 int OptionsHistogram2D::choose_square_size() {
-    return ui->SquareSizeComboBox->currentIndex();
+    return std::pow(2, ui->SquareSizeComboBox->currentIndex());
 }
 
 int OptionsHistogram2D::choose_AxisX() {
