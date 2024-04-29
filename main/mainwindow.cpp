@@ -249,6 +249,11 @@ void MainWindow::UpdatePlots() {
 }
 
 void MainWindow::ConnectingAction() {
+  connect(ui->tableViewMain->model(), SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)), this, SLOT(UpdatePlots()), Qt::DirectConnection);
+  connect(ui->tableViewErrors->model(), SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)), this, SLOT(UpdatePlots()), Qt::DirectConnection);
+  connect(ui->tableViewNaming->model(), SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)), this, SLOT(UpdatePlots()), Qt::DirectConnection);
+  connect(ui->tableViewPlotsSets->model(), SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)), this, SLOT(UpdatePlots()), Qt::DirectConnection);
+
   connect(ui->redrawPlotBtn, SIGNAL(clicked()), this, SLOT(UpdatePlots()));
 
   connect(ui->addPlotBtn, SIGNAL(clicked()), this, SLOT(AddPlot()));
@@ -375,7 +380,7 @@ void MainWindow::DarkThemeOn() {
 
   darkPalette.setColor(QPalette::Window, QColor(53, 53, 53));
   darkPalette.setColor(QPalette::WindowText, Qt::white);
-  darkPalette.setColor(QPalette::Base, QColor(40, 40, 40));
+  darkPalette.setColor(QPalette::Base, QColor(25, 25, 25));
   darkPalette.setColor(QPalette::AlternateBase, QColor(53, 53, 53));
   darkPalette.setColor(QPalette::ToolTipBase, Qt::white);
   darkPalette.setColor(QPalette::ToolTipText, Qt::white);
@@ -387,27 +392,19 @@ void MainWindow::DarkThemeOn() {
   darkPalette.setColor(QPalette::Highlight, QColor(42, 130, 218));
   darkPalette.setColor(QPalette::HighlightedText, Qt::black);
 
-  AbstractPlotModel::SetDarkTheme(
-      qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(0)));
-  AbstractPlotModel::SetDarkTheme(
-      qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(1)));
-  AbstractPlotModel::SetDarkTheme(
-      qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(2)));
-  AbstractPlotModel::SetDarkTheme(
-      qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(3)));
+  int count_of_plots = 4;
+  for (int i = 0; i < count_of_plots; i++)
+    AbstractPlotModel::SetDarkTheme(
+        qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(i)));
 
   qApp->setPalette(darkPalette);
 }
 
 void MainWindow::LightThemeOn() {
-  AbstractPlotModel::SetLightTheme(
-      qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(0)));
-  AbstractPlotModel::SetLightTheme(
-      qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(1)));
-  AbstractPlotModel::SetLightTheme(
-      qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(2)));
-  AbstractPlotModel::SetLightTheme(
-      qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(3)));
+  int count_of_plots = 4;
+  for (int i = 0; i < count_of_plots; i++)
+    AbstractPlotModel::SetLightTheme(
+        qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(i)));
 
   qApp->setPalette(style()->standardPalette());
 }
