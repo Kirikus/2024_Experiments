@@ -282,7 +282,7 @@ void MainWindow::OptionsPlot() {
       a.exec();
       HAxisX = a.choose_AxisX();
       HAxisY = a.choose_AxisY();
-      SquareSize = a.choose_square_size() + 1;
+      SquareSize = a.choose_square_size();
 
       break;
     }
