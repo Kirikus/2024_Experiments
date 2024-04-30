@@ -53,20 +53,43 @@ void MainWindow::ConfirmDeleteVariables() {
   for (int i = lib::Manager::GetInstance()->GetVariablesCount(); i > -1; i--)
     if (ui->tableViewMain->selectionModel()->isColumnSelected(i))
       column_indexes.push_back(i);
-  if (!column_indexes.isEmpty() &&
-      ConfirmingAction("Are you sure you want to delete this variables?"))
+
+  QString str;
+
+  if (column_indexes.size() == 1)
+    str = "Are you sure you want to delete this variable?";
+  else
+    str = "Are you sure you want to delete these variables? (" +
+          QVariant(column_indexes.size()).toString() + ")";
+
+  if (!column_indexes.isEmpty() && ConfirmingAction(str)) {
     for (int i : column_indexes) lib::Manager::GetInstance()->DeleteVariable(i);
+    UpdatePlots();
+  }
 }
 
 void MainWindow::ConfirmDeleteMeasurments() {
   QList<int> rows_indexes;
-  for (int i = lib::Manager::GetInstance()->GetMeasurementsCount(); i > -1; i--)
-    if (ui->tableViewMain->selectionModel()->isRowSelected(i))
-      rows_indexes.push_back(i);
-  if (!rows_indexes.isEmpty() &&
-      ConfirmingAction("Are you sure you want to delete these measurements?")) {
+  for (int i = lib::Manager::GetInstance()->GetMeasurementsCount(); i > 0; i--)
+    if (ui->tableViewMain->selectionModel()->isRowSelected(i - 1))
+      rows_indexes.push_back(i - 1);
+
+  QString str = "Are you sure you want to delete these \nmeasurements: ";
+
+  for (int i = rows_indexes.size(); i > 0 && i > rows_indexes.size() - 6; i--) {
+    str += QVariant(rows_indexes[i - 1] + 1).toString();
+    if (i != 1) str += ", ";
+  }
+
+  rows_indexes.size() < 7
+      ? str += "?"
+      : str +=
+        "... (and " + QVariant(rows_indexes.size() - 6).toString() + " more) ?";
+
+  if (!rows_indexes.isEmpty() && ConfirmingAction(str)) {
     for (int i : rows_indexes)
       lib::Manager::GetInstance()->DeleteMeasurements(i);
+    UpdatePlots();
   }
 }
 
@@ -89,7 +112,7 @@ bool MainWindow::ConfirmingAction(QString delete_message) {
 
   QLabel text_label;
   text_label.setGeometry(54, 8, 326, 32);
-  text_label.setFont(QFont("Times", 10));
+  text_label.setFont(QFont("Helvetica", 10));
   text_label.setText(delete_message);
   text_label.setParent(&dialog);
   text_label.show();
@@ -182,6 +205,7 @@ void MainWindow::DeleteColumn() {
       ->removeRow(index_column);
   dynamic_cast<lib::ErrorsTable*>(ui->tableViewErrors->model())
       ->removeRow(index_column);
+  UpdatePlots();
 }
 
 void MainWindow::AddRow() {
@@ -194,6 +218,7 @@ void MainWindow::DeleteRow() {
   if (index_row == -1) index_row = 0;
   dynamic_cast<lib::MeasurementsTable*>(ui->tableViewMain->model())
       ->removeRow(index_row);
+  // UpdatePlots();
 }
 
 void MainWindow::SetupTables() {
@@ -249,10 +274,18 @@ void MainWindow::UpdatePlots() {
 }
 
 void MainWindow::ConnectingAction() {
-  connect(ui->tableViewMain->model(), SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)), this, SLOT(UpdatePlots()), Qt::DirectConnection);
-  connect(ui->tableViewErrors->model(), SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)), this, SLOT(UpdatePlots()), Qt::DirectConnection);
-  connect(ui->tableViewNaming->model(), SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)), this, SLOT(UpdatePlots()), Qt::DirectConnection);
-  connect(ui->tableViewPlotsSets->model(), SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)), this, SLOT(UpdatePlots()), Qt::DirectConnection);
+  connect(ui->tableViewMain->model(),
+          SIGNAL(dataChanged(QModelIndex, QModelIndex, QVector<int>)), this,
+          SLOT(UpdatePlots()), Qt::DirectConnection);
+  connect(ui->tableViewErrors->model(),
+          SIGNAL(dataChanged(QModelIndex, QModelIndex, QVector<int>)), this,
+          SLOT(UpdatePlots()), Qt::DirectConnection);
+  connect(ui->tableViewNaming->model(),
+          SIGNAL(dataChanged(QModelIndex, QModelIndex, QVector<int>)), this,
+          SLOT(UpdatePlots()), Qt::DirectConnection);
+  connect(ui->tableViewPlotsSets->model(),
+          SIGNAL(dataChanged(QModelIndex, QModelIndex, QVector<int>)), this,
+          SLOT(UpdatePlots()), Qt::DirectConnection);
 
   connect(ui->redrawPlotBtn, SIGNAL(clicked()), this, SLOT(UpdatePlots()));
 
