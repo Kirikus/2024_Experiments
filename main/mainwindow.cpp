@@ -28,12 +28,6 @@ MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
   ui->setupUi(this);
 
-  ui->tabWidgetPlots->addTab(new QCustomPlot, "ScatterPlot");
-  ui->tabWidgetPlots->addTab(new QCustomPlot, "ColumnPlot");
-  ui->tabWidgetPlots->addTab(new QCustomPlot, "Histogram");
-  ui->tabWidgetPlots->addTab(new QCustomPlot, "ScatterPlot2D");
-  ui->tabWidgetPlots->addTab(new QCustomPlot, "Histogram2D");
-
   setWindowIcon(QIcon("C:/2024_Experiments/images/mainwindow.png"));
   setWindowTitle("Data Handler");
 
@@ -222,32 +216,12 @@ void MainWindow::SetupTables() {
 }
 
 void MainWindow::UpdatePlots() {
-  LinePlot* line_plot = new LinePlot("x", "y", "test");
-  line_plot->Draw(qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(0)));
-  delete line_plot;
-
-  ScatterPlot* scatter_plot = new ScatterPlot("x", "y", "test");
-  scatter_plot->Draw(qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(1)));
-  delete scatter_plot;
-
-  ColumnPlot* column_plot = new ColumnPlot("x", "y", "test");
-  column_plot->Draw(qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(2)));
-  delete column_plot;
-
-  Histogram* histogram = new Histogram("x", "y", "test");
-  histogram->Draw(qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(3)),
-                  var, column_size);
-  delete histogram;
-
-  ScatterPlot2D* scatter_plot_2d = new ScatterPlot2D("x", "y", "test");
-  scatter_plot_2d->Draw(
-      qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(4)), AxisX, AxisY);
-  delete scatter_plot_2d;
-
-  Histogram2D* histogram_2d = new Histogram2D("x", "y", "test");
-  histogram_2d->Draw(qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(5)),
-                     HAxisX, HAxisY, SquareSize);
-  delete histogram_2d;
+  ui->ObjectLinePlot->Draw();
+  ui->ObjectScatterPlot->Draw();
+  ui->ObjectColumnPlot->Draw();
+  ui->ObjectHistogram->Draw();
+  ui->ObjectScatterPlot2D->Draw();
+  ui->ObjectHistogram2D->Draw();
 }
 
 void MainWindow::OptionsPlot() {
@@ -266,27 +240,23 @@ void MainWindow::OptionsPlot() {
     case 3: {
       OptionsHistogram a;
       a.exec();
-      var = a.choose_variable();
-      column_size = a.choose_column_size();
+      ui->ObjectHistogram->set(a.choose_variable(), a.choose_column_size());
       break;
     }
     case 4: {
       OptionsScatter2D a;
       a.exec();
-      AxisX = a.choose_AxisX();
-      AxisY = a.choose_AxisY();
+      ui->ObjectScatterPlot2D->set(a.choose_AxisX(), a.choose_AxisY());
       break;
     }
     case 5: {
       OptionsHistogram2D a;
       a.exec();
-      HAxisX = a.choose_AxisX();
-      HAxisY = a.choose_AxisY();
-      SquareSize = a.choose_square_size();
-
+      ui->ObjectHistogram2D->set(a.choose_AxisX(), a.choose_AxisY(), a.choose_square_size());
       break;
     }
   }
+  UpdatePlots();
 }
 
 void MainWindow::ConnectingAction() {
@@ -342,7 +312,7 @@ void MainWindow::AddTextBlock() {
 void MainWindow::AddPlotBlock() {
   ManagerODF::GetInstance()->AddPlotBlock(
       ManagerODF::GetInstance()->form->GetLayout(),
-      QPixmap(ui->customPlot->toPixmap(256, 256)));
+      QPixmap(ui->ObjectLinePlot->toPixmap(256, 256)));
 }
 
 void MainWindow::AddTableBlock() {

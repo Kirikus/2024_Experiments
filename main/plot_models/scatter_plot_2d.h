@@ -1,24 +1,23 @@
 #ifndef SCATTER_PLOT_2D_H
 #define SCATTER_PLOT_2D_H
 
-#include "abstractplotmodel.h"
+#include "qcustomplot.h"
 
-class ScatterPlot2D : public AbstractPlotModel {
+class ScatterPlot2D : public QCustomPlot {
   Q_OBJECT
  public:
-  ScatterPlot2D(QString x_label, QString y_label, QString title = "",
-                QWidget* parent = nullptr)
-      : AbstractPlotModel(parent),
-        x_label(x_label),
-        y_label(y_label),
-        title(title) {}
+  ScatterPlot2D() {}
 
-  void Draw(QCustomPlot*, int, int);
+  void Draw();
+
+  void set(int x0, int y0) {
+    x = x0;
+    y = y0;
+  }
 
  private:
-  QString x_label;
-  QString y_label;
-  QString title;
+  int x = 0;
+  int y = 0;
 };
 
 #endif  // SCATTER_PLOT_2D_H

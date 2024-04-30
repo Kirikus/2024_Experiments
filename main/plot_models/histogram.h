@@ -1,24 +1,23 @@
 #ifndef HISTOGRAM_H
 #define HISTOGRAM_H
 
-#include "abstractplotmodel.h"
+#include "qcustomplot.h"
 
-class Histogram : public AbstractPlotModel {
+class Histogram : public QCustomPlot {
   Q_OBJECT
  public:
-  Histogram(QString x_label, QString y_label, QString title = "",
-            QWidget* parent = nullptr)
-      : AbstractPlotModel(parent),
-        x_label(x_label),
-        y_label(y_label),
-        title(title) {}
+  Histogram() {}
 
-  void Draw(QCustomPlot*, int, int);
+  void Draw();
+
+  void set(int var0, int column_size0) {
+      var = var0;
+      column_size = column_size0;
+  }
 
  private:
-  QString x_label;
-  QString y_label;
-  QString title;
+  int var = 0;
+  int column_size = 1;
 };
 
 #endif  // HISTOGRAM_H

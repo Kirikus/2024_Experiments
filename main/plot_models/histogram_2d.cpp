@@ -2,11 +2,11 @@
 
 #include "manager.h"
 
-void Histogram2D::Draw(QCustomPlot* plot, int x, int y, int square_size) {
+void Histogram2D::Draw() {
   // The color scheme automatically adjusts to the set of values
 
-  plot->clearGraphs();
-  plot->clearPlottables();
+  clearGraphs();
+  clearPlottables();
 
   int size_box = 200;
 
@@ -14,9 +14,9 @@ void Histogram2D::Draw(QCustomPlot* plot, int x, int y, int square_size) {
   QVector<QVector<bool>> flags(size_box, QVector<bool>(size_box, true));
 
   const lib::Variable& variable_x = lib::Manager::GetInstance()->GetVariable(x);
-  QCPGraph* graph = plot->addGraph();
+  QCPGraph* graph = addGraph();
 
-  plot->setFont(QFont("Helvetica", 9));
+  setFont(QFont("Helvetica", 9));
 
   const lib::Variable& variable_y = lib::Manager::GetInstance()->GetVariable(y);
 
@@ -29,7 +29,7 @@ void Histogram2D::Draw(QCustomPlot* plot, int x, int y, int square_size) {
     }
   }
 
-  QCPColorMap* colorMap = new QCPColorMap(plot->xAxis, plot->yAxis);
+  QCPColorMap* colorMap = new QCPColorMap(xAxis, yAxis);
 
   colorMap->data()->setSize(size_box, size_box);
   colorMap->data()->setRange(QCPRange(-size_box / 2, size_box / 2),
@@ -68,11 +68,11 @@ void Histogram2D::Draw(QCustomPlot* plot, int x, int y, int square_size) {
   colorMap->setInterpolate(true);
   colorMap->rescaleDataRange(true);
 
-  plot->moveLayer(plot->layer("grid"), plot->layer("main"),
+  moveLayer(layer("grid"), layer("main"),
                   QCustomPlot::limAbove);
 
-  plot->xAxis->setLabel("Axis " + variable_x.naming.title);
-  plot->yAxis->setLabel("Axis " + variable_y.naming.title);
-  plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
-  plot->replot();
+  xAxis->setLabel("Axis " + variable_x.naming.title);
+  yAxis->setLabel("Axis " + variable_y.naming.title);
+  setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
+  replot();
 }

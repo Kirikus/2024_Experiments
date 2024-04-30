@@ -2,13 +2,13 @@
 
 #include "manager.h"
 
-void ScatterPlot2D::Draw(QCustomPlot* plot, int x, int y) {
-  plot->clearGraphs();
+void ScatterPlot2D::Draw() {
+  clearGraphs();
 
   const lib::Variable& variable_x = lib::Manager::GetInstance()->GetVariable(x);
-  QCPGraph* graph = plot->addGraph();
+  QCPGraph* graph = addGraph();
 
-  plot->setFont(QFont("Helvetica", 9));
+  setFont(QFont("Helvetica", 9));
 
   graph->setLineStyle(QCPGraph::lsNone);
 
@@ -25,10 +25,10 @@ void ScatterPlot2D::Draw(QCustomPlot* plot, int x, int y) {
     xAxis_data.push_back(variable_x.measurements[j]);
     yAxis_data.push_back(variable_y.measurements[j]);
   }
-  plot->xAxis->setLabel("Axis " + variable_x.naming.title);
-  plot->yAxis->setLabel("Axis " + variable_y.naming.title);
+  xAxis->setLabel("Axis " + variable_x.naming.title);
+  yAxis->setLabel("Axis " + variable_y.naming.title);
   graph->setData(xAxis_data, yAxis_data);
 
-  plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
-  plot->replot();
+  setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
+  replot();
 }

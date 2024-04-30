@@ -13,7 +13,6 @@
 #include <QStandardItem>
 
 #include "manager_odf/odf_form.h"
-#include "plot_models/abstractplotmodel.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -67,14 +66,6 @@ class MainWindow : public QMainWindow {
 
  private:
   Ui::MainWindow *ui;
-
-  int var = 0;
-  int column_size = 1;
-  int AxisX = 0;
-  int AxisY = 0;
-  int HAxisX = 0;
-  int HAxisY = 0;
-  int SquareSize = 1;
 };
 
 #endif  // MAINWINDOW_H

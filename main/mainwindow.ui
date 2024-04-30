@@ -517,11 +517,36 @@
       <item>
        <widget class="QTabWidget" name="tabWidgetPlots">
         <property name="currentIndex">
-         <number>0</number>
+         <number>3</number>
         </property>
-        <widget class="QCustomPlot" name="customPlot">
+        <widget class="LinePlot" name="ObjectLinePlot">
          <attribute name="title">
           <string>LinePlot</string>
+         </attribute>
+        </widget>
+        <widget class="ScatterPlot" name="ObjectScatterPlot">
+         <attribute name="title">
+          <string>ScatterPlot</string>
+         </attribute>
+        </widget>
+        <widget class="ColumnPlot" name="ObjectColumnPlot">
+         <attribute name="title">
+          <string>ColumnPlot</string>
+         </attribute>
+        </widget>
+        <widget class="Histogram" name="ObjectHistogram">
+         <attribute name="title">
+          <string>Histogram</string>
+         </attribute>
+        </widget>
+        <widget class="ScatterPlot2D" name="ObjectScatterPlot2D">
+         <attribute name="title">
+          <string>ScatterPlot2D</string>
+         </attribute>
+        </widget>
+        <widget class="Histogram2D" name="ObjectHistogram2D">
+         <attribute name="title">
+          <string>Histogram2D</string>
          </attribute>
         </widget>
        </widget>
@@ -670,9 +695,39 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>QCustomPlot</class>
+   <class>ScatterPlot</class>
    <extends>QWidget</extends>
-   <header>qcustomplot.h</header>
+   <header>C:\2024_Experiments\main\plot_models\scatter_plot.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ColumnPlot</class>
+   <extends>QWidget</extends>
+   <header>C:\2024_Experiments\main\plot_models\column_plot.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Histogram</class>
+   <extends>QWidget</extends>
+   <header>C:\2024_Experiments\main\plot_models\histogram.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ScatterPlot2D</class>
+   <extends>QWidget</extends>
+   <header>C:\2024_Experiments\main\plot_models\scatter_plot_2d.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Histogram2D</class>
+   <extends>QWidget</extends>
+   <header>C:\2024_Experiments\main\plot_models\histogram_2d.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>LinePlot</class>
+   <extends>QWidget</extends>
+   <header>C:\2024_Experiments\main\plot_models\line_plot.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

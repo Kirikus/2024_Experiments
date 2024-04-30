@@ -2,16 +2,16 @@
 
 #include "manager.h"
 
-void ScatterPlot::Draw(QCustomPlot* plot) {
-  plot->clearGraphs();
-  plot->legend->setVisible(true);
+void ScatterPlot::Draw() {
+  clearGraphs();
+  legend->setVisible(true);
 
   for (int i = 0; i < lib::Manager::GetInstance()->GetVariablesCount(); ++i) {
     const lib::Variable& variable = lib::Manager::GetInstance()->GetVariable(i);
     if (!variable.visual.visible) continue;
-    QCPGraph* graph = plot->addGraph();
+    QCPGraph* graph = addGraph();
     graph->setName(variable.naming.title);
-    plot->setFont(QFont("Helvetica", 9));
+    setFont(QFont("Helvetica", 9));
 
     graph->setLineStyle(QCPGraph::lsNone);
 
@@ -29,6 +29,6 @@ void ScatterPlot::Draw(QCustomPlot* plot) {
     }
     graph->setData(xAxis_data, yAxis_data);
   }
-  plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
-  plot->replot();
+  setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
+  replot();
 }

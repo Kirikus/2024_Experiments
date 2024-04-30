@@ -1,24 +1,14 @@
 #ifndef SCATTER_PLOT_H
 #define SCATTER_PLOT_H
 
-#include "abstractplotmodel.h"
+#include "qcustomplot.h"
 
-class ScatterPlot : public AbstractPlotModel {
+class ScatterPlot : public QCustomPlot {
   Q_OBJECT
  public:
-  ScatterPlot(QString x_label, QString y_label, QString title = "",
-              QWidget* parent = nullptr)
-      : AbstractPlotModel(parent),
-        x_label(x_label),
-        y_label(y_label),
-        title(title) {}
+  ScatterPlot() {}
 
-  void Draw(QCustomPlot*);
-
- private:
-  QString x_label;
-  QString y_label;
-  QString title;
+  void Draw();
 };
 
 #endif  // SCATTER_PLOT_H

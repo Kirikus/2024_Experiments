@@ -2,22 +2,22 @@
 
 #include "manager.h"
 
-void LinePlot::Draw(QCustomPlot* plot) {
-  plot->clearGraphs();
-  plot->legend->setVisible(true);
+void LinePlot::Draw() {
+  clearGraphs();
+  legend->setVisible(true);
 
   for (int i = 0; i < lib::Manager::GetInstance()->GetVariablesCount(); ++i) {
     const lib::Variable& variable = lib::Manager::GetInstance()->GetVariable(i);
     if (!variable.visual.visible) continue;
-    QCPGraph* graph = plot->addGraph();
+    QCPGraph* graph = addGraph();
     graph->setName(variable.naming.title);
-    plot->setFont(QFont("Helvetica", 9));
+    setFont(QFont("Helvetica", 9));
 
     graph->setScatterStyle(variable.visual.point_shape);
     graph->setPen(QPen(QBrush(variable.visual.color), variable.visual.width,
                        variable.visual.line_type));
 
-    QCPErrorBars* yError_bar = new QCPErrorBars(plot->xAxis, plot->yAxis);
+    QCPErrorBars* yError_bar = new QCPErrorBars(xAxis, yAxis);
     yError_bar->removeFromLegend();
     yError_bar->setDataPlottable(graph);
 
@@ -42,6 +42,6 @@ void LinePlot::Draw(QCustomPlot* plot) {
     yError_bar->setData(yError_data);
     graph->setData(xAxis_data, yAxis_data);
   }
-  plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
-  plot->replot();
+  setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
+  replot();
 }

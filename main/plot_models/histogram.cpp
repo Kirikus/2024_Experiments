@@ -2,8 +2,8 @@
 
 #include "manager.h"
 
-void Histogram::Draw(QCustomPlot* plot, int var, int column_size) {
-  plot->clearPlottables();
+void Histogram::Draw() {
+  clearPlottables();
 
   const lib::Variable& variable = lib::Manager::GetInstance()->GetVariable(var);
 
@@ -29,12 +29,12 @@ void Histogram::Draw(QCustomPlot* plot, int var, int column_size) {
     yAxis_data.push_back(count);
   }
 
-  QCPBars* bar = new QCPBars(plot->xAxis, plot->yAxis);
+  QCPBars* bar = new QCPBars(xAxis, yAxis);
 
   bar->setWidth(column_size);
   bar->setData(xAxis_data, yAxis_data);
   bar->setBrush(QBrush(variable.visual.color));
 
-  plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
-  plot->replot();
+  setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
+  replot();
 }

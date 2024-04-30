@@ -1,24 +1,25 @@
 #ifndef HISTOGRAM_2D_H
 #define HISTOGRAM_2D_H
 
-#include "abstractplotmodel.h"
+#include "qcustomplot.h"
 
-class Histogram2D : public AbstractPlotModel {
+class Histogram2D : public QCustomPlot {
   Q_OBJECT
  public:
-  Histogram2D(QString x_label, QString y_label, QString title = "",
-              QWidget* parent = nullptr)
-      : AbstractPlotModel(parent),
-        x_label(x_label),
-        y_label(y_label),
-        title(title) {}
+  Histogram2D() {}
 
-  void Draw(QCustomPlot*, int, int, int);
+  void Draw();
+
+  void set(int x0, int y0, int square_size0) {
+    x = x0;
+    y = y0;
+    square_size = square_size0;
+  }
 
  private:
-  QString x_label;
-  QString y_label;
-  QString title;
+  int x = 0;
+  int y = 0;
+  int square_size = 1;
 };
 
 #endif  // HISTOGRAM_2D_H

@@ -2,8 +2,8 @@
 
 #include "manager.h"
 
-void ColumnPlot::Draw(QCustomPlot* plot) {
-  plot->clearPlottables();
+void ColumnPlot::Draw() {
+  clearPlottables();
 
   int n = lib::Manager::GetInstance()->GetVariablesCount();
 
@@ -20,13 +20,13 @@ void ColumnPlot::Draw(QCustomPlot* plot) {
       }
     }
 
-    QCPBars* bar = new QCPBars(plot->xAxis, plot->yAxis);
+    QCPBars* bar = new QCPBars(xAxis, yAxis);
 
     bar->setWidth(0.9 / n);
     bar->setData(xAxis_data, yAxis_data);
     bar->setBrush(QBrush(variable.visual.color));
   }
 
-  plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
-  plot->replot();
+  setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
+  replot();
 }
