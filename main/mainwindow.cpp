@@ -3,11 +3,16 @@
 #include "./ui_mainwindow.h"
 #include "QStandardPaths"
 #include "manager.h"
-#include "plot_models/column_plot.h"
-#include "plot_models/dot_plot.h"
 #include "manager_odf/manager_odf.h"
+#include "plot_models/column_plot.h"
+#include "plot_models/histogram.h"
+#include "plot_models/histogram_2d.h"
 #include "plot_models/line_plot.h"
-#include "plot_models/combo_plot.h"
+#include "plot_models/options_histogram.h"
+#include "plot_models/options_histogram_2d.h"
+#include "plot_models/options_scatter_2d.h"
+#include "plot_models/scatter_plot.h"
+#include "plot_models/scatter_plot_2d.h"
 #include "qcustomplot.h"
 #include "sqlite_database/db_form.h"
 #include "sqlite_database/sqlite.h"
@@ -23,17 +28,18 @@ MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
   ui->setupUi(this);
 
-  ui->tabWidgetPlots->addTab(new QCustomPlot, "DotPlot");
-  ui->tabWidgetPlots->addTab(new QCustomPlot, "ColumnPlot");
-  ui->tabWidgetPlots->addTab(new QCustomPlot, "ComboPlot");
-
   setWindowIcon(QIcon("C:/2024_Experiments/images/mainwindow.png"));
   setWindowTitle("Data Handler");
 
   lib::Variable Foo({1, 2, 3, 4, 5}, lib::Variable::Naming("Foo"),
-                    lib::Variable::VisualOptions(true, 4));
-  lib::Variable bar({4, 2, 11, 3, 5, 1}, lib::Variable::Naming("bar", "x"));
-  lib::Variable var({5, 3, 3, 2, 6, 1}, lib::Variable::Naming("var", "x"));
+                    lib::Variable::VisualOptions(true, 1, {255, 0, 0},
+                                                 QCPScatterStyle::ssCircle));
+  lib::Variable bar({4, 2, 11, 3, 5, 1}, lib::Variable::Naming("bar"),
+                    lib::Variable::VisualOptions(true, 1, {83, 204, 101},
+                                                 QCPScatterStyle::ssCircle));
+  lib::Variable var({5, 3, 3, 2, 6, 1}, lib::Variable::Naming("var"),
+                    lib::Variable::VisualOptions(true, 1, {42, 182, 204},
+                                                 QCPScatterStyle::ssCircle));
 
   lib::Manager::GetInstance()->AddVariable(Foo);
   lib::Manager::GetInstance()->AddVariable(bar);
@@ -138,14 +144,6 @@ void MainWindow::Save() {
   }
 }
 
-void MainWindow::DeletePlot() {
-  ui->tabWidgetPlots->removeTab(ui->tabWidgetPlots->currentIndex());
-}
-
-void MainWindow::AddPlot() {
-  ui->tabWidgetPlots->addTab(new QCustomPlot, "Plot");
-}
-
 void MainWindow::AddColumn() {
   dynamic_cast<lib::MeasurementsTable*>(ui->tableViewMain->model())
       ->insertColumn(lib::Manager::GetInstance()->GetVariablesCount());
@@ -218,28 +216,53 @@ void MainWindow::SetupTables() {
 }
 
 void MainWindow::UpdatePlots() {
-  LinePlot* line_plot = new LinePlot("x", "y", "test");
-  line_plot->Draw(qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(0)));
-  delete line_plot;
+  ui->ObjectLinePlot->Draw();
+  ui->ObjectScatterPlot->Draw();
+  ui->ObjectColumnPlot->Draw();
+  ui->ObjectHistogram->Draw();
+  ui->ObjectScatterPlot2D->Draw();
+  ui->ObjectHistogram2D->Draw();
+}
 
-  DotPlot* dot_plot = new DotPlot("x", "y", "test");
-  dot_plot->Draw(qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(1)));
-  delete dot_plot;
+void MainWindow::OptionsPlot() {
+  int index = ui->tabWidgetPlots->currentIndex();
 
-  ColumnPlot* column_plot = new ColumnPlot("x", "y", "test");
-  column_plot->Draw(qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(2)));
-  delete column_plot;
-
-  ComboPlot* combo_plot = new ComboPlot("x", "y", "test");
-  combo_plot->Draw(qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(3)));
-  delete combo_plot;
+  switch (index) {
+    case 0:
+      // nothing
+      break;
+    case 1:
+      // nothing
+      break;
+    case 2:
+      // nothing
+      break;
+    case 3: {
+      OptionsHistogram a;
+      a.exec();
+      ui->ObjectHistogram->set(a.choose_variable(), a.choose_column_size());
+      break;
+    }
+    case 4: {
+      OptionsScatter2D a;
+      a.exec();
+      ui->ObjectScatterPlot2D->set(a.choose_AxisX(), a.choose_AxisY());
+      break;
+    }
+    case 5: {
+      OptionsHistogram2D a;
+      a.exec();
+      ui->ObjectHistogram2D->set(a.choose_AxisX(), a.choose_AxisY(), a.choose_square_size());
+      break;
+    }
+  }
+  UpdatePlots();
 }
 
 void MainWindow::ConnectingAction() {
   connect(ui->redrawPlotBtn, SIGNAL(clicked()), this, SLOT(UpdatePlots()));
 
-  connect(ui->addPlotBtn, SIGNAL(clicked()), this, SLOT(AddPlot()));
-  connect(ui->deletePlotBtn, SIGNAL(clicked()), this, SLOT(DeletePlot()));
+  connect(ui->OptionsPlotBtn, SIGNAL(clicked()), this, SLOT(OptionsPlot()));
 
   connect(ui->LoadDataBtn, SIGNAL(clicked()), this, SLOT(Load()));
   connect(ui->SaveDataBtn, SIGNAL(clicked()), this, SLOT(Save()));
@@ -289,7 +312,7 @@ void MainWindow::AddTextBlock() {
 void MainWindow::AddPlotBlock() {
   ManagerODF::GetInstance()->AddPlotBlock(
       ManagerODF::GetInstance()->form->GetLayout(),
-      QPixmap(ui->customPlot->toPixmap(256, 256)));
+      QPixmap(ui->ObjectLinePlot->toPixmap(256, 256)));
 }
 
 void MainWindow::AddTableBlock() {

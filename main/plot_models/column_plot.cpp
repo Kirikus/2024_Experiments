@@ -1,16 +1,10 @@
 #include "column_plot.h"
 
-#include <vector>
-
 #include "manager.h"
 
-std::vector<QCPBars*> glob_bars;
+void ColumnPlot::Draw() {
+  clearPlottables();
 
-void ColumnPlot::Draw(QCustomPlot* plot) {
-  for (int i = 0; i < glob_bars.size(); ++i) {
-      plot->clearPlottables();
-  }
-  plot->legend->setVisible(true);
   int n = lib::Manager::GetInstance()->GetVariablesCount();
 
   for (int i = 0; i < n; ++i) {
@@ -26,16 +20,13 @@ void ColumnPlot::Draw(QCustomPlot* plot) {
       }
     }
 
-    QCPBars* bar = new QCPBars(plot->xAxis, plot->yAxis);  // нет delete
+    QCPBars* bar = new QCPBars(xAxis, yAxis);
 
     bar->setWidth(0.9 / n);
     bar->setData(xAxis_data, yAxis_data);
     bar->setBrush(QBrush(variable.visual.color));
-    glob_bars.push_back(bar);
   }
 
-  plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
-  plot->replot();
+  setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
+  replot();
 }
-
-void ColumnPlot::SetOptions() {}

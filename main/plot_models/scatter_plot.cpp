@@ -1,21 +1,21 @@
-#include "dot_plot.h"
+#include "scatter_plot.h"
 
 #include "manager.h"
 
-void DotPlot::Draw(QCustomPlot* plot) {
-  plot->clearGraphs();
-  plot->legend->setVisible(true);
+void ScatterPlot::Draw() {
+  clearGraphs();
+  legend->setVisible(true);
 
   for (int i = 0; i < lib::Manager::GetInstance()->GetVariablesCount(); ++i) {
     const lib::Variable& variable = lib::Manager::GetInstance()->GetVariable(i);
     if (!variable.visual.visible) continue;
-    QCPGraph* graph = plot->addGraph();
+    QCPGraph* graph = addGraph();
     graph->setName(variable.naming.title);
-    plot->setFont(QFont("Helvetica", 9));
+    setFont(QFont("Helvetica", 9));
 
     graph->setLineStyle(QCPGraph::lsNone);
 
-    graph->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle));
+    graph->setScatterStyle(variable.visual.point_shape);
     graph->setPen(QPen(QBrush(variable.visual.color), variable.visual.width,
                        variable.visual.line_type));
 
@@ -29,9 +29,6 @@ void DotPlot::Draw(QCustomPlot* plot) {
     }
     graph->setData(xAxis_data, yAxis_data);
   }
-  plot->rescaleAxes();
-  plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
-  plot->replot();
+  setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
+  replot();
 }
-
-void DotPlot::SetOptions() {}

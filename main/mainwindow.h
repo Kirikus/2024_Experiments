@@ -13,7 +13,6 @@
 #include <QStandardItem>
 
 #include "manager_odf/odf_form.h"
-#include "plot_models/abstractplotmodel.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -37,8 +36,7 @@ class MainWindow : public QMainWindow {
   void Load();
   void Save();
 
-  void DeletePlot();
-  void AddPlot();
+  void OptionsPlot();
 
   void AddColumn();
   void DeleteColumn();
