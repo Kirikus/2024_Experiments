@@ -4,21 +4,11 @@
 #include "abstractplotmodel.h"
 
 class ColumnPlot : public AbstractPlotModel {
-    Q_OBJECT
-public:
-    ColumnPlot(QString x_label, QString y_label, QString title = "",
-            QWidget* parent = nullptr)
-        : AbstractPlotModel(parent),
-        x_label(x_label),
-        y_label(y_label),
-        title(title) {}
+  Q_OBJECT
+ public:
+  ColumnPlot() {}
 
-    void Draw(QCustomPlot*) override;
-    void SetOptions() override;
-private:
-    QString x_label;
-    QString y_label;
-    QString title;
+  virtual void Draw() override;
 };
 
-#endif // COLUMN_PLOT_H
+#endif  // COLUMN_PLOT_H

@@ -551,9 +551,34 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <property name="currentIndex">
          <number>0</number>
         </property>
-        <widget class="QCustomPlot" name="customPlot">
+        <widget class="LinePlot" name="ObjectLinePlot">
          <attribute name="title">
           <string>LinePlot</string>
+         </attribute>
+        </widget>
+        <widget class="ScatterPlot" name="ObjectScatterPlot">
+         <attribute name="title">
+          <string>ScatterPlot</string>
+         </attribute>
+        </widget>
+        <widget class="ColumnPlot" name="ObjectColumnPlot">
+         <attribute name="title">
+          <string>ColumnPlot</string>
+         </attribute>
+        </widget>
+        <widget class="Histogram" name="ObjectHistogram">
+         <attribute name="title">
+          <string>Histogram</string>
+         </attribute>
+        </widget>
+        <widget class="ScatterPlot2D" name="ObjectScatterPlot2D">
+         <attribute name="title">
+          <string>ScatterPlot2D</string>
+         </attribute>
+        </widget>
+        <widget class="Histogram2D" name="ObjectHistogram2D">
+         <attribute name="title">
+          <string>Histogram2D</string>
          </attribute>
         </widget>
        </widget>
@@ -577,7 +602,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="redrawPlotBtn">
+         <widget class="QPushButton" name="rescalePlotsBtn">
           <property name="font">
            <font>
             <pointsize>10</pointsize>
@@ -585,7 +610,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
            </font>
           </property>
           <property name="text">
-           <string>Redraw</string>
+           <string>Rescale</string>
           </property>
          </widget>
         </item>
@@ -606,37 +631,14 @@ li.checked::marker { content: &quot;\2612&quot;; }
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="addPlotBtn">
+         <widget class="QPushButton" name="OptionsPlotBtn">
           <property name="text">
-           <string>Add plot</string>
+           <string>Options</string>
           </property>
          </widget>
         </item>
         <item>
          <spacer name="horizontalSpacer_2">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Maximum</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>10</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="QPushButton" name="deletePlotBtn">
-          <property name="text">
-           <string>Delete plot</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer_4">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -742,9 +744,39 @@ li.checked::marker { content: &quot;\2612&quot;; }
  </widget>
  <customwidgets>
   <customwidget>
-   <class>QCustomPlot</class>
+   <class>ScatterPlot</class>
    <extends>QWidget</extends>
-   <header>qcustomplot.h</header>
+   <header>C:\2024_Experiments\main\plot_models\scatter_plot.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ColumnPlot</class>
+   <extends>QWidget</extends>
+   <header>C:\2024_Experiments\main\plot_models\column_plot.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Histogram</class>
+   <extends>QWidget</extends>
+   <header>C:\2024_Experiments\main\plot_models\histogram.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ScatterPlot2D</class>
+   <extends>QWidget</extends>
+   <header>C:\2024_Experiments\main\plot_models\scatter_plot_2d.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Histogram2D</class>
+   <extends>QWidget</extends>
+   <header>C:\2024_Experiments\main\plot_models\histogram_2d.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>LinePlot</class>
+   <extends>QWidget</extends>
+   <header>C:\2024_Experiments\main\plot_models\line_plot.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
