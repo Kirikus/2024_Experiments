@@ -101,11 +101,11 @@ void MainWindow::ClearData() {
 }
 
 bool MainWindow::ConfirmingAction(QString delete_message) {
-
   QMessageBox message_box;
 
   message_box.setWindowTitle("  Data Handler");
-  message_box.setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint);
+  message_box.setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint |
+                             Qt::WindowTitleHint);
   message_box.setIconPixmap(QPixmap("C:/2024_Experiments/images/warning.png"));
   message_box.setFont(QFont("Helvetica", 10));
   message_box.setStandardButtons(QMessageBox::Yes | QMessageBox::Cancel);
