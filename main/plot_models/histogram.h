@@ -8,11 +8,11 @@ class Histogram : public AbstractPlotModel {
  public:
   Histogram() {}
 
-  virtual void Draw() override;
+  void Draw();
 
   void set(int var0, int column_size0) {
-      var = var0;
-      column_size = column_size0;
+    var = var0;
+    column_size = column_size0;
   }
 
  private:

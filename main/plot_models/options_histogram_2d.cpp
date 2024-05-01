@@ -24,7 +24,7 @@ OptionsHistogram2D::OptionsHistogram2D(QWidget *parent)
 }
 
 int OptionsHistogram2D::choose_square_size() {
-    return std::pow(2, ui->SquareSizeComboBox->currentIndex());
+  return std::pow(2, ui->SquareSizeComboBox->currentIndex());
 }
 
 int OptionsHistogram2D::choose_AxisX() {

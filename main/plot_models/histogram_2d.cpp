@@ -68,8 +68,7 @@ void Histogram2D::Draw() {
   colorMap->setInterpolate(true);
   colorMap->rescaleDataRange(true);
 
-  moveLayer(layer("grid"), layer("main"),
-                  QCustomPlot::limAbove);
+  moveLayer(layer("grid"), layer("main"), QCustomPlot::limAbove);
 
   xAxis->setLabel("Axis " + variable_x.naming.title);
   yAxis->setLabel("Axis " + variable_y.naming.title);

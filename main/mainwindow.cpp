@@ -50,6 +50,8 @@ MainWindow::MainWindow(QWidget* parent)
   ConnectingAction();
 
   UpdatePlots();
+
+  RescalePlots();
 }
 
 MainWindow::~MainWindow() { delete ui; }
@@ -236,7 +238,7 @@ void MainWindow::UpdatePlots() {
   ui->ObjectHistogram2D->Draw();
 }
 
-void MainWindow::RescalePlots(){
+void MainWindow::RescalePlots() {
   for (int i = 0; i < ui->tabWidgetPlots->count(); i++)
     AbstractPlotModel::Rescale(
         qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(i)));
@@ -270,7 +272,8 @@ void MainWindow::OptionsPlot() {
     case 5: {
       OptionsHistogram2D a;
       a.exec();
-      ui->ObjectHistogram2D->set(a.choose_AxisX(), a.choose_AxisY(), a.choose_square_size());
+      ui->ObjectHistogram2D->set(a.choose_AxisX(), a.choose_AxisY(),
+                                 a.choose_square_size());
       break;
     }
   }
@@ -440,5 +443,3 @@ void MainWindow::LightThemeOn() {
 
   qApp->setPalette(style()->standardPalette());
 }
-
-
