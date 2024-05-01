@@ -97,36 +97,22 @@ void MainWindow::ClearData() {
   if (lib::Manager::GetInstance()->GetMeasurementsCount() > 0 &&
       ConfirmingAction("Are you sure to clear all data?"))
     lib::Manager::GetInstance()->Clear();
+  UpdatePlots();
 }
 
 bool MainWindow::ConfirmingAction(QString delete_message) {
-  QDialog dialog;
-  dialog.setFixedSize(380, 90);
-  dialog.setWindowFlag(Qt::SubWindow);
-  dialog.setWindowTitle(" Data Handler");
 
-  QDialogButtonBox button_box(QDialogButtonBox::Yes | QDialogButtonBox::Cancel);
-  button_box.setGeometry(65, 40, 200, 50);
-  button_box.setParent(&dialog);
-  button_box.show();
+  QMessageBox message_box;
 
-  QLabel text_label;
-  text_label.setGeometry(54, 8, 326, 32);
-  text_label.setFont(QFont("Helvetica", 10));
-  text_label.setText(delete_message);
-  text_label.setParent(&dialog);
-  text_label.show();
+  message_box.setWindowTitle("  Data Handler");
+  message_box.setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint);
+  message_box.setIconPixmap(QPixmap("C:/2024_Experiments/images/warning.png"));
+  message_box.setFont(QFont("Helvetica", 10));
+  message_box.setStandardButtons(QMessageBox::Yes | QMessageBox::Cancel);
+  message_box.setDefaultButton(QMessageBox::Yes);
+  message_box.setText(delete_message);
 
-  QLabel icon_label;
-  icon_label.setGeometry(16, 8, 32, 32);
-  icon_label.setPixmap(QPixmap("C:/2024_Experiments/images/warning.png"));
-  icon_label.setParent(&dialog);
-  icon_label.show();
-
-  connect(&button_box, SIGNAL(accepted()), &dialog, SLOT(accept()));
-  connect(&button_box, SIGNAL(rejected()), &dialog, SLOT(reject()));
-
-  return dialog.exec() == QDialog::Accepted ? true : false;
+  return message_box.exec() == QMessageBox::Yes ? true : false;
 }
 
 void MainWindow::Load() {
@@ -205,7 +191,6 @@ void MainWindow::DeleteColumn() {
       ->removeRow(index_column);
   dynamic_cast<lib::ErrorsTable*>(ui->tableViewErrors->model())
       ->removeRow(index_column);
-  UpdatePlots();
 }
 
 void MainWindow::AddRow() {
@@ -218,7 +203,6 @@ void MainWindow::DeleteRow() {
   if (index_row == -1) index_row = 0;
   dynamic_cast<lib::MeasurementsTable*>(ui->tableViewMain->model())
       ->removeRow(index_row);
-  // UpdatePlots();
 }
 
 void MainWindow::SetupTables() {
@@ -292,9 +276,6 @@ void MainWindow::ConnectingAction() {
   connect(ui->addPlotBtn, SIGNAL(clicked()), this, SLOT(AddPlot()));
   connect(ui->deletePlotBtn, SIGNAL(clicked()), this, SLOT(DeletePlot()));
 
-  connect(ui->LoadDataBtn, SIGNAL(clicked()), this, SLOT(Load()));
-  connect(ui->SaveDataBtn, SIGNAL(clicked()), this, SLOT(Save()));
-
   connect(ui->deleteColumnBtn, SIGNAL(clicked()), this,
           SLOT(ConfirmDeleteVariables()));
   connect(lib::Manager::GetInstance(), SIGNAL(variable_is_deleted()), this,
@@ -326,9 +307,12 @@ void MainWindow::ConnectingAction() {
           SLOT(LightThemeOn()));
 
   connect(ui->actionHelp, SIGNAL(triggered()), this, SLOT(CreateHelpWindow()));
+
+  connect(ui->actionLoad, SIGNAL(triggered()), this, SLOT(Load()));
+  connect(ui->actionSave, SIGNAL(triggered()), this, SLOT(Save()));
 }
 
-void MainWindow::on_actionCreate_ODF_triggered() {
+void MainWindow::on_actionCreateODF_triggered() {
   ManagerODF::GetInstance()->form->show();
 
   connect(ManagerODF::GetInstance()->form, SIGNAL(textBtn_is_clicked()), this,
@@ -385,7 +369,7 @@ void MainWindow::AssembleODF() {
 
 void MainWindow::closeEvent(QCloseEvent* event) {
   if (lib::Manager::GetInstance()->GetVariablesCount() == 0 ||
-      ConfirmingAction("Are you sure to close programm?")) {
+      ConfirmingAction("Are you sure to close program?")) {
     event->accept();
     if (ManagerODF::GetInstance()->form != NULL)
       ManagerODF::GetInstance()->form->close();

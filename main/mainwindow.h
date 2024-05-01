@@ -52,7 +52,7 @@ class MainWindow : public QMainWindow {
 
   void ConnectingAction();
 
-  void on_actionCreate_ODF_triggered();
+  void on_actionCreateODF_triggered();
 
   void AddTextBlock();
   void AddPlotBlock();
