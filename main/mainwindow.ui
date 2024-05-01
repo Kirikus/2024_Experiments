@@ -672,12 +672,6 @@ li.checked::marker { content: &quot;\2612&quot;; }
      <string>Settings</string>
     </property>
    </widget>
-   <widget class="QMenu" name="menuHelp">
-    <property name="title">
-     <string>Help</string>
-    </property>
-    <addaction name="actionHelp"/>
-   </widget>
    <widget class="QMenu" name="menuTheme">
     <property name="title">
      <string>Theme</string>
@@ -704,7 +698,6 @@ li.checked::marker { content: &quot;\2612&quot;; }
    <addaction name="menuSettings"/>
    <addaction name="menuTheme"/>
    <addaction name="menuData_base"/>
-   <addaction name="menuHelp"/>
   </widget>
   <action name="actionLightTheme">
    <property name="text">

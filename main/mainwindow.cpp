@@ -131,11 +131,6 @@ void MainWindow::Load() {
     loader->Load(file_name);
     delete loader;
   }
-  if (file_name.endsWith(".db")) {
-    lib::StrategyIO* loader = new lib::StrategyIO_DB;
-    loader->Load(file_name);
-    delete loader;
-  }
 }
 
 void MainWindow::Save() {
@@ -151,11 +146,6 @@ void MainWindow::Save() {
   }
   if (file_name.endsWith(".json")) {
     lib::StrategyIO* saver = new lib::StrategyIO_JSON;
-    saver->Save(file_name);
-    delete saver;
-  }
-  if (file_name.endsWith(".db")) {
-    lib::StrategyIO* saver = new lib::StrategyIO_DB;
     saver->Save(file_name);
     delete saver;
   }
@@ -306,8 +296,6 @@ void MainWindow::ConnectingAction() {
   connect(ui->actionLightTheme, SIGNAL(triggered()), this,
           SLOT(LightThemeOn()));
 
-  connect(ui->actionHelp, SIGNAL(triggered()), this, SLOT(CreateHelpWindow()));
-
   connect(ui->actionLoad, SIGNAL(triggered()), this, SLOT(Load()));
   connect(ui->actionSave, SIGNAL(triggered()), this, SLOT(Save()));
 }
@@ -409,8 +397,7 @@ void MainWindow::DarkThemeOn() {
   darkPalette.setColor(QPalette::Highlight, QColor(42, 130, 218));
   darkPalette.setColor(QPalette::HighlightedText, Qt::black);
 
-  int count_of_plots = 4;
-  for (int i = 0; i < count_of_plots; i++)
+  for (int i = 0; i < ui->tabWidgetPlots->count(); i++)
     AbstractPlotModel::SetDarkTheme(
         qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(i)));
 
@@ -418,21 +405,9 @@ void MainWindow::DarkThemeOn() {
 }
 
 void MainWindow::LightThemeOn() {
-  int count_of_plots = 4;
-  for (int i = 0; i < count_of_plots; i++)
+  for (int i = 0; i < ui->tabWidgetPlots->count(); i++)
     AbstractPlotModel::SetLightTheme(
         qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(i)));
 
   qApp->setPalette(style()->standardPalette());
-}
-
-void MainWindow::CreateHelpWindow() {
-  QMessageBox message;
-  QPixmap pix(QSize(720, 560));
-  pix.fill(QColor(255, 255, 255));
-  message.setIconPixmap(pix);
-  message.setWindowFlag(Qt::Window);
-  message.setWindowIcon(QIcon("C:/2024_Experiments/images/mainwindow.png"));
-  message.setWindowTitle(" Data Handler");
-  message.exec();
 }
