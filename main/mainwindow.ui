@@ -548,6 +548,12 @@ li.checked::marker { content: &quot;\2612&quot;; }
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <widget class="QTabWidget" name="tabWidgetPlots">
+        <property name="minimumSize">
+         <size>
+          <width>300</width>
+          <height>300</height>
+         </size>
+        </property>
         <property name="currentIndex">
          <number>0</number>
         </property>
