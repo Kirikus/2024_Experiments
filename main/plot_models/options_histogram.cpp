@@ -15,9 +15,9 @@ OptionsHistogram::OptionsHistogram(QWidget *parent)
         lib::Manager::GetInstance()->GetVariable(i).naming.title);
   }
 
-  ui->ColumnSizeComboBox->addItem(QString("1"));
-  ui->ColumnSizeComboBox->addItem(QString("2"));
-  ui->ColumnSizeComboBox->addItem(QString("3"));
+  ui->ColumnSizeComboBox->addItem("1");
+  ui->ColumnSizeComboBox->addItem("2");
+  ui->ColumnSizeComboBox->addItem("3");
 
   connect(ui->ConfirmPushButton, &QPushButton::clicked, this, &QDialog::close);
 }

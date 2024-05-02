@@ -281,68 +281,71 @@ void MainWindow::OptionsPlot() {
 }
 
 void MainWindow::ConnectingAction() {
-  connect(ui->tableViewMain->model(),
-          SIGNAL(dataChanged(QModelIndex, QModelIndex, QVector<int>)), this,
-          SLOT(UpdatePlots()), Qt::DirectConnection);
-  connect(ui->tableViewErrors->model(),
-          SIGNAL(dataChanged(QModelIndex, QModelIndex, QVector<int>)), this,
-          SLOT(UpdatePlots()), Qt::DirectConnection);
-  connect(ui->tableViewNaming->model(),
-          SIGNAL(dataChanged(QModelIndex, QModelIndex, QVector<int>)), this,
-          SLOT(UpdatePlots()), Qt::DirectConnection);
-  connect(ui->tableViewPlotsSets->model(),
-          SIGNAL(dataChanged(QModelIndex, QModelIndex, QVector<int>)), this,
-          SLOT(UpdatePlots()), Qt::DirectConnection);
+  connect(ui->tableViewMain->model(), &QAbstractTableModel::dataChanged, this,
+          &MainWindow::UpdatePlots, Qt::DirectConnection);
+  connect(ui->tableViewErrors->model(), &QAbstractTableModel::dataChanged, this,
+          &MainWindow::UpdatePlots, Qt::DirectConnection);
+  connect(ui->tableViewNaming->model(), &QAbstractTableModel::dataChanged, this,
+          &MainWindow::UpdatePlots, Qt::DirectConnection);
+  connect(ui->tableViewPlotsSets->model(), &QAbstractTableModel::dataChanged,
+          this, &MainWindow::UpdatePlots, Qt::DirectConnection);
 
-  connect(ui->rescalePlotsBtn, SIGNAL(clicked()), this, SLOT(RescalePlots()));
+  connect(ui->rescalePlotsBtn, &QAbstractButton::clicked, this,
+          &MainWindow::RescalePlots);
 
-  connect(ui->OptionsPlotBtn, SIGNAL(clicked()), this, SLOT(OptionsPlot()));
+  connect(ui->OptionsPlotBtn, &QAbstractButton::clicked, this,
+          &MainWindow::OptionsPlot);
 
-  connect(ui->deleteColumnBtn, SIGNAL(clicked()), this,
-          SLOT(ConfirmDeleteVariables()));
-  connect(lib::Manager::GetInstance(), SIGNAL(variable_is_deleted()), this,
-          SLOT(DeleteColumn()));
-
+  connect(ui->deleteColumnBtn, &QAbstractButton::clicked, this,
+          &MainWindow::ConfirmDeleteVariables);
+  connect(lib::Manager::GetInstance(), &lib::Manager::variable_is_deleted, this,
+          &MainWindow::DeleteColumn);
+  // need to fix
   connect(ui->addColumnBtn, SIGNAL(clicked()), lib::Manager::GetInstance(),
           SLOT(AddVariable()));
-  connect(lib::Manager::GetInstance(), SIGNAL(variable_is_added()), this,
-          SLOT(AddColumn()));
+  // need to fix
+  connect(lib::Manager::GetInstance(), &lib::Manager::variable_is_added, this,
+          &MainWindow::AddColumn);
 
-  connect(ui->deleteRowBtn, SIGNAL(clicked()), this,
-          SLOT(ConfirmDeleteMeasurments()));
-  connect(lib::Manager::GetInstance(), SIGNAL(measurements_is_deleted()), this,
-          SLOT(DeleteRow()));
+  connect(ui->deleteRowBtn, &QAbstractButton::clicked, this,
+          &MainWindow::ConfirmDeleteMeasurments);
+  connect(lib::Manager::GetInstance(), &lib::Manager::measurements_is_deleted,
+          this, &MainWindow::DeleteRow);
 
-  connect(ui->addRowBtn, SIGNAL(clicked()), lib::Manager::GetInstance(),
-          SLOT(AddMeasurements()));
-  connect(lib::Manager::GetInstance(), SIGNAL(measurements_is_added()), this,
-          SLOT(AddRow()));
+  connect(ui->addRowBtn, &QAbstractButton::clicked, lib::Manager::GetInstance(),
+          &lib::Manager::AddMeasurements);
+  connect(lib::Manager::GetInstance(), &lib::Manager::measurements_is_added,
+          this, &MainWindow::AddRow);
 
-  connect(ui->ClearDataBtn, SIGNAL(clicked()), this, SLOT(ClearData()));
+  connect(ui->ClearDataBtn, &QAbstractButton::clicked, this,
+          &MainWindow::ClearData);
 
-  connect(ui->uploadToDatabaseBtn, SIGNAL(clicked()), this,
-          SLOT(AddToDatabase()));
+  connect(ui->uploadToDatabaseBtn, &QAbstractButton::clicked, this,
+          &MainWindow::AddToDatabase);
 
-  connect(ui->actionDarkTheme, SIGNAL(triggered()), this, SLOT(DarkThemeOn()));
+  // conecting menu
 
-  connect(ui->actionLightTheme, SIGNAL(triggered()), this,
-          SLOT(LightThemeOn()));
+  connect(ui->actionDarkTheme, &QAction::triggered, this,
+          &MainWindow::DarkThemeOn);
 
-  connect(ui->actionLoad, SIGNAL(triggered()), this, SLOT(Load()));
-  connect(ui->actionSave, SIGNAL(triggered()), this, SLOT(Save()));
+  connect(ui->actionLightTheme, &QAction::triggered, this,
+          &MainWindow::LightThemeOn);
+
+  connect(ui->actionLoad, &QAction::triggered, this, &MainWindow::Load);
+  connect(ui->actionSave, &QAction::triggered, this, &MainWindow::Save);
 }
 
 void MainWindow::on_actionCreateODF_triggered() {
   ManagerODF::GetInstance()->form->show();
 
-  connect(ManagerODF::GetInstance()->form, SIGNAL(textBtn_is_clicked()), this,
-          SLOT(AddTextBlock()));
-  connect(ManagerODF::GetInstance()->form, SIGNAL(plotBtn_is_clicked()), this,
-          SLOT(AddPlotBlock()));
-  connect(ManagerODF::GetInstance()->form, SIGNAL(tableBtn_is_clicked()), this,
-          SLOT(AddTableBlock()));
-  connect(ManagerODF::GetInstance()->form, SIGNAL(AssembleBtn_is_clicked()),
-          this, SLOT(AssembleODF()));
+  connect(ManagerODF::GetInstance()->form, &ODF_Form::textBtn_is_clicked, this,
+          &MainWindow::AddTextBlock);
+  connect(ManagerODF::GetInstance()->form, &ODF_Form::plotBtn_is_clicked, this,
+          &MainWindow::AddPlotBlock);
+  connect(ManagerODF::GetInstance()->form, &ODF_Form::tableBtn_is_clicked, this,
+          &MainWindow::AddTableBlock);
+  connect(ManagerODF::GetInstance()->form, &ODF_Form::assembleBtn_is_clicked,
+          this, &MainWindow::AssembleODF);
 }
 
 void MainWindow::AddTextBlock() {
