@@ -64,7 +64,7 @@ class MainWindow : public QMainWindow {
 
   void ClearData();
 
-  void on_actionOpen_data_base_triggered();
+  void on_actionOpenDataBase_triggered();
 
   void AddToDatabase();
 

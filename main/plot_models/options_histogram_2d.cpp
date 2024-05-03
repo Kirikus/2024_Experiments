@@ -11,32 +11,32 @@ OptionsHistogram2D::OptionsHistogram2D(QWidget *parent)
   setWindowIcon(QIcon("C:/2024_Experiments/images/mainwindow.png"));
 
   for (int i = 0; i < lib::Manager::GetInstance()->GetVariablesCount(); ++i) {
-    ui->SubVarComboBox->addItem(
+    ui->subVarComboBox->addItem(
         lib::Manager::GetInstance()->GetVariable(i).naming.title);
   }
 
   for (int i = 0; i < lib::Manager::GetInstance()->GetVariablesCount(); ++i) {
-    ui->MainVarComboBox->addItem(
+    ui->mainVarComboBox->addItem(
         lib::Manager::GetInstance()->GetVariable(i).naming.title);
   }
 
-  ui->SquareSizeComboBox->addItem("1");
-  ui->SquareSizeComboBox->addItem("2");
-  ui->SquareSizeComboBox->addItem("4");
+  ui->squareSizeComboBox->addItem("1");
+  ui->squareSizeComboBox->addItem("2");
+  ui->squareSizeComboBox->addItem("4");
 
-  connect(ui->ConfirmPushButton, &QPushButton::clicked, this, &QDialog::close);
+  connect(ui->confirmPushButton, &QPushButton::clicked, this, &QDialog::close);
 }
 
 int OptionsHistogram2D::choose_square_size() {
-  return std::pow(2, ui->SquareSizeComboBox->currentIndex());
+  return std::pow(2, ui->squareSizeComboBox->currentIndex());
 }
 
 int OptionsHistogram2D::choose_AxisX() {
-  return ui->SubVarComboBox->currentIndex();
+  return ui->subVarComboBox->currentIndex();
 }
 
 int OptionsHistogram2D::choose_AxisY() {
-  return ui->MainVarComboBox->currentIndex();
+  return ui->mainVarComboBox->currentIndex();
 }
 
 OptionsHistogram2D::~OptionsHistogram2D() { delete ui; }

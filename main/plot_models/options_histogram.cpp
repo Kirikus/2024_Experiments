@@ -11,23 +11,23 @@ OptionsHistogram::OptionsHistogram(QWidget *parent)
   setWindowIcon(QIcon("C:/2024_Experiments/images/mainwindow.png"));
 
   for (int i = 0; i < lib::Manager::GetInstance()->GetVariablesCount(); ++i) {
-    ui->VariableComboBox->addItem(
+    ui->variableComboBox->addItem(
         lib::Manager::GetInstance()->GetVariable(i).naming.title);
   }
 
-  ui->ColumnSizeComboBox->addItem("1");
-  ui->ColumnSizeComboBox->addItem("2");
-  ui->ColumnSizeComboBox->addItem("3");
+  ui->columnSizeComboBox->addItem("1");
+  ui->columnSizeComboBox->addItem("2");
+  ui->columnSizeComboBox->addItem("3");
 
-  connect(ui->ConfirmPushButton, &QPushButton::clicked, this, &QDialog::close);
+  connect(ui->confirmPushButton, &QPushButton::clicked, this, &QDialog::close);
 }
 
 int OptionsHistogram::choose_variable() {
-  return ui->VariableComboBox->currentIndex();
+  return ui->variableComboBox->currentIndex();
 }
 
 int OptionsHistogram::choose_column_size() {
-  return ui->ColumnSizeComboBox->currentIndex() + 1;
+  return ui->columnSizeComboBox->currentIndex();
 }
 
 OptionsHistogram::~OptionsHistogram() { delete ui; }

@@ -79,7 +79,7 @@
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_2">
             <item>
-             <widget class="QPushButton" name="uploadToDatabaseBtn">
+             <widget class="QPushButton" name="uploadToDataBaseBtn">
               <property name="text">
                <string>Upload to data base</string>
               </property>
@@ -102,7 +102,7 @@
              </spacer>
             </item>
             <item>
-             <widget class="QPushButton" name="ClearDataBtn">
+             <widget class="QPushButton" name="clearDataBtn">
               <property name="toolTip">
                <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -555,7 +555,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          </size>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>5</number>
         </property>
         <widget class="LinePlot" name="ObjectLinePlot">
          <attribute name="title">
@@ -637,7 +637,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="OptionsPlotBtn">
+         <widget class="QPushButton" name="optionsPlotBtn">
           <property name="text">
            <string>Options</string>
           </property>
@@ -691,7 +691,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <property name="title">
      <string>Data base</string>
     </property>
-    <addaction name="actionOpen_data_base"/>
+    <addaction name="actionOpenDataBase"/>
    </widget>
    <widget class="QMenu" name="menuFile">
     <property name="title">
@@ -722,7 +722,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <string>Create ODF</string>
    </property>
   </action>
-  <action name="actionOpen_data_base">
+  <action name="actionOpenDataBase">
    <property name="text">
     <string>Open data base</string>
    </property>

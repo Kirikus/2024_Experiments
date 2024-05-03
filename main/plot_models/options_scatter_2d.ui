@@ -35,7 +35,7 @@
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_3">
        <item>
-        <widget class="QLabel" name="label">
+        <widget class="QLabel" name="SubVarLabel">
          <property name="font">
           <font>
            <pointsize>10</pointsize>
@@ -66,14 +66,14 @@
         </spacer>
        </item>
        <item>
-        <widget class="QComboBox" name="SubVarComboBox"/>
+        <widget class="QComboBox" name="subVarComboBox"/>
        </item>
       </layout>
      </item>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_2">
        <item>
-        <widget class="QLabel" name="label_2">
+        <widget class="QLabel" name="mainVarLabel">
          <property name="font">
           <font>
            <pointsize>10</pointsize>
@@ -104,7 +104,7 @@
         </spacer>
        </item>
        <item>
-        <widget class="QComboBox" name="MainVarComboBox">
+        <widget class="QComboBox" name="mainVarComboBox">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -150,7 +150,7 @@
         </spacer>
        </item>
        <item>
-        <widget class="QPushButton" name="ConfirmPushButton">
+        <widget class="QPushButton" name="confirmPushButton">
          <property name="font">
           <font>
            <pointsize>10</pointsize>

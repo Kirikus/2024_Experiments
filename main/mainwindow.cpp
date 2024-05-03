@@ -105,7 +105,8 @@ void MainWindow::ClearData() {
   if (lib::Manager::GetInstance()->GetMeasurementsCount() > 0 &&
       ConfirmingAction("Are you sure to clear all data?"))
     lib::Manager::GetInstance()->Clear();
-  UpdatePlots();
+    UpdatePlots();
+
 }
 
 bool MainWindow::ConfirmingAction(QString delete_message) {
@@ -293,7 +294,7 @@ void MainWindow::ConnectingAction() {
   connect(ui->rescalePlotsBtn, &QAbstractButton::clicked, this,
           &MainWindow::RescalePlots);
 
-  connect(ui->OptionsPlotBtn, &QAbstractButton::clicked, this,
+  connect(ui->optionsPlotBtn, &QAbstractButton::clicked, this,
           &MainWindow::OptionsPlot);
 
   connect(ui->deleteColumnBtn, &QAbstractButton::clicked, this,
@@ -317,10 +318,10 @@ void MainWindow::ConnectingAction() {
   connect(lib::Manager::GetInstance(), &lib::Manager::measurements_is_added,
           this, &MainWindow::AddRow);
 
-  connect(ui->ClearDataBtn, &QAbstractButton::clicked, this,
+  connect(ui->clearDataBtn, &QAbstractButton::clicked, this,
           &MainWindow::ClearData);
 
-  connect(ui->uploadToDatabaseBtn, &QAbstractButton::clicked, this,
+  connect(ui->uploadToDataBaseBtn, &QAbstractButton::clicked, this,
           &MainWindow::AddToDatabase);
 
   // conecting menu
@@ -400,7 +401,7 @@ void MainWindow::closeEvent(QCloseEvent* event) {
     event->ignore();
 }
 
-void MainWindow::on_actionOpen_data_base_triggered() {
+void MainWindow::on_actionOpenDataBase_triggered() {
   lib::Manager::GetInstance()->GetSQLite().form->show();
 }
 

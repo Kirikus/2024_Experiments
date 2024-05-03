@@ -12,7 +12,7 @@ DB_Form::DB_Form(QWidget *parent) : QMainWindow(parent), ui(new Ui::DB_Form) {
 DB_Form::~DB_Form() { delete ui; }
 
 QTableWidget *DB_Form::GetMeasurementsTableWidget() {
-  return ui->measurements_table;
+  return ui->measurementsTable;
 }
 
 

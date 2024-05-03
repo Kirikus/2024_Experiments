@@ -18,7 +18,7 @@
     <item row="0" column="0">
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QTableWidget" name="measurements_table"/>
+       <widget class="QTableWidget" name="measurementsTable"/>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
