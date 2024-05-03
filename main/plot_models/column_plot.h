@@ -1,14 +1,14 @@
 #ifndef COLUMN_PLOT_H
 #define COLUMN_PLOT_H
 
-#include "qcustomplot.h"
+#include "abstractplotmodel.h"
 
-class ColumnPlot : public QCustomPlot {
+class ColumnPlot : public AbstractPlotModel {
   Q_OBJECT
  public:
   ColumnPlot() {}
 
-  void Draw();
+  void Draw() override;
 };
 
 #endif  // COLUMN_PLOT_H

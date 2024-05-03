@@ -1,14 +1,14 @@
 #ifndef LINE_PLOT_H
 #define LINE_PLOT_H
 
-#include "qcustomplot.h"
+#include "abstractplotmodel.h"
 
-class LinePlot : public QCustomPlot {
+class LinePlot : public AbstractPlotModel {
   Q_OBJECT
  public:
   LinePlot() {}
 
-  void Draw();
+  void Draw() override;
 };
 
 #endif  // LINE_PLOT_H

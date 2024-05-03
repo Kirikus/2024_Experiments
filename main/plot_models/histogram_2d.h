@@ -1,14 +1,14 @@
 #ifndef HISTOGRAM_2D_H
 #define HISTOGRAM_2D_H
 
-#include "qcustomplot.h"
+#include "abstractplotmodel.h"
 
-class Histogram2D : public QCustomPlot {
+class Histogram2D : public AbstractPlotModel {
   Q_OBJECT
  public:
   Histogram2D() {}
 
-  void Draw();
+  void Draw() override;
 
   void set(int x0, int y0, int square_size0) {
     x = x0;
