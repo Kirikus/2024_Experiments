@@ -10,8 +10,6 @@ void Histogram2D::Draw() {
   xAxis->setLabel("");
   yAxis->setLabel("");
 
-  setBackground(QBrush(QColor("#FFFF00")));
-
   if (lib::Manager::GetInstance()->GetVariablesCount() == 0) return;
 
   int size_box = 200;

@@ -7,7 +7,7 @@
 class Histogram2D : public AbstractPlotModel {
   Q_OBJECT
  public:
-  Histogram2D() {}
+  Histogram2D() { setBackground(QBrush(QColor("#FFFF00"))); }
 
   void Draw() override;
 
