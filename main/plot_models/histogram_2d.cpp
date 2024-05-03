@@ -5,26 +5,35 @@
 void Histogram2D::Draw() {
   // The color scheme automatically adjusts to the set of values
 
-  clearGraphs();
+  setBackground(QBrush(QColor("#FFFF00")));
+
   clearPlottables();
 
   int size_box = 200;
 
-  QVector<QVector<double>> density(size_box, QVector<double>(size_box));
-  QVector<QVector<bool>> flags(size_box, QVector<bool>(size_box, true));
-
   const lib::Variable& variable_x = lib::Manager::GetInstance()->GetVariable(x);
+
   QCPGraph* graph = addGraph();
 
   setFont(QFont("Helvetica", 9));
 
   const lib::Variable& variable_y = lib::Manager::GetInstance()->GetVariable(y);
 
-  for (int j = 0; j < variable_y.GetMeasurementsCount(); j++) {
-    for (int l = -size_box / 2; l <= size_box / 2; ++l) {
-      if (l <= variable_y.measurements[j] &&
-          variable_y.measurements[j] < l + 1) {
-        density[variable_x.measurements[j] + size_box / 2][l + size_box / 2]++;
+  for (int i = 0; i < variable_y.GetMeasurementsCount(); ++i) {
+    size_box =
+        std::max(size_box, 2*std::max(abs(int(variable_x.measurements[i])),
+                                    abs(int(variable_y.measurements[i]))) +
+                               20);
+  }
+
+  QVector<QVector<double>> density(size_box, QVector<double>(size_box));
+  QVector<QVector<bool>> flags(size_box, QVector<bool>(size_box, true));
+
+  for (int i = 0; i < variable_y.GetMeasurementsCount(); ++i) {
+    for (int j = -size_box / 2; j <= size_box / 2; ++j) {
+      if (j <= variable_y.measurements[i] &&
+          variable_y.measurements[i] < j + 1) {
+        density[variable_x.measurements[i] + size_box / 2][j + size_box / 2]++;
       }
     }
   }
@@ -68,8 +77,7 @@ void Histogram2D::Draw() {
   colorMap->setInterpolate(true);
   colorMap->rescaleDataRange(true);
 
-  moveLayer(layer("grid"), layer("main"),
-                  QCustomPlot::limAbove);
+  moveLayer(layer("grid"), layer("main"), QCustomPlot::limAbove);
 
   xAxis->setLabel("Axis " + variable_x.naming.title);
   yAxis->setLabel("Axis " + variable_y.naming.title);
