@@ -103,10 +103,10 @@ void MainWindow::ConfirmDeleteMeasurments() {
 
 void MainWindow::ClearData() {
   if (lib::Manager::GetInstance()->GetMeasurementsCount() > 0 &&
-      ConfirmingAction("Are you sure to clear all data?"))
+      ConfirmingAction("Are you sure to clear all data?")){
     lib::Manager::GetInstance()->Clear();
     UpdatePlots();
-
+  }
 }
 
 bool MainWindow::ConfirmingAction(QString delete_message) {
