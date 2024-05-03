@@ -5,24 +5,31 @@
 void Histogram2D::Draw() {
   // The color scheme automatically adjusts to the set of values
 
+  clearPlottables();
+
+  xAxis->setLabel("");
+  yAxis->setLabel("");
+
   setBackground(QBrush(QColor("#FFFF00")));
 
-  clearPlottables();
+  if (lib::Manager::GetInstance()->GetVariablesCount() == 0) return;
 
   int size_box = 200;
 
-  const lib::Variable& variable_x = lib::Manager::GetInstance()->GetVariable(x_);
+  const lib::Variable& variable_x =
+      lib::Manager::GetInstance()->GetVariable(x_);
 
   QCPGraph* graph = addGraph();
 
   setFont(QFont("Helvetica", 9));
 
-  const lib::Variable& variable_y = lib::Manager::GetInstance()->GetVariable(y_);
+  const lib::Variable& variable_y =
+      lib::Manager::GetInstance()->GetVariable(y_);
 
   for (int i = 0; i < variable_y.GetMeasurementsCount(); ++i) {
     size_box =
-        std::max(size_box, 2*std::max(abs(int(variable_x.measurements[i])),
-                                    abs(int(variable_y.measurements[i]))) +
+        std::max(size_box, 2 * std::max(abs(int(variable_x.measurements[i])),
+                                        abs(int(variable_y.measurements[i]))) +
                                20);
   }
 

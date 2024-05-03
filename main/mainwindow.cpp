@@ -252,7 +252,8 @@ void MainWindow::OptionsPlot() {
     case 5: {
       OptionsHistogram2D a;
       a.exec();
-      ui->ObjectHistogram2D->set(a.choose_AxisX(), a.choose_AxisY(), a.choose_square_size());
+      ui->ObjectHistogram2D->set(a.choose_AxisX(), a.choose_AxisY(),
+                                 a.choose_square_size());
       break;
     }
   }

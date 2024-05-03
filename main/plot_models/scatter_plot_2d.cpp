@@ -5,7 +5,10 @@
 void ScatterPlot2D::Draw() {
   clearGraphs();
 
-  const lib::Variable& variable_x = lib::Manager::GetInstance()->GetVariable(x_);
+  if (lib::Manager::GetInstance()->GetVariablesCount() == 0) return;
+
+  const lib::Variable& variable_x =
+      lib::Manager::GetInstance()->GetVariable(x_);
   QCPGraph* graph = addGraph();
 
   setFont(QFont("Helvetica", 9));
@@ -19,7 +22,8 @@ void ScatterPlot2D::Draw() {
   QVector<double> xAxis_data;
   QVector<double> yAxis_data;
 
-  const lib::Variable& variable_y = lib::Manager::GetInstance()->GetVariable(y_);
+  const lib::Variable& variable_y =
+      lib::Manager::GetInstance()->GetVariable(y_);
 
   for (int j = 0; j < variable_x.GetMeasurementsCount(); j++) {
     xAxis_data.push_back(variable_x.measurements[j]);

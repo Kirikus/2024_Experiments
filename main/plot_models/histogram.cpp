@@ -5,7 +5,13 @@
 void Histogram::Draw() {
   clearPlottables();
 
-  const lib::Variable& variable = lib::Manager::GetInstance()->GetVariable(var_);
+  xAxis->setLabel("");
+  yAxis->setLabel("");
+
+  if (lib::Manager::GetInstance()->GetVariablesCount() == 0) return;
+
+  const lib::Variable& variable =
+      lib::Manager::GetInstance()->GetVariable(var_);
 
   double max_value = -1e9, min_value = 1e9;
 
