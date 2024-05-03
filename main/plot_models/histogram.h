@@ -11,13 +11,13 @@ class Histogram : public AbstractPlotModel {
   void Draw() override;
 
   void set(int var0, int column_size0) {
-      var = var0;
-      column_size = column_size0;
+      var_ = var0;
+      column_size_ = column_size0;
   }
 
  private:
-  int var = 0;
-  int column_size = 1;
+  int var_ = 0;
+  int column_size_ = 1;
 };
 
 #endif  // HISTOGRAM_H

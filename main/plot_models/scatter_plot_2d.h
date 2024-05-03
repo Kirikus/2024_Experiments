@@ -11,13 +11,13 @@ class ScatterPlot2D : public AbstractPlotModel {
   void Draw() override;
 
   void set(int x0, int y0) {
-    x = x0;
-    y = y0;
+    x_ = x0;
+    y_ = y0;
   }
 
  private:
-  int x = 0;
-  int y = 0;
+  int x_ = 0;
+  int y_ = 0;
 };
 
 #endif  // SCATTER_PLOT_2D_H

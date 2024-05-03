@@ -11,15 +11,15 @@ class Histogram2D : public AbstractPlotModel {
   void Draw() override;
 
   void set(int x0, int y0, int square_size0) {
-    x = x0;
-    y = y0;
-    square_size = square_size0;
+    x_ = x0;
+    y_ = y0;
+    square_size_ = square_size0;
   }
 
  private:
-  int x = 0;
-  int y = 0;
-  int square_size = 1;
+  int x_ = 0;
+  int y_ = 0;
+  int square_size_ = 1;
 };
 
 #endif  // HISTOGRAM_2D_H

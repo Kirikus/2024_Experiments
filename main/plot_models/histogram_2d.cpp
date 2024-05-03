@@ -11,13 +11,13 @@ void Histogram2D::Draw() {
 
   int size_box = 200;
 
-  const lib::Variable& variable_x = lib::Manager::GetInstance()->GetVariable(x);
+  const lib::Variable& variable_x = lib::Manager::GetInstance()->GetVariable(x_);
 
   QCPGraph* graph = addGraph();
 
   setFont(QFont("Helvetica", 9));
 
-  const lib::Variable& variable_y = lib::Manager::GetInstance()->GetVariable(y);
+  const lib::Variable& variable_y = lib::Manager::GetInstance()->GetVariable(y_);
 
   for (int i = 0; i < variable_y.GetMeasurementsCount(); ++i) {
     size_box =
@@ -48,19 +48,19 @@ void Histogram2D::Draw() {
     for (int j = 0; j < size_box; ++j) {
       if (flags[i][j]) {
         double med = 0;
-        for (int l1 = 0; l1 < square_size; ++l1) {
-          for (int l2 = 0; l2 < square_size; ++l2) {
+        for (int l1 = 0; l1 < square_size_; ++l1) {
+          for (int l2 = 0; l2 < square_size_; ++l2) {
             med += density[std::min(i + l1, size_box - 1)]
                           [std::min(j + l2, size_box - 1)];
             flags[std::min(i + l1, size_box - 1)]
                  [std::min(j + l2, size_box - 1)] = false;
           }
         }
-        for (int l1 = 0; l1 < square_size; ++l1) {
-          for (int l2 = 0; l2 < square_size; ++l2) {
+        for (int l1 = 0; l1 < square_size_; ++l1) {
+          for (int l2 = 0; l2 < square_size_; ++l2) {
             colorMap->data()->setCell(std::min(i + l1, size_box - 1),
                                       std::min(j + l2, size_box - 1),
-                                      med / square_size * square_size);
+                                      med / square_size_ * square_size_);
           }
         }
       }

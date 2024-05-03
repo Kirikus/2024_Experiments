@@ -5,7 +5,7 @@
 void Histogram::Draw() {
   clearPlottables();
 
-  const lib::Variable& variable = lib::Manager::GetInstance()->GetVariable(var);
+  const lib::Variable& variable = lib::Manager::GetInstance()->GetVariable(var_);
 
   double max_value = -1e9, min_value = 1e9;
 
@@ -17,21 +17,21 @@ void Histogram::Draw() {
   QVector<double> xAxis_data;
   QVector<double> yAxis_data;
 
-  for (int i = min_value; i <= max_value; i += column_size) {
+  for (int i = min_value; i <= max_value; i += column_size_) {
     int count = 0;
     for (int j = 0; j < variable.GetMeasurementsCount(); ++j) {
       if (i <= variable.measurements[j] &&
-          variable.measurements[j] < i + column_size) {
+          variable.measurements[j] < i + column_size_) {
         count++;
       }
     }
-    xAxis_data.push_back(i + column_size / 2.0);
+    xAxis_data.push_back(i + column_size_ / 2.0);
     yAxis_data.push_back(count);
   }
 
   QCPBars* bar = new QCPBars(xAxis, yAxis);
 
-  bar->setWidth(column_size);
+  bar->setWidth(column_size_);
   bar->setData(xAxis_data, yAxis_data);
   bar->setBrush(QBrush(variable.visual.color));
 
