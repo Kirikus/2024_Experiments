@@ -301,10 +301,9 @@ void MainWindow::ConnectingAction() {
           &MainWindow::ConfirmDeleteVariables);
   connect(lib::Manager::GetInstance(), &lib::Manager::variable_is_deleted, this,
           &MainWindow::DeleteColumn);
-  // need to fix
-  connect(ui->addColumnBtn, SIGNAL(clicked()), lib::Manager::GetInstance(),
-          SLOT(AddVariable()));
-  // need to fix
+
+  connect(ui->addColumnBtn, &QAbstractButton::clicked, lib::Manager::GetInstance(),
+          &lib::Manager::CreateNewVariable);
   connect(lib::Manager::GetInstance(), &lib::Manager::variable_is_added, this,
           &MainWindow::AddColumn);
 
