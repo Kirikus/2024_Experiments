@@ -48,54 +48,80 @@ MainWindow::MainWindow(QWidget* parent)
   SetupTables();
 
   ConnectingAction();
+
+  UpdatePlots();
+
+  RescalePlots();
 }
 
 MainWindow::~MainWindow() { delete ui; }
 
-void MainWindow::ConfirmDeleteVariable() {
-  if (ui->tableViewMain->selectionModel()->hasSelection() &&
-      ConfirmingAction("Are you sure you want to delete this variable?")) {
-    lib::Manager::GetInstance()->DeleteVariable(
-        ui->tableViewMain->currentIndex().column());
+void MainWindow::ConfirmDeleteVariables() {
+  QList<int> column_indexes;
+  for (int i = lib::Manager::GetInstance()->GetVariablesCount(); i > -1; i--)
+    if (ui->tableViewMain->selectionModel()->isColumnSelected(i))
+      column_indexes.push_back(i);
+
+  QString str;
+
+  if (column_indexes.size() == 1)
+    str = "Are you sure you want to delete this variable?";
+  else
+    str = "Are you sure you want to delete these variables? (" +
+          QVariant(column_indexes.size()).toString() + ")";
+
+  if (!column_indexes.isEmpty() && ConfirmingAction(str)) {
+    for (int i : column_indexes) lib::Manager::GetInstance()->DeleteVariable(i);
+    UpdatePlots();
   }
 }
 
 void MainWindow::ConfirmDeleteMeasurments() {
-  if (ui->tableViewMain->selectionModel()->hasSelection() &&
-      ConfirmingAction("Are you sure you want to delete these measurements?")) {
-    lib::Manager::GetInstance()->DeleteMeasurements(
-        ui->tableViewMain->currentIndex().row());
+  QList<int> rows_indexes;
+  for (int i = lib::Manager::GetInstance()->GetMeasurementsCount(); i > 0; i--)
+    if (ui->tableViewMain->selectionModel()->isRowSelected(i - 1))
+      rows_indexes.push_back(i - 1);
+
+  QString str = "Are you sure you want to delete these \nmeasurements: ";
+
+  for (int i = rows_indexes.size(); i > 0 && i > rows_indexes.size() - 6; i--) {
+    str += QVariant(rows_indexes[i - 1] + 1).toString();
+    if (i != 1) str += ", ";
+  }
+
+  rows_indexes.size() < 7
+      ? str += "?"
+      : str +=
+        "... (and " + QVariant(rows_indexes.size() - 6).toString() + " more) ?";
+
+  if (!rows_indexes.isEmpty() && ConfirmingAction(str)) {
+    for (int i : rows_indexes)
+      lib::Manager::GetInstance()->DeleteMeasurements(i);
+    UpdatePlots();
+  }
+}
+
+void MainWindow::ClearData() {
+  if (lib::Manager::GetInstance()->GetMeasurementsCount() > 0 &&
+      ConfirmingAction("Are you sure to clear all data?")){
+    lib::Manager::GetInstance()->Clear();
+    UpdatePlots();
   }
 }
 
 bool MainWindow::ConfirmingAction(QString delete_message) {
-  QDialog dialog;
-  dialog.setFixedSize(380, 90);
-  dialog.setWindowFlag(Qt::SubWindow);
-  dialog.setWindowTitle(" Data Handler");
+  QMessageBox message_box;
 
-  QDialogButtonBox button_box(QDialogButtonBox::Yes | QDialogButtonBox::Cancel);
-  button_box.setGeometry(65, 40, 200, 50);
-  button_box.setParent(&dialog);
-  button_box.show();
+  message_box.setWindowTitle("  Data Handler");
+  message_box.setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint |
+                             Qt::WindowTitleHint);
+  message_box.setIconPixmap(QPixmap("C:/2024_Experiments/images/warning.png"));
+  message_box.setFont(QFont("Helvetica", 10));
+  message_box.setStandardButtons(QMessageBox::Yes | QMessageBox::Cancel);
+  message_box.setDefaultButton(QMessageBox::Yes);
+  message_box.setText(delete_message);
 
-  QLabel text_label;
-  text_label.setGeometry(54, 8, 326, 32);
-  text_label.setFont(QFont("Times", 10));
-  text_label.setText(delete_message);
-  text_label.setParent(&dialog);
-  text_label.show();
-
-  QLabel icon_label;
-  icon_label.setGeometry(16, 8, 32, 32);
-  icon_label.setPixmap(QPixmap("C:/2024_Experiments/images/warning.png"));
-  icon_label.setParent(&dialog);
-  icon_label.show();
-
-  connect(&button_box, SIGNAL(accepted()), &dialog, SLOT(accept()));
-  connect(&button_box, SIGNAL(rejected()), &dialog, SLOT(reject()));
-
-  return dialog.exec() == QDialog::Accepted ? true : false;
+  return message_box.exec() == QMessageBox::Yes ? true : false;
 }
 
 void MainWindow::Load() {
@@ -114,11 +140,6 @@ void MainWindow::Load() {
     loader->Load(file_name);
     delete loader;
   }
-  if (file_name.endsWith(".db")) {
-    lib::StrategyIO* loader = new lib::StrategyIO_DB;
-    loader->Load(file_name);
-    delete loader;
-  }
 }
 
 void MainWindow::Save() {
@@ -134,11 +155,6 @@ void MainWindow::Save() {
   }
   if (file_name.endsWith(".json")) {
     lib::StrategyIO* saver = new lib::StrategyIO_JSON;
-    saver->Save(file_name);
-    delete saver;
-  }
-  if (file_name.endsWith(".db")) {
-    lib::StrategyIO* saver = new lib::StrategyIO_DB;
     saver->Save(file_name);
     delete saver;
   }
@@ -176,7 +192,6 @@ void MainWindow::AddRow() {
 void MainWindow::DeleteRow() {
   int index_row = ui->tableViewMain->currentIndex().row();
   if (index_row == -1) index_row = 0;
-  qDebug() << index_row;
   dynamic_cast<lib::MeasurementsTable*>(ui->tableViewMain->model())
       ->removeRow(index_row);
 }
@@ -224,6 +239,12 @@ void MainWindow::UpdatePlots() {
   ui->ObjectHistogram2D->Draw();
 }
 
+void MainWindow::RescalePlots() {
+  for (int i = 0; i < ui->tabWidgetPlots->count(); i++)
+    AbstractPlotModel::Rescale(
+        qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(i)));
+}
+
 void MainWindow::OptionsPlot() {
   int index = ui->tabWidgetPlots->currentIndex();
 
@@ -252,7 +273,8 @@ void MainWindow::OptionsPlot() {
     case 5: {
       OptionsHistogram2D a;
       a.exec();
-      ui->ObjectHistogram2D->set(a.choose_AxisX(), a.choose_AxisY(), a.choose_square_size());
+      ui->ObjectHistogram2D->set(a.choose_AxisX(), a.choose_AxisY(),
+                                 a.choose_square_size());
       break;
     }
   }
@@ -260,48 +282,71 @@ void MainWindow::OptionsPlot() {
 }
 
 void MainWindow::ConnectingAction() {
-  connect(ui->redrawPlotBtn, SIGNAL(clicked()), this, SLOT(UpdatePlots()));
+  connect(ui->tableViewMain->model(), &QAbstractTableModel::dataChanged, this,
+          &MainWindow::UpdatePlots, Qt::DirectConnection);
+  connect(ui->tableViewErrors->model(), &QAbstractTableModel::dataChanged, this,
+          &MainWindow::UpdatePlots, Qt::DirectConnection);
+  connect(ui->tableViewNaming->model(), &QAbstractTableModel::dataChanged, this,
+          &MainWindow::UpdatePlots, Qt::DirectConnection);
+  connect(ui->tableViewPlotsSets->model(), &QAbstractTableModel::dataChanged,
+          this, &MainWindow::UpdatePlots, Qt::DirectConnection);
 
-  connect(ui->OptionsPlotBtn, SIGNAL(clicked()), this, SLOT(OptionsPlot()));
+  connect(ui->rescalePlotsBtn, &QAbstractButton::clicked, this,
+          &MainWindow::RescalePlots);
 
-  connect(ui->LoadDataBtn, SIGNAL(clicked()), this, SLOT(Load()));
-  connect(ui->SaveDataBtn, SIGNAL(clicked()), this, SLOT(Save()));
+  connect(ui->optionsPlotBtn, &QAbstractButton::clicked, this,
+          &MainWindow::OptionsPlot);
 
-  connect(ui->deleteColumnBtn, SIGNAL(clicked()), this,
-          SLOT(ConfirmDeleteVariable()));
-  connect(lib::Manager::GetInstance(), SIGNAL(variable_is_deleted()), this,
-          SLOT(DeleteColumn()));
-
+  connect(ui->deleteColumnBtn, &QAbstractButton::clicked, this,
+          &MainWindow::ConfirmDeleteVariables);
+  connect(lib::Manager::GetInstance(), &lib::Manager::variable_is_deleted, this,
+          &MainWindow::DeleteColumn);
+  // need to fix
   connect(ui->addColumnBtn, SIGNAL(clicked()), lib::Manager::GetInstance(),
           SLOT(AddVariable()));
-  connect(lib::Manager::GetInstance(), SIGNAL(variable_is_added()), this,
-          SLOT(AddColumn()));
+  // need to fix
+  connect(lib::Manager::GetInstance(), &lib::Manager::variable_is_added, this,
+          &MainWindow::AddColumn);
 
-  connect(ui->deleteRowBtn, SIGNAL(clicked()), this,
-          SLOT(ConfirmDeleteMeasurments()));
-  connect(lib::Manager::GetInstance(), SIGNAL(measurements_is_deleted()), this,
-          SLOT(DeleteRow()));
+  connect(ui->deleteRowBtn, &QAbstractButton::clicked, this,
+          &MainWindow::ConfirmDeleteMeasurments);
+  connect(lib::Manager::GetInstance(), &lib::Manager::measurements_is_deleted,
+          this, &MainWindow::DeleteRow);
 
-  connect(ui->addRowBtn, SIGNAL(clicked()), lib::Manager::GetInstance(),
-          SLOT(AddMeasurements()));
-  connect(lib::Manager::GetInstance(), SIGNAL(measurements_is_added()), this,
-          SLOT(AddRow()));
+  connect(ui->addRowBtn, &QAbstractButton::clicked, lib::Manager::GetInstance(),
+          &lib::Manager::AddMeasurements);
+  connect(lib::Manager::GetInstance(), &lib::Manager::measurements_is_added,
+          this, &MainWindow::AddRow);
 
-  connect(ui->uploadToDatabaseBtn, SIGNAL(clicked()), this,
-          SLOT(AddToDatabase()));
+  connect(ui->clearDataBtn, &QAbstractButton::clicked, this,
+          &MainWindow::ClearData);
+
+  connect(ui->uploadToDataBaseBtn, &QAbstractButton::clicked, this,
+          &MainWindow::AddToDatabase);
+
+  // conecting menu
+
+  connect(ui->actionDarkTheme, &QAction::triggered, this,
+          &MainWindow::DarkThemeOn);
+
+  connect(ui->actionLightTheme, &QAction::triggered, this,
+          &MainWindow::LightThemeOn);
+
+  connect(ui->actionLoad, &QAction::triggered, this, &MainWindow::Load);
+  connect(ui->actionSave, &QAction::triggered, this, &MainWindow::Save);
 }
 
-void MainWindow::on_actionCreate_ODF_triggered() {
+void MainWindow::on_actionCreateODF_triggered() {
   ManagerODF::GetInstance()->form->show();
 
-  connect(ManagerODF::GetInstance()->form, SIGNAL(textBtn_is_clicked()), this,
-          SLOT(AddTextBlock()));
-  connect(ManagerODF::GetInstance()->form, SIGNAL(plotBtn_is_clicked()), this,
-          SLOT(AddPlotBlock()));
-  connect(ManagerODF::GetInstance()->form, SIGNAL(tableBtn_is_clicked()), this,
-          SLOT(AddTableBlock()));
-  connect(ManagerODF::GetInstance()->form, SIGNAL(AssembleBtn_is_clicked()),
-          this, SLOT(AssembleODF()));
+  connect(ManagerODF::GetInstance()->form, &ODF_Form::textBtn_is_clicked, this,
+          &MainWindow::AddTextBlock);
+  connect(ManagerODF::GetInstance()->form, &ODF_Form::plotBtn_is_clicked, this,
+          &MainWindow::AddPlotBlock);
+  connect(ManagerODF::GetInstance()->form, &ODF_Form::tableBtn_is_clicked, this,
+          &MainWindow::AddTableBlock);
+  connect(ManagerODF::GetInstance()->form, &ODF_Form::assembleBtn_is_clicked,
+          this, &MainWindow::AssembleODF);
 }
 
 void MainWindow::AddTextBlock() {
@@ -347,12 +392,16 @@ void MainWindow::AssembleODF() {
 }
 
 void MainWindow::closeEvent(QCloseEvent* event) {
-  if (ManagerODF::GetInstance()->form != nullptr)
-    ManagerODF::GetInstance()->form->close();
-  lib::Manager::GetInstance()->GetSQLite().form->close();
+  if (lib::Manager::GetInstance()->GetVariablesCount() == 0 ||
+      ConfirmingAction("Are you sure to close program?")) {
+    event->accept();
+    if (ManagerODF::GetInstance()->form != NULL)
+      ManagerODF::GetInstance()->form->close();
+  } else
+    event->ignore();
 }
 
-void MainWindow::on_actionOpen_data_base_triggered() {
+void MainWindow::on_actionOpenDataBase_triggered() {
   lib::Manager::GetInstance()->GetSQLite().form->show();
 }
 
@@ -365,4 +414,36 @@ void MainWindow::AddToDatabase() {
   for (int i : column_indexes)
     lib::Manager::GetInstance()->GetSQLite().AddToDatabase(
         lib::Manager::GetInstance()->GetVariable(i));
+}
+
+void MainWindow::DarkThemeOn() {
+  QPalette darkPalette;
+
+  darkPalette.setColor(QPalette::Window, QColor(53, 53, 53));
+  darkPalette.setColor(QPalette::WindowText, Qt::white);
+  darkPalette.setColor(QPalette::Base, QColor(25, 25, 25));
+  darkPalette.setColor(QPalette::AlternateBase, QColor(53, 53, 53));
+  darkPalette.setColor(QPalette::ToolTipBase, Qt::white);
+  darkPalette.setColor(QPalette::ToolTipText, Qt::white);
+  darkPalette.setColor(QPalette::Text, Qt::white);
+  darkPalette.setColor(QPalette::Button, QColor(53, 53, 53));
+  darkPalette.setColor(QPalette::ButtonText, Qt::white);
+  darkPalette.setColor(QPalette::BrightText, Qt::red);
+  darkPalette.setColor(QPalette::Link, QColor(42, 130, 218));
+  darkPalette.setColor(QPalette::Highlight, QColor(42, 130, 218));
+  darkPalette.setColor(QPalette::HighlightedText, Qt::black);
+
+  for (int i = 0; i < ui->tabWidgetPlots->count(); i++)
+    AbstractPlotModel::SetDarkTheme(
+        qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(i)));
+
+  qApp->setPalette(darkPalette);
+}
+
+void MainWindow::LightThemeOn() {
+  for (int i = 0; i < ui->tabWidgetPlots->count(); i++)
+    AbstractPlotModel::SetLightTheme(
+        qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(i)));
+
+  qApp->setPalette(style()->standardPalette());
 }

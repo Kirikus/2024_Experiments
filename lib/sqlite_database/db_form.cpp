@@ -12,14 +12,9 @@ DB_Form::DB_Form(QWidget *parent) : QMainWindow(parent), ui(new Ui::DB_Form) {
 DB_Form::~DB_Form() { delete ui; }
 
 QTableWidget *DB_Form::GetMeasurementsTableWidget() {
-  return ui->measurements_table;
+  return ui->measurementsTable;
 }
 
-QTableWidget *DB_Form::GetVisualTableWidget() { return ui->visual_table; }
-
-QTableWidget *DB_Form::GetNamingTableWidget() { return ui->naming_table; }
-
-QTableWidget *DB_Form::GetErrorTableWidget() { return ui->error_table; }
 
 void DB_Form::on_uploadBtn_clicked() { emit uploadBtn_is_clicked(); }
 

@@ -1,9 +1,9 @@
 #ifndef HISTOGRAM_H
 #define HISTOGRAM_H
 
-#include "qcustomplot.h"
+#include "abstractplotmodel.h"
 
-class Histogram : public QCustomPlot {
+class Histogram : public AbstractPlotModel {
   Q_OBJECT
  public:
   Histogram() {}
@@ -11,8 +11,8 @@ class Histogram : public QCustomPlot {
   void Draw();
 
   void set(int var0, int column_size0) {
-      var = var0;
-      column_size = column_size0;
+    var = var0;
+    column_size = column_size0;
   }
 
  private:
