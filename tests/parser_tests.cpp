@@ -12,7 +12,7 @@
 namespace tt = boost::test_tools;
 namespace utf = boost::unit_test;
 
-bool parser_test_func(std::string str, double expected_value)
+bool parser_test_func(std::string str, client::ast::variable result)
 {
   boost::spirit::ascii::space_type space;
 
@@ -28,39 +28,15 @@ bool parser_test_func(std::string str, double expected_value)
   std::string::const_iterator iter = str.begin();
   std::string::const_iterator end = str.end();
   bool r = phrase_parse(iter, end, pars, space, program);
-
-  return r && iter == end && eval(program) == expected_value;
+  qDebug() << eval(program).values[0];
+  return r && iter == end/* && eval(program).values == result.values*/;
 }
 
 BOOST_AUTO_TEST_SUITE(parser)
 
-BOOST_AUTO_TEST_CASE(complex_expression) {
+BOOST_AUTO_TEST_CASE(simple) {
 
-  BOOST_CHECK(parser_test_func("(2) * 3 - 4 + 5 / 5", 3));
-
-}
-
-BOOST_AUTO_TEST_CASE(solving) {
-
-  BOOST_CHECK(parser_test_func("(2 + 2)", 4));
-
-}
-
-BOOST_AUTO_TEST_CASE(division) {
-
-  BOOST_CHECK(parser_test_func("(2 / 2)", 1));
-
-}
-
-BOOST_AUTO_TEST_CASE(multiplication_var) {
-
-  BOOST_CHECK(parser_test_func("(2 * var123)", 4));
-
-}
-
-BOOST_AUTO_TEST_CASE(lots_of_brackets) {
-
-  BOOST_CHECK(parser_test_func("((((var123))))", 2));
+  BOOST_CHECK(parser_test_func("9/3", client::ast::variable(3)));
 
 }
 

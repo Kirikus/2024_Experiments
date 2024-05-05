@@ -11,15 +11,13 @@ add_executable(tests ${PROJECT_SOURCES} )
 find_package(QT NAMES Qt6 COMPONENTS Core Gui Widgets PrintSupport REQUIRED)
 find_package(Qt6 COMPONENTS Core Gui Widgets PrintSupport REQUIRED)
 
-target_link_libraries(tests PUBLIC Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Gui Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::PrintSupport)
-
-# target_link_libraries(tests PRIVATE lib)
-# target_link_libraries(tests PRIVATE backend)
-
+target_link_libraries(tests PUBLIC Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Gui
+    Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::PrintSupport)
 target_link_libraries(tests PRIVATE ${Boost_LIBRARIES})
 
 target_compile_definitions(tests PRIVATE QCUSTOMPLOT_USE_LIBRARY)
 target_link_libraries(tests PUBLIC qcustomplot)
+target_link_libraries(tests PRIVATE core)
 
 set_target_properties(tests PROPERTIES
   MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com

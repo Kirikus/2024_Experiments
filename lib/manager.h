@@ -2,6 +2,7 @@
 #define MANAGER_H
 
 #include "QList"
+#include "string"
 #include "variable.h"
 
 namespace lib {
@@ -16,12 +17,20 @@ class Manager : public QObject {
  public:
   static class Manager* GetInstance();
 
+  Manager() {
+    GetInstance()->AddVariable(Variable({1, 2, 3, 4, 5}, Variable::Naming("Foo")));
+
+    GetInstance()->AddVariable(Variable({1, 2, 3, 4, 5}, Variable::Naming("Bar")));
+  }
+
   void AugmentVariables();
 
   size_t GetVariablesCount() const { return variables.size(); }
   size_t GetMeasurementsCount() const;
 
   Variable& GetVariable(size_t index) { return variables[index]; }
+
+  Variable& GetVariable(std::string name);
 
   void ClearCalculated();
   void AddCalculated(Variable&);

@@ -58,6 +58,15 @@ size_t Manager::GetMeasurementsCount() const {
   return MeasurementsCount;
 }
 
+Variable& Manager::GetVariable(std::string name) {
+  for (int i = 0; i < GetVariablesCount(); i++)
+    if (GetVariable(i).naming.title == QString::fromStdString(name) ||
+        GetVariable(i).naming.tag == QString::fromStdString(name)) {
+      qDebug() << "mama";
+      return GetVariable(i);
+    }
+}
+
 void Manager::Clear() {
   while (GetVariablesCount() != 0) DeleteVariable();
 }
