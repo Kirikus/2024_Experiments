@@ -65,7 +65,7 @@ void Histogram2D::Draw() {
           for (int l2 = 0; l2 < square_size_; ++l2) {
             colorMap->data()->setCell(std::min(i + l1, size_box - 1),
                                       std::min(j + l2, size_box - 1),
-                                      med / square_size_ * square_size_);
+                                        med / (square_size_ * square_size_));
           }
         }
       }
