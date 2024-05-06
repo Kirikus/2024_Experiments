@@ -31,19 +31,9 @@ MainWindow::MainWindow(QWidget* parent)
   setWindowIcon(QIcon("C:/2024_Experiments/images/mainwindow.png"));
   setWindowTitle("Data Handler");
 
-  lib::Variable Foo({1, 2, 3, 4, 5}, lib::Variable::Naming("Foo"),
-                    lib::Variable::VisualOptions(true, 1, {255, 0, 0},
-                                                 QCPScatterStyle::ssCircle));
-  lib::Variable bar({4, 2, 11, 3, 5, 1}, lib::Variable::Naming("bar"),
-                    lib::Variable::VisualOptions(true, 1, {83, 204, 101},
-                                                 QCPScatterStyle::ssCircle));
-  lib::Variable var({5, 3, 3, 2, 6, 1}, lib::Variable::Naming("var"),
-                    lib::Variable::VisualOptions(true, 1, {42, 182, 204},
-                                                 QCPScatterStyle::ssCircle));
-
-  lib::Manager::GetInstance()->AddVariable(Foo);
-  lib::Manager::GetInstance()->AddVariable(bar);
-  lib::Manager::GetInstance()->AddVariable(var);
+  lib::StrategyIO* loader = new lib::StrategyIO_CSV;
+  loader->Load("C:/2024_Experiments/message.csv");
+  delete loader;
 
   SetupTables();
 
@@ -52,6 +42,8 @@ MainWindow::MainWindow(QWidget* parent)
   UpdatePlots();
 
   RescalePlots();
+
+  DarkThemeOn();
 }
 
 MainWindow::~MainWindow() { delete ui; }
@@ -446,9 +438,3 @@ void MainWindow::LightThemeOn() {
 
   qApp->setPalette(style()->standardPalette());
 }
-
-void MainWindow::on_tabWidgetPlots_tabBarClicked(int index)
-{
-  ui->optionsPlotBtn->hide();
-}
-
