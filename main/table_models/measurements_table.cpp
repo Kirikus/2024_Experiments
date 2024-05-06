@@ -56,15 +56,17 @@ bool MeasurementsTable::setData(const QModelIndex &index, const QVariant &value,
 QVariant MeasurementsTable::headerData(int section, Qt::Orientation orientation,
                                        int role) const {
   switch (role) {
-    case Qt::DisplayRole:
-      switch (orientation) {
-        case Qt::Vertical:
-          return section + 1;
-        case Qt::Horizontal:
-          return Manager::GetInstance()->GetVariable(section).naming.title;
-      }
-    default:
-      return QVariant();
+  case Qt::DisplayRole:
+    switch (orientation) {
+    case Qt::Vertical:
+      return section + 1;
+    case Qt::Horizontal:
+      auto naming = Manager::GetInstance()->GetVariable(section).naming;
+      return naming.tag.isEmpty() ? naming.title
+                                  : naming.title + "\n(" + naming.tag + ")";
+    }
+  default:
+    return QVariant();
   }
 }
 

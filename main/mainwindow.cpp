@@ -103,7 +103,7 @@ void MainWindow::ConfirmDeleteMeasurments() {
 
 void MainWindow::ClearData() {
   if (lib::Manager::GetInstance()->GetMeasurementsCount() > 0 &&
-      ConfirmingAction("Are you sure to clear all data?")){
+      ConfirmingAction("Are you sure to clear all data?")) {
     lib::Manager::GetInstance()->Clear();
     UpdatePlots();
   }
@@ -143,7 +143,7 @@ void MainWindow::Load() {
 }
 
 void MainWindow::Save() {
-  QString file_name = QFileDialog::getOpenFileName(
+  QString file_name = QFileDialog::getSaveFileName(
       this, tr("Select a file"),
       QStandardPaths::writableLocation(QStandardPaths::DesktopLocation),
       tr("Open CSV (*.csv);;Open JSON (*.json);;"));
@@ -294,6 +294,15 @@ void MainWindow::ConnectingAction() {
   connect(ui->rescalePlotsBtn, &QAbstractButton::clicked, this,
           &MainWindow::RescalePlots);
 
+  connect(ManagerODF::GetInstance()->form, &ODF_Form::textBtn_is_clicked, this,
+          &MainWindow::AddTextBlock);
+  connect(ManagerODF::GetInstance()->form, &ODF_Form::plotBtn_is_clicked, this,
+          &MainWindow::AddPlotBlock);
+  connect(ManagerODF::GetInstance()->form, &ODF_Form::tableBtn_is_clicked, this,
+          &MainWindow::AddTableBlock);
+  connect(ManagerODF::GetInstance()->form, &ODF_Form::assembleBtn_is_clicked,
+          this, &MainWindow::AssembleODF);
+
   connect(ui->optionsPlotBtn, &QAbstractButton::clicked, this,
           &MainWindow::OptionsPlot);
 
@@ -302,8 +311,8 @@ void MainWindow::ConnectingAction() {
   connect(lib::Manager::GetInstance(), &lib::Manager::variable_is_deleted, this,
           &MainWindow::DeleteColumn);
 
-  connect(ui->addColumnBtn, &QAbstractButton::clicked, lib::Manager::GetInstance(),
-          &lib::Manager::CreateNewVariable);
+  connect(ui->addColumnBtn, &QAbstractButton::clicked,
+          lib::Manager::GetInstance(), &lib::Manager::CreateNewVariable);
   connect(lib::Manager::GetInstance(), &lib::Manager::variable_is_added, this,
           &MainWindow::AddColumn);
 
@@ -337,15 +346,6 @@ void MainWindow::ConnectingAction() {
 
 void MainWindow::on_actionCreateODF_triggered() {
   ManagerODF::GetInstance()->form->show();
-
-  connect(ManagerODF::GetInstance()->form, &ODF_Form::textBtn_is_clicked, this,
-          &MainWindow::AddTextBlock);
-  connect(ManagerODF::GetInstance()->form, &ODF_Form::plotBtn_is_clicked, this,
-          &MainWindow::AddPlotBlock);
-  connect(ManagerODF::GetInstance()->form, &ODF_Form::tableBtn_is_clicked, this,
-          &MainWindow::AddTableBlock);
-  connect(ManagerODF::GetInstance()->form, &ODF_Form::assembleBtn_is_clicked,
-          this, &MainWindow::AssembleODF);
 }
 
 void MainWindow::AddTextBlock() {
@@ -446,3 +446,9 @@ void MainWindow::LightThemeOn() {
 
   qApp->setPalette(style()->standardPalette());
 }
+
+void MainWindow::on_tabWidgetPlots_tabBarClicked(int index)
+{
+  ui->optionsPlotBtn->hide();
+}
+
