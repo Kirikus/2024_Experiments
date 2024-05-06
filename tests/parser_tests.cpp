@@ -3,6 +3,7 @@
 #include <random>
 
 #include "../lib/formula_parser.h"
+#include "manager.h"
 
 #if !defined(WIN32)
 #define BOOST_TEST_DYN_LINK
@@ -12,8 +13,7 @@
 namespace tt = boost::test_tools;
 namespace utf = boost::unit_test;
 
-bool parser_test_func(std::string str, client::ast::variable result)
-{
+bool parser_test_func(std::string str, client::ast::variable result) {
   boost::spirit::ascii::space_type space;
 
   typedef std::string::const_iterator iterator_type;
@@ -28,16 +28,21 @@ bool parser_test_func(std::string str, client::ast::variable result)
   std::string::const_iterator iter = str.begin();
   std::string::const_iterator end = str.end();
   bool r = phrase_parse(iter, end, pars, space, program);
-  qDebug() << eval(program).values[0];
-  return r && iter == end/* && eval(program).values == result.values*/;
+  // for (double i : eval(program).values) qDebug() << i;
+  return r && iter == end  && eval(program).values == result.values;
 }
 
 BOOST_AUTO_TEST_SUITE(parser)
 
 BOOST_AUTO_TEST_CASE(simple) {
+  lib::Manager::GetInstance()->AddVariable(
+      lib::Variable({1, 2, 3, 4, 5}, lib::Variable::Naming("Bar")));
 
-  BOOST_CHECK(parser_test_func("9/3", client::ast::variable(3)));
+  std::string test_string{"Bar^(4/2) - 0.5*Bar"};
 
+  QList<double> expected_value{0.5, 3.0, 7.5, 14.0, 22.5};
+
+  BOOST_CHECK(parser_test_func(test_string, client::ast::variable(expected_value)));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

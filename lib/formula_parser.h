@@ -44,10 +44,15 @@ parser<Iterator>::parser() : parser::base_type(expression) {
       ;
 
   multiplicative_expr =
-      unary_expr
-      >> *(   (char_('*') > unary_expr)
-           |   (char_('/') > unary_expr)
+      pow_expr
+      >> *(   (char_('*') > pow_expr)
+           |   (char_('/') > pow_expr)
            )
+      ;
+
+  pow_expr =
+      unary_expr
+      >> *( char_('^') > unary_expr)
       ;
 
   unary_expr =

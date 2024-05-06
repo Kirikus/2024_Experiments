@@ -17,12 +17,6 @@ class Manager : public QObject {
  public:
   static class Manager* GetInstance();
 
-  Manager() {
-    GetInstance()->AddVariable(Variable({1, 2, 3, 4, 5}, Variable::Naming("Foo")));
-
-    GetInstance()->AddVariable(Variable({1, 2, 3, 4, 5}, Variable::Naming("Bar")));
-  }
-
   void AugmentVariables();
 
   size_t GetVariablesCount() const { return variables.size(); }

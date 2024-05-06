@@ -19,6 +19,7 @@ struct parser : qi::grammar<Iterator, ast::program(), ascii::space_type>
   qi::rule<Iterator, ast::program(), ascii::space_type> expression;
   qi::rule<Iterator, ast::program(), ascii::space_type> additive_expr;
   qi::rule<Iterator, ast::program(), ascii::space_type> multiplicative_expr;
+  qi::rule<Iterator, ast::program(), ascii::space_type> pow_expr;
   qi::rule<Iterator, ast::operand(), ascii::space_type> unary_expr;
   qi::rule<Iterator, ast::operand(), ascii::space_type> primary_expr;
   qi::rule<Iterator, std::string(), ascii::space_type> varname;

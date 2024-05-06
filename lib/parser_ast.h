@@ -7,6 +7,7 @@
 #include <boost/fusion/include/io.hpp>
 #include <boost/optional.hpp>
 #include <boost/variant/recursive_variant.hpp>
+#include <cmath>
 #include <list>
 
 #include "formula_parser.h"
@@ -99,12 +100,21 @@ struct eval {
           return variable(result);
         }
       case '-':
-        if (lhs.values.size() == 1 || rhs.values.size() == 1) {
-          if (lhs.values.size() == 1) std::swap(lhs, rhs);
+        if (lhs.values.size() == 1 && rhs.values.size() == 1) {
+          result.push_back(lhs.values[0] - rhs.values[0]);
+          return variable(result);
+        }
+        if (lhs.values.size() == 1 && rhs.values.size() != 1) {
+          for (double i : rhs.values) result.push_back(lhs.values[0] - i);
+          return variable(result);
+        }
+        if (lhs.values.size() != 1 && rhs.values.size() == 1) {
           for (double i : lhs.values) result.push_back(i - rhs.values[0]);
           return variable(result);
-        } else {
-          for (int i = 0; i < lhs.values.size(); i++)
+        }
+        if (lhs.values.size() != 1 && rhs.values.size() != 1) {
+          for (int i = 0;
+               i < lib::Manager::GetInstance()->GetMeasurementsCount(); i++)
             result.push_back(lhs.values[i] - rhs.values[i]);
           return variable(result);
         }
@@ -135,6 +145,25 @@ struct eval {
           for (int i = 0;
                i < lib::Manager::GetInstance()->GetMeasurementsCount(); i++)
             result.push_back(lhs.values[i] / rhs.values[i]);
+          return variable(result);
+        }
+      case '^':
+        if (lhs.values.size() == 1 && rhs.values.size() == 1) {
+          result.push_back(pow(lhs.values[0], rhs.values[0]));
+          return variable(result);
+        }
+        if (lhs.values.size() == 1 && rhs.values.size() != 1) {
+          for (double i : rhs.values) result.push_back(pow(lhs.values[0], i));
+          return variable(result);
+        }
+        if (lhs.values.size() != 1 && rhs.values.size() == 1) {
+          for (double i : lhs.values) result.push_back(pow(i, rhs.values[0]));
+          return variable(result);
+        }
+        if (lhs.values.size() != 1 && rhs.values.size() != 1) {
+          for (int i = 0;
+               i < lib::Manager::GetInstance()->GetMeasurementsCount(); i++)
+            result.push_back(pow(lhs.values[i], rhs.values[i]));
           return variable(result);
         }
     }
