@@ -13,9 +13,9 @@ void Histogram::Draw() {
   const lib::Variable& variable =
       lib::Manager::GetInstance()->GetVariable(var_);
 
-  double max_value = -1e9, min_value = 1e9;
+  double max_value = variable.measurements[0], min_value = variable.measurements[0];
 
-  for (int j = 0; j < variable.GetMeasurementsCount(); j++) {
+  for (int j = 0; j < variable.GetMeasurementsCount(); ++j) {
     max_value = std::max(max_value, variable.measurements[j]);
     min_value = std::min(min_value, variable.measurements[j]);
   }
@@ -23,7 +23,9 @@ void Histogram::Draw() {
   QVector<double> xAxis_data;
   QVector<double> yAxis_data;
 
-  for (int i = min_value; i <= max_value; i += column_size_) {
+  double column_size_ = std::max(0.001, (max_value - min_value) / granularity_);
+
+  for (double i = min_value; i <= max_value; i += column_size_) {
     int count = 0;
     for (int j = 0; j < variable.GetMeasurementsCount(); ++j) {
       if (i <= variable.measurements[j] &&
@@ -50,7 +52,7 @@ void Histogram::Options() {
   a.exec();
 
   var_ = a.choose_variable();
-  column_size_ = a.choose_column_size();
+  granularity_ = a.choose_granularity();
 
   Draw();
 }
@@ -64,9 +66,9 @@ OptionsHistogram::OptionsHistogram(QWidget* parent)
         lib::Manager::GetInstance()->GetVariable(i).naming.title);
   }
 
-  ui->ColumnSizeComboBox->addItem(QString("1"));
-  ui->ColumnSizeComboBox->addItem(QString("2"));
-  ui->ColumnSizeComboBox->addItem(QString("3"));
+  ui->GranularityComboBox->addItem(QString("10"));
+  ui->GranularityComboBox->addItem(QString("100"));
+  ui->GranularityComboBox->addItem(QString("1000"));
 
   connect(ui->okPushButton, &QPushButton::clicked, this, &QDialog::close);
 }
@@ -75,8 +77,8 @@ int OptionsHistogram::choose_variable() {
   return ui->VariableComboBox->currentIndex();
 }
 
-int OptionsHistogram::choose_column_size() {
-  return ui->ColumnSizeComboBox->currentIndex() + 1;
+int OptionsHistogram::choose_granularity() {
+  return std::pow(10, ui->GranularityComboBox->currentIndex() + 1);
 }
 
 OptionsHistogram::~OptionsHistogram() { delete ui; }

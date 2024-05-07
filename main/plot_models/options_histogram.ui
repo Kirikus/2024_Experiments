@@ -56,7 +56,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Сolumn size:</string>
+    <string>Granularity:</string>
    </property>
   </widget>
   <widget class="QComboBox" name="ColumnSizeComboBox">

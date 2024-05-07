@@ -14,7 +14,7 @@ class Histogram : public AbstractPlotModel {
 
  private:
   int var_ = 0;
-  int column_size_ = 1;
+  int granularity_ = 10;
 };
 
 class OptionsHistogram : public QDialog {
@@ -25,7 +25,7 @@ class OptionsHistogram : public QDialog {
   ~OptionsHistogram();
 
   int choose_variable();
-  int choose_column_size();
+  int choose_granularity();
 
  private:
   Ui::DialogHistogram *ui;
