@@ -1,7 +1,6 @@
 #include "histogram.h"
 
 #include "manager.h"
-#include "options_histogram.h"
 
 void Histogram::Draw() {
   clearPlottables();
@@ -55,3 +54,29 @@ void Histogram::Options() {
 
   Draw();
 }
+
+OptionsHistogram::OptionsHistogram(QWidget* parent)
+    : QDialog(parent), ui(new Ui::DialogHistogram) {
+  ui->setupUi(this);
+
+  for (int i = 0; i < lib::Manager::GetInstance()->GetVariablesCount(); ++i) {
+    ui->VariableComboBox->addItem(
+        lib::Manager::GetInstance()->GetVariable(i).naming.title);
+  }
+
+  ui->ColumnSizeComboBox->addItem(QString("1"));
+  ui->ColumnSizeComboBox->addItem(QString("2"));
+  ui->ColumnSizeComboBox->addItem(QString("3"));
+
+  connect(ui->okPushButton, &QPushButton::clicked, this, &QDialog::close);
+}
+
+int OptionsHistogram::choose_variable() {
+  return ui->VariableComboBox->currentIndex();
+}
+
+int OptionsHistogram::choose_column_size() {
+  return ui->ColumnSizeComboBox->currentIndex() + 1;
+}
+
+OptionsHistogram::~OptionsHistogram() { delete ui; }
