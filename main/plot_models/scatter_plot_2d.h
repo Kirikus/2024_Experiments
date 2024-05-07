@@ -9,11 +9,7 @@ class ScatterPlot2D : public AbstractPlotModel {
   ScatterPlot2D() {}
 
   void Draw() override;
-
-  void set(int x0, int y0) {
-    x_ = x0;
-    y_ = y0;
-  }
+  void Options() override;
 
  private:
   int x_ = 0;

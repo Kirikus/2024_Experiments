@@ -1,6 +1,7 @@
 #include "histogram.h"
 
 #include "manager.h"
+#include "options_histogram.h"
 
 void Histogram::Draw() {
   clearPlottables();
@@ -43,4 +44,14 @@ void Histogram::Draw() {
 
   setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
   replot();
+}
+
+void Histogram::Options() {
+  OptionsHistogram a;
+  a.exec();
+
+  var_ = a.choose_variable();
+  column_size_ = a.choose_column_size();
+
+  Draw();
 }

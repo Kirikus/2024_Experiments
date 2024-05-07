@@ -4,6 +4,7 @@
 #include "QStandardPaths"
 #include "manager.h"
 #include "manager_odf/manager_odf.h"
+#include "plot_models/abstractplotmodel.h"
 #include "plot_models/column_plot.h"
 #include "plot_models/histogram.h"
 #include "plot_models/histogram_2d.h"
@@ -225,39 +226,9 @@ void MainWindow::UpdatePlots() {
 }
 
 void MainWindow::OptionsPlot() {
-  int index = ui->tabWidgetPlots->currentIndex();
-
-  switch (index) {
-    case 0:
-      // nothing
-      break;
-    case 1:
-      // nothing
-      break;
-    case 2:
-      // nothing
-      break;
-    case 3: {
-      OptionsHistogram a;
-      a.exec();
-      ui->ObjectHistogram->set(a.choose_variable(), a.choose_column_size());
-      break;
-    }
-    case 4: {
-      OptionsScatter2D a;
-      a.exec();
-      ui->ObjectScatterPlot2D->set(a.choose_AxisX(), a.choose_AxisY());
-      break;
-    }
-    case 5: {
-      OptionsHistogram2D a;
-      a.exec();
-      ui->ObjectHistogram2D->set(a.choose_AxisX(), a.choose_AxisY(),
-                                 a.choose_square_size());
-      break;
-    }
-  }
-  UpdatePlots();
+  auto plot =
+      static_cast<AbstractPlotModel*>(ui->tabWidgetPlots->currentWidget());
+  plot->Options();
 }
 
 void MainWindow::ConnectingAction() {

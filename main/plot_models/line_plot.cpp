@@ -45,3 +45,7 @@ void LinePlot::Draw() {
   setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
   replot();
 }
+
+void LinePlot::Options() {
+  // nothing
+}

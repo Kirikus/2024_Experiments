@@ -517,7 +517,7 @@
       <item>
        <widget class="QTabWidget" name="tabWidgetPlots">
         <property name="currentIndex">
-         <number>3</number>
+         <number>0</number>
         </property>
         <widget class="LinePlot" name="ObjectLinePlot">
          <attribute name="title">

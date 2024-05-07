@@ -32,3 +32,7 @@ void ScatterPlot::Draw() {
   setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
   replot();
 }
+
+void ScatterPlot::Options() {
+  // nothing
+}

@@ -9,6 +9,7 @@ class LinePlot : public AbstractPlotModel {
   LinePlot() {}
 
   void Draw() override;
+  void Options() override;
 };
 
 #endif  // LINE_PLOT_H

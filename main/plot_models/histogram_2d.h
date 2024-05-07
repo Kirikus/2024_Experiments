@@ -9,12 +9,7 @@ class Histogram2D : public AbstractPlotModel {
   Histogram2D() { setBackground(QBrush(QColor("#FFFF00"))); }
 
   void Draw() override;
-
-  void set(int x0, int y0, int square_size0) {
-    x_ = x0;
-    y_ = y0;
-    square_size_ = square_size0;
-  }
+  void Options() override;
 
  private:
   int x_ = 0;

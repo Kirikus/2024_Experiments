@@ -9,6 +9,7 @@ class ScatterPlot : public AbstractPlotModel {
   ScatterPlot() {}
 
   void Draw() override;
+  void Options() override;
 };
 
 #endif  // SCATTER_PLOT_H

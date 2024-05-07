@@ -9,6 +9,7 @@ class ColumnPlot : public AbstractPlotModel {
   ColumnPlot() {}
 
   void Draw() override;
+  void Options() override;
 };
 
 #endif  // COLUMN_PLOT_H

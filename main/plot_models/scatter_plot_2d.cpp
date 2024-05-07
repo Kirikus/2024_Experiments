@@ -1,6 +1,7 @@
 #include "scatter_plot_2d.h"
 
 #include "manager.h"
+#include "options_scatter_2d.h"
 
 void ScatterPlot2D::Draw() {
   clearGraphs();
@@ -35,4 +36,14 @@ void ScatterPlot2D::Draw() {
 
   setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
   replot();
+}
+
+void ScatterPlot2D::Options() {
+  OptionsScatter2D a;
+  a.exec();
+
+  x_ = a.choose_AxisX();
+  y_ = a.choose_AxisY();
+
+  Draw();
 }
