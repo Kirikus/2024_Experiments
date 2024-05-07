@@ -15,15 +15,21 @@ void ScatterPlot2D::Draw() {
 
   graph->setLineStyle(QCPGraph::lsNone);
 
-  graph->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle));
-  graph->setPen(QPen(QBrush(variable_x.visual.color), variable_x.visual.width,
-                     variable_x.visual.line_type));
-
   QVector<double> xAxis_data;
   QVector<double> yAxis_data;
 
   const lib::Variable& variable_y =
       lib::Manager::GetInstance()->GetVariable(y_);
+
+  if (variable_y.visual.point_shape ==
+      QCPScatterStyle::ScatterShape::ssNone) {
+      graph->setScatterStyle(QCPScatterStyle::ScatterShape::ssDisc);
+  } else {
+      graph->setScatterStyle(variable_y.visual.point_shape);
+  }
+
+  graph->setPen(QPen(QBrush(variable_y.visual.color), variable_y.visual.width,
+                     variable_y.visual.line_type));
 
   for (int j = 0; j < variable_x.GetMeasurementsCount(); j++) {
     xAxis_data.push_back(variable_x.measurements[j]);
