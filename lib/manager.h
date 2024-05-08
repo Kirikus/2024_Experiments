@@ -3,6 +3,7 @@
 
 #include "QList"
 #include "string"
+#include "sqlite_database/sqlite.h"
 #include "variable.h"
 
 namespace lib {
@@ -13,6 +14,7 @@ class Manager : public QObject {
  private:
   QList<Variable> variables;
   QList<Variable> calculated;
+  SQLite sqlite;
 
  public:
   static class Manager* GetInstance();
@@ -30,6 +32,8 @@ class Manager : public QObject {
   void AddCalculated(Variable&);
 
   void Clear();
+
+  SQLite& GetSQLite() { return sqlite; }
 
  public slots:
   void DeleteVariable(int index = 0);

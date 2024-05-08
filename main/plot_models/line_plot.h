@@ -6,19 +6,9 @@
 class LinePlot : public AbstractPlotModel {
   Q_OBJECT
  public:
-  LinePlot(QString x_label, QString y_label, QString title = "",
-           QWidget* parent = nullptr)
-      : AbstractPlotModel(parent),
-        x_label(x_label),
-        y_label(y_label),
-        title(title) {}
+  LinePlot() {}
 
-  void Draw(QCustomPlot*) override;
-  void SetOptions() override;
- private:
-  QString x_label;
-  QString y_label;
-  QString title;
+  virtual void Draw() override;
 };
 
 #endif  // LINE_PLOT_H

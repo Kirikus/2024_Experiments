@@ -2,7 +2,7 @@
 
 TextBlock::TextBlock(QVBoxLayout *block_chain)
     : Block(), text_line(new QLineEdit) {
-  text_line->setFixedSize(256, 32);
+  text_line->setFixedSize(512, 32);
   layout->addWidget(text_line);
   block_chain->addLayout(layout);
 }

@@ -32,6 +32,12 @@
        <number>0</number>
       </property>
       <widget class="QWidget" name="MainTab">
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="whatsThis">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Main able to work with variables&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
        <attribute name="title">
         <string>Main</string>
        </attribute>
@@ -39,10 +45,10 @@
         <item row="0" column="2">
          <spacer name="horizontalSpacer_8">
           <property name="orientation">
-           <enum>Qt::Orientation::Horizontal</enum>
+           <enum>Qt::Horizontal</enum>
           </property>
           <property name="sizeType">
-           <enum>QSizePolicy::Policy::Maximum</enum>
+           <enum>QSizePolicy::Maximum</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -55,10 +61,10 @@
         <item row="0" column="0">
          <spacer name="horizontalSpacer_7">
           <property name="orientation">
-           <enum>Qt::Orientation::Horizontal</enum>
+           <enum>Qt::Horizontal</enum>
           </property>
           <property name="sizeType">
-           <enum>QSizePolicy::Policy::Maximum</enum>
+           <enum>QSizePolicy::Maximum</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -73,35 +79,52 @@
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_2">
             <item>
-             <widget class="QPushButton" name="SaveDataBtn">
+             <widget class="QPushButton" name="uploadToDataBaseBtn">
               <property name="text">
-               <string>Save data</string>
+               <string>Upload to data base</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="LoadDataBtn">
-              <property name="font">
-               <font>
-                <pointsize>9</pointsize>
-                <bold>true</bold>
-               </font>
+             <spacer name="horizontalSpacer_19">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Maximum</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>10</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="clearDataBtn">
+              <property name="toolTip">
+               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+hr { height: 1px; border-width: 0; }
+li.unchecked::marker { content: &quot;\2610&quot;; }
+li.checked::marker { content: &quot;\2612&quot;; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Segoe UI'; font-size:9pt; font-weight:700; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Delete all variables&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <property name="whatsThis">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
               <property name="text">
-               <string>Load data</string>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>12</width>
-                <height>12</height>
-               </size>
+               <string>Clear</string>
               </property>
              </widget>
             </item>
             <item>
              <spacer name="horizontalSpacer_6">
               <property name="orientation">
-               <enum>Qt::Orientation::Horizontal</enum>
+               <enum>Qt::Horizontal</enum>
               </property>
               <property name="sizeHint" stdset="0">
                <size>
@@ -123,28 +146,28 @@
               <item row="0" column="1">
                <widget class="QPushButton" name="addRowBtn">
                 <property name="text">
-                 <string>add row</string>
+                 <string>Add new measurment</string>
                 </property>
                </widget>
               </item>
               <item row="1" column="3">
                <widget class="QPushButton" name="deleteColumnBtn">
                 <property name="text">
-                 <string>delete column</string>
+                 <string>Delete selected variables</string>
                 </property>
                </widget>
               </item>
               <item row="0" column="0">
                <spacer name="horizontalSpacer">
                 <property name="orientation">
-                 <enum>Qt::Orientation::Horizontal</enum>
+                 <enum>Qt::Horizontal</enum>
                 </property>
                 <property name="sizeType">
-                 <enum>QSizePolicy::Policy::Maximum</enum>
+                 <enum>QSizePolicy::Maximum</enum>
                 </property>
                 <property name="sizeHint" stdset="0">
                  <size>
-                  <width>40</width>
+                  <width>60</width>
                   <height>20</height>
                  </size>
                 </property>
@@ -153,28 +176,44 @@
               <item row="0" column="3">
                <widget class="QPushButton" name="addColumnBtn">
                 <property name="text">
-                 <string>add column</string>
+                 <string>Add new variable</string>
                 </property>
                </widget>
               </item>
               <item row="1" column="1">
                <widget class="QPushButton" name="deleteRowBtn">
                 <property name="text">
-                 <string>delete row</string>
+                 <string>Delete selected measurments</string>
                 </property>
                </widget>
               </item>
               <item row="0" column="4">
                <spacer name="horizontalSpacer_5">
                 <property name="orientation">
-                 <enum>Qt::Orientation::Horizontal</enum>
+                 <enum>Qt::Horizontal</enum>
                 </property>
                 <property name="sizeType">
-                 <enum>QSizePolicy::Policy::Maximum</enum>
+                 <enum>QSizePolicy::Maximum</enum>
                 </property>
                 <property name="sizeHint" stdset="0">
                  <size>
-                  <width>40</width>
+                  <width>60</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item row="0" column="2">
+               <spacer name="horizontalSpacer_18">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeType">
+                 <enum>QSizePolicy::Maximum</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
                   <height>20</height>
                  </size>
                 </property>
@@ -189,10 +228,10 @@
         <item row="1" column="1">
          <spacer name="verticalSpacer">
           <property name="orientation">
-           <enum>Qt::Orientation::Vertical</enum>
+           <enum>Qt::Vertical</enum>
           </property>
           <property name="sizeType">
-           <enum>QSizePolicy::Policy::Preferred</enum>
+           <enum>QSizePolicy::Preferred</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -215,10 +254,10 @@
         <item row="1" column="2">
          <spacer name="horizontalSpacer_10">
           <property name="orientation">
-           <enum>Qt::Orientation::Horizontal</enum>
+           <enum>Qt::Horizontal</enum>
           </property>
           <property name="sizeType">
-           <enum>QSizePolicy::Policy::Maximum</enum>
+           <enum>QSizePolicy::Maximum</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -234,10 +273,10 @@
         <item row="0" column="1">
          <spacer name="verticalSpacer_3">
           <property name="orientation">
-           <enum>Qt::Orientation::Vertical</enum>
+           <enum>Qt::Vertical</enum>
           </property>
           <property name="sizeType">
-           <enum>QSizePolicy::Policy::Maximum</enum>
+           <enum>QSizePolicy::Maximum</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -250,10 +289,10 @@
         <item row="2" column="1">
          <spacer name="verticalSpacer_2">
           <property name="orientation">
-           <enum>Qt::Orientation::Vertical</enum>
+           <enum>Qt::Vertical</enum>
           </property>
           <property name="sizeType">
-           <enum>QSizePolicy::Policy::Maximum</enum>
+           <enum>QSizePolicy::Maximum</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -266,10 +305,10 @@
         <item row="1" column="0">
          <spacer name="horizontalSpacer_9">
           <property name="orientation">
-           <enum>Qt::Orientation::Horizontal</enum>
+           <enum>Qt::Horizontal</enum>
           </property>
           <property name="sizeType">
-           <enum>QSizePolicy::Policy::Fixed</enum>
+           <enum>QSizePolicy::Fixed</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -292,10 +331,10 @@
         <item row="0" column="1">
          <spacer name="verticalSpacer_4">
           <property name="orientation">
-           <enum>Qt::Orientation::Vertical</enum>
+           <enum>Qt::Vertical</enum>
           </property>
           <property name="sizeType">
-           <enum>QSizePolicy::Policy::Fixed</enum>
+           <enum>QSizePolicy::Fixed</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -308,10 +347,10 @@
         <item row="1" column="0">
          <spacer name="horizontalSpacer_11">
           <property name="orientation">
-           <enum>Qt::Orientation::Horizontal</enum>
+           <enum>Qt::Horizontal</enum>
           </property>
           <property name="sizeType">
-           <enum>QSizePolicy::Policy::Fixed</enum>
+           <enum>QSizePolicy::Fixed</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -324,10 +363,10 @@
         <item row="1" column="2">
          <spacer name="horizontalSpacer_12">
           <property name="orientation">
-           <enum>Qt::Orientation::Horizontal</enum>
+           <enum>Qt::Horizontal</enum>
           </property>
           <property name="sizeType">
-           <enum>QSizePolicy::Policy::Maximum</enum>
+           <enum>QSizePolicy::Maximum</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -340,10 +379,10 @@
         <item row="2" column="1">
          <spacer name="verticalSpacer_5">
           <property name="orientation">
-           <enum>Qt::Orientation::Vertical</enum>
+           <enum>Qt::Vertical</enum>
           </property>
           <property name="sizeType">
-           <enum>QSizePolicy::Policy::Maximum</enum>
+           <enum>QSizePolicy::Maximum</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -363,10 +402,10 @@
         <item row="1" column="0">
          <spacer name="horizontalSpacer_13">
           <property name="orientation">
-           <enum>Qt::Orientation::Horizontal</enum>
+           <enum>Qt::Horizontal</enum>
           </property>
           <property name="sizeType">
-           <enum>QSizePolicy::Policy::Fixed</enum>
+           <enum>QSizePolicy::Fixed</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -379,10 +418,10 @@
         <item row="0" column="1">
          <spacer name="verticalSpacer_6">
           <property name="orientation">
-           <enum>Qt::Orientation::Vertical</enum>
+           <enum>Qt::Vertical</enum>
           </property>
           <property name="sizeType">
-           <enum>QSizePolicy::Policy::Fixed</enum>
+           <enum>QSizePolicy::Fixed</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -395,10 +434,10 @@
         <item row="1" column="2">
          <spacer name="horizontalSpacer_14">
           <property name="orientation">
-           <enum>Qt::Orientation::Horizontal</enum>
+           <enum>Qt::Horizontal</enum>
           </property>
           <property name="sizeType">
-           <enum>QSizePolicy::Policy::Maximum</enum>
+           <enum>QSizePolicy::Maximum</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -414,10 +453,10 @@
         <item row="2" column="1">
          <spacer name="verticalSpacer_7">
           <property name="orientation">
-           <enum>Qt::Orientation::Vertical</enum>
+           <enum>Qt::Vertical</enum>
           </property>
           <property name="sizeType">
-           <enum>QSizePolicy::Policy::Maximum</enum>
+           <enum>QSizePolicy::Maximum</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -437,10 +476,10 @@
         <item row="1" column="0">
          <spacer name="horizontalSpacer_15">
           <property name="orientation">
-           <enum>Qt::Orientation::Horizontal</enum>
+           <enum>Qt::Horizontal</enum>
           </property>
           <property name="sizeType">
-           <enum>QSizePolicy::Policy::Fixed</enum>
+           <enum>QSizePolicy::Fixed</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -453,10 +492,10 @@
         <item row="2" column="1">
          <spacer name="verticalSpacer_8">
           <property name="orientation">
-           <enum>Qt::Orientation::Vertical</enum>
+           <enum>Qt::Vertical</enum>
           </property>
           <property name="sizeType">
-           <enum>QSizePolicy::Policy::Maximum</enum>
+           <enum>QSizePolicy::Maximum</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -469,10 +508,10 @@
         <item row="1" column="2">
          <spacer name="horizontalSpacer_16">
           <property name="orientation">
-           <enum>Qt::Orientation::Horizontal</enum>
+           <enum>Qt::Horizontal</enum>
           </property>
           <property name="sizeType">
-           <enum>QSizePolicy::Policy::Maximum</enum>
+           <enum>QSizePolicy::Maximum</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -488,10 +527,10 @@
         <item row="0" column="1">
          <spacer name="verticalSpacer_9">
           <property name="orientation">
-           <enum>Qt::Orientation::Vertical</enum>
+           <enum>Qt::Vertical</enum>
           </property>
           <property name="sizeType">
-           <enum>QSizePolicy::Policy::Fixed</enum>
+           <enum>QSizePolicy::Fixed</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -509,12 +548,43 @@
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <widget class="QTabWidget" name="tabWidgetPlots">
-        <property name="currentIndex">
-         <number>0</number>
+        <property name="minimumSize">
+         <size>
+          <width>300</width>
+          <height>300</height>
+         </size>
         </property>
-        <widget class="QCustomPlot" name="customPlot">
+        <property name="currentIndex">
+         <number>5</number>
+        </property>
+        <widget class="LinePlot" name="ObjectLinePlot">
          <attribute name="title">
-          <string>Plot 1</string>
+          <string>LinePlot</string>
+         </attribute>
+        </widget>
+        <widget class="ScatterPlot" name="ObjectScatterPlot">
+         <attribute name="title">
+          <string>ScatterPlot</string>
+         </attribute>
+        </widget>
+        <widget class="ColumnPlot" name="ObjectColumnPlot">
+         <attribute name="title">
+          <string>ColumnPlot</string>
+         </attribute>
+        </widget>
+        <widget class="Histogram" name="ObjectHistogram">
+         <attribute name="title">
+          <string>Histogram</string>
+         </attribute>
+        </widget>
+        <widget class="ScatterPlot2D" name="ObjectScatterPlot2D">
+         <attribute name="title">
+          <string>ScatterPlot2D</string>
+         </attribute>
+        </widget>
+        <widget class="Histogram2D" name="ObjectHistogram2D">
+         <attribute name="title">
+          <string>Histogram2D</string>
          </attribute>
         </widget>
        </widget>
@@ -524,10 +594,10 @@
         <item>
          <spacer name="horizontalSpacer_3">
           <property name="orientation">
-           <enum>Qt::Orientation::Horizontal</enum>
+           <enum>Qt::Horizontal</enum>
           </property>
           <property name="sizeType">
-           <enum>QSizePolicy::Policy::Maximum</enum>
+           <enum>QSizePolicy::Maximum</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -538,7 +608,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="redrawPlotBtn">
+         <widget class="QPushButton" name="rescalePlotsBtn">
           <property name="font">
            <font>
             <pointsize>10</pointsize>
@@ -546,17 +616,17 @@
            </font>
           </property>
           <property name="text">
-           <string>Redraw</string>
+           <string>Rescale</string>
           </property>
          </widget>
         </item>
         <item>
          <spacer name="horizontalSpacer_17">
           <property name="orientation">
-           <enum>Qt::Orientation::Horizontal</enum>
+           <enum>Qt::Horizontal</enum>
           </property>
           <property name="sizeType">
-           <enum>QSizePolicy::Policy::Maximum</enum>
+           <enum>QSizePolicy::Maximum</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -567,42 +637,19 @@
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="addPlotBtn">
+         <widget class="QPushButton" name="optionsPlotBtn">
           <property name="text">
-           <string>Add plot</string>
+           <string>Options</string>
           </property>
          </widget>
         </item>
         <item>
          <spacer name="horizontalSpacer_2">
           <property name="orientation">
-           <enum>Qt::Orientation::Horizontal</enum>
+           <enum>Qt::Horizontal</enum>
           </property>
           <property name="sizeType">
-           <enum>QSizePolicy::Policy::Maximum</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>10</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="QPushButton" name="deletePlotBtn">
-          <property name="text">
-           <string>Delete plot</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer_4">
-          <property name="orientation">
-           <enum>Qt::Orientation::Horizontal</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Policy::Maximum</enum>
+           <enum>QSizePolicy::Maximum</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -625,7 +672,7 @@
      <x>0</x>
      <y>0</y>
      <width>1280</width>
-     <height>21</height>
+     <height>17</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuSettings">
@@ -633,35 +680,39 @@
      <string>Settings</string>
     </property>
    </widget>
-   <widget class="QMenu" name="menuHelp">
-    <property name="title">
-     <string>Help</string>
-    </property>
-   </widget>
    <widget class="QMenu" name="menuTheme">
     <property name="title">
      <string>Theme</string>
     </property>
-    <addaction name="actionWhite"/>
-    <addaction name="actionDark"/>
+    <addaction name="actionLightTheme"/>
+    <addaction name="actionDarkTheme"/>
    </widget>
-   <widget class="QMenu" name="menuODF">
+   <widget class="QMenu" name="menuData_base">
     <property name="title">
-     <string>ODF</string>
+     <string>Data base</string>
     </property>
-    <addaction name="actionCreate_ODF"/>
+    <addaction name="actionOpenDataBase"/>
    </widget>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionSave"/>
+    <addaction name="actionLoad"/>
+    <addaction name="separator"/>
+    <addaction name="actionCreateODF"/>
+   </widget>
+   <addaction name="menuFile"/>
    <addaction name="menuSettings"/>
    <addaction name="menuTheme"/>
-   <addaction name="menuHelp"/>
-   <addaction name="menuODF"/>
+   <addaction name="menuData_base"/>
   </widget>
-  <action name="actionWhite">
+  <action name="actionLightTheme">
    <property name="text">
     <string>Light</string>
    </property>
   </action>
-  <action name="actionDark">
+  <action name="actionDarkTheme">
    <property name="text">
     <string>Dark</string>
    </property>
@@ -671,12 +722,67 @@
     <string>Create ODF</string>
    </property>
   </action>
+  <action name="actionOpenDataBase">
+   <property name="text">
+    <string>Open data base</string>
+   </property>
+  </action>
+  <action name="actionHelp">
+   <property name="text">
+    <string>Help</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="text">
+    <string>Save</string>
+   </property>
+  </action>
+  <action name="actionLoad">
+   <property name="text">
+    <string>Load</string>
+   </property>
+  </action>
+  <action name="actionCreateODF">
+   <property name="text">
+    <string>Create ODF</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>QCustomPlot</class>
+   <class>ScatterPlot</class>
    <extends>QWidget</extends>
-   <header>qcustomplot.h</header>
+   <header>C:\2024_Experiments\main\plot_models\scatter_plot.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ColumnPlot</class>
+   <extends>QWidget</extends>
+   <header>C:\2024_Experiments\main\plot_models\column_plot.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Histogram</class>
+   <extends>QWidget</extends>
+   <header>C:\2024_Experiments\main\plot_models\histogram.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ScatterPlot2D</class>
+   <extends>QWidget</extends>
+   <header>C:\2024_Experiments\main\plot_models\scatter_plot_2d.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Histogram2D</class>
+   <extends>QWidget</extends>
+   <header>C:\2024_Experiments\main\plot_models\histogram_2d.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>LinePlot</class>
+   <extends>QWidget</extends>
+   <header>C:\2024_Experiments\main\plot_models\line_plot.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

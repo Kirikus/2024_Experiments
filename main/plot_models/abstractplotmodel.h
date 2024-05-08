@@ -6,13 +6,30 @@
 #include "manager.h"
 #include "qcustomplot.h"
 
-class AbstractPlotModel : public QWidget {
+class AbstractPlotModel : public QCustomPlot {
   Q_OBJECT
  public:
-  AbstractPlotModel(QWidget* parent = nullptr) : QWidget(parent) {}
+  AbstractPlotModel(QCustomPlot* parent = nullptr) : QCustomPlot(parent) {}
 
-  virtual void Draw(QCustomPlot*) = 0;
-  virtual void SetOptions() = 0;
+  virtual void Draw() = 0;
+
+  static void Rescale(QCustomPlot* plot) {
+    plot->rescaleAxes();
+    plot->replot();
+  }
+
+  static void SetDarkTheme(QCustomPlot* plot) {
+    plot->setBackground(QBrush(QColor("#454545")));
+    plot->yAxis->setTickLabelColor(Qt::white);
+    plot->xAxis->setTickLabelColor(Qt::white);
+    plot->replot();
+  }
+  static void SetLightTheme(QCustomPlot* plot) {
+    plot->setBackground(QBrush(QColor("#ffffff")));
+    plot->yAxis->setTickLabelColor(Qt::black);
+    plot->xAxis->setTickLabelColor(Qt::black);
+    plot->replot();
+  }
 };
 
 #endif  // ABSTRACTPLOTMODEL_H

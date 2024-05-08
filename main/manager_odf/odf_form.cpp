@@ -5,6 +5,9 @@
 
 ODF_Form::ODF_Form(QWidget *parent) : QWidget(parent), ui(new Ui::ODF_Form) {
   ui->setupUi(this);
+  setWindowIcon(QIcon("C:/2024_Experiments/images/mainwindow.png"));
+  setWindowTitle("Data Handler");
+  setFixedSize(860, 800);
 }
 
 ODF_Form::~ODF_Form() {

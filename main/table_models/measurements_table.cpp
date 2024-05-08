@@ -22,10 +22,10 @@ QVariant MeasurementsTable::data(const QModelIndex &index, int role) const {
         switch (variable.error.type) {
           case Variable::ErrorOptions::Types::kAbsolute:
             return QVariant(variable.measurements[index.row()]).toString() +
-                   "±" + QVariant(variable.error.value).toString();
+                   " ± " + QVariant(variable.error.value).toString();
           case Variable::ErrorOptions::Types::kRelative:
             return QVariant(variable.measurements[index.row()]).toString() +
-                   "±" +
+                   " ± " +
                    QVariant(variable.measurements[index.row()] *
                             variable.error.value * 0.5)
                        .toString();

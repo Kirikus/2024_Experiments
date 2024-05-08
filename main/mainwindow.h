@@ -13,7 +13,6 @@
 #include <QStandardItem>
 
 #include "manager_odf/odf_form.h"
-#include "plot_models/abstractplotmodel.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -32,13 +31,12 @@ class MainWindow : public QMainWindow {
 
   bool ConfirmingAction(QString);
   void ConfirmDeleteMeasurments();
-  void ConfirmDeleteVariable();
+  void ConfirmDeleteVariables();
 
   void Load();
   void Save();
 
-  void DeletePlot();
-  void AddPlot();
+  void OptionsPlot();
 
   void AddColumn();
   void DeleteColumn();
@@ -50,9 +48,11 @@ class MainWindow : public QMainWindow {
 
   void UpdatePlots();
 
+  void RescalePlots();
+
   void ConnectingAction();
 
-  void on_actionCreate_ODF_triggered();
+  void on_actionCreateODF_triggered();
 
   void AddTextBlock();
   void AddPlotBlock();
@@ -61,6 +61,15 @@ class MainWindow : public QMainWindow {
   void AssembleODF();
 
   void closeEvent(QCloseEvent *event);
+
+  void ClearData();
+
+  void on_actionOpenDataBase_triggered();
+
+  void AddToDatabase();
+
+  void DarkThemeOn();
+  void LightThemeOn();
 
  private:
   Ui::MainWindow *ui;

@@ -8,15 +8,17 @@ set(CMAKE_AUTORCC ON)   # Specific to Qt
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 COMPONENTS Core Widgets REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Widgets REQUIRED)
+find_package(QT NAMES Qt6 COMPONENTS Core Widgets Sql REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Widgets Sql REQUIRED)
 
 file(GLOB PROJECT_SOURCES "*.h" "*.cpp")
+file(GLOB QSQLITE_SOURCES "sqlite_database/*.h" "sqlite_database/*.cpp" "sqlite_database/*.ui")
 
-add_library(core STATIC ${PROJECT_SOURCES})
+add_library(core STATIC ${PROJECT_SOURCES} ${QSQLITE_SOURCES})
 
 target_link_libraries(core PRIVATE Qt${QT_VERSION_MAJOR}::Core)
 target_link_libraries(core PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 target_link_libraries(core PRIVATE ${Boost_LIBRARIES})
+target_link_libraries(core PRIVATE Qt${QT_VERSION_MAJOR}::Sql)
 
 target_include_directories(core INTERFACE .)
