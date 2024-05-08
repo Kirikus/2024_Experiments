@@ -59,7 +59,7 @@
     <string>Granularity:</string>
    </property>
   </widget>
-  <widget class="QComboBox" name="ColumnSizeComboBox">
+  <widget class="QComboBox" name="GranularityComboBox">
    <property name="geometry">
     <rect>
      <x>180</x>
