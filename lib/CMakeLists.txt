@@ -5,7 +5,7 @@ set(CMAKE_AUTOUIC ON)   # Specific to Qt
 set(CMAKE_AUTOMOC ON)   # Specific to Qt
 set(CMAKE_AUTORCC ON)   # Specific to Qt
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(QT NAMES Qt6 COMPONENTS Core Widgets Sql REQUIRED)

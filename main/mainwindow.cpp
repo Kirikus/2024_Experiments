@@ -2,8 +2,8 @@
 
 #include "./ui_mainwindow.h"
 #include "QStandardPaths"
+#include "implementer/implementer.h"
 #include "manager.h"
-#include "manager_odf/manager_odf.h"
 #include "plot_models/column_plot.h"
 #include "plot_models/histogram.h"
 #include "plot_models/histogram_2d.h"
@@ -14,8 +14,6 @@
 #include "plot_models/scatter_plot.h"
 #include "plot_models/scatter_plot_2d.h"
 #include "qcustomplot.h"
-#include "sqlite_database/db_form.h"
-#include "sqlite_database/sqlite.h"
 #include "strategyIO.h"
 #include "table_models/delegates/color_delegate.h"
 #include "table_models/delegates/combobox_delegate.h"
@@ -103,7 +101,7 @@ void MainWindow::ConfirmDeleteMeasurments() {
 
 void MainWindow::ClearData() {
   if (lib::Manager::GetInstance()->GetMeasurementsCount() > 0 &&
-      ConfirmingAction("Are you sure to clear all data?")){
+      ConfirmingAction("Are you sure to clear all data?")) {
     lib::Manager::GetInstance()->Clear();
     UpdatePlots();
   }
@@ -293,7 +291,6 @@ void MainWindow::ConnectingAction() {
 
   connect(ui->rescalePlotsBtn, &QAbstractButton::clicked, this,
           &MainWindow::RescalePlots);
-
   connect(ui->optionsPlotBtn, &QAbstractButton::clicked, this,
           &MainWindow::OptionsPlot);
 
@@ -301,10 +298,9 @@ void MainWindow::ConnectingAction() {
           &MainWindow::ConfirmDeleteVariables);
   connect(lib::Manager::GetInstance(), &lib::Manager::variable_is_deleted, this,
           &MainWindow::DeleteColumn);
-  // need to fix
+
   connect(ui->addColumnBtn, SIGNAL(clicked()), lib::Manager::GetInstance(),
           SLOT(AddVariable()));
-  // need to fix
   connect(lib::Manager::GetInstance(), &lib::Manager::variable_is_added, this,
           &MainWindow::AddColumn);
 
@@ -324,39 +320,36 @@ void MainWindow::ConnectingAction() {
   connect(ui->uploadToDataBaseBtn, &QAbstractButton::clicked, this,
           &MainWindow::AddToDatabase);
 
-  // conecting menu
-
   connect(ui->actionDarkTheme, &QAction::triggered, this,
           &MainWindow::DarkThemeOn);
-
   connect(ui->actionLightTheme, &QAction::triggered, this,
           &MainWindow::LightThemeOn);
 
   connect(ui->actionLoad, &QAction::triggered, this, &MainWindow::Load);
   connect(ui->actionSave, &QAction::triggered, this, &MainWindow::Save);
+
+  connect(Implementer::GetInstance()->odf_form, &ODF_Form::textBtn_is_clicked,
+          this, &MainWindow::AddTextBlock);
+  connect(Implementer::GetInstance()->odf_form, &ODF_Form::plotBtn_is_clicked,
+          this, &MainWindow::AddPlotBlock);
+  connect(Implementer::GetInstance()->odf_form, &ODF_Form::tableBtn_is_clicked,
+          this, &MainWindow::AddTableBlock);
+  connect(Implementer::GetInstance()->odf_form,
+          &ODF_Form::assembleBtn_is_clicked, this, &MainWindow::AssembleODF);
 }
 
 void MainWindow::on_actionCreateODF_triggered() {
-  ManagerODF::GetInstance()->form->show();
-
-  connect(ManagerODF::GetInstance()->form, &ODF_Form::textBtn_is_clicked, this,
-          &MainWindow::AddTextBlock);
-  connect(ManagerODF::GetInstance()->form, &ODF_Form::plotBtn_is_clicked, this,
-          &MainWindow::AddPlotBlock);
-  connect(ManagerODF::GetInstance()->form, &ODF_Form::tableBtn_is_clicked, this,
-          &MainWindow::AddTableBlock);
-  connect(ManagerODF::GetInstance()->form, &ODF_Form::assembleBtn_is_clicked,
-          this, &MainWindow::AssembleODF);
+  Implementer::GetInstance()->odf_form->show();
 }
 
 void MainWindow::AddTextBlock() {
-  ManagerODF::GetInstance()->AddTextBlock(
-      ManagerODF::GetInstance()->form->GetLayout());
+  Implementer::GetInstance()->AddTextBlock(
+      Implementer::GetInstance()->odf_form->GetLayout());
 }
 
 void MainWindow::AddPlotBlock() {
-  ManagerODF::GetInstance()->AddPlotBlock(
-      ManagerODF::GetInstance()->form->GetLayout(),
+  Implementer::GetInstance()->AddPlotBlock(
+      Implementer::GetInstance()->odf_form->GetLayout(),
       QPixmap(ui->ObjectLinePlot->toPixmap(256, 256)));
 }
 
@@ -366,8 +359,8 @@ void MainWindow::AddTableBlock() {
     if (ui->tableViewMain->selectionModel()->isColumnSelected(i))
       column_indexes.push_back(i);
   if (column_indexes.isEmpty()) return;
-  ManagerODF::GetInstance()->AddTableBlock(
-      ManagerODF::GetInstance()->form->GetLayout(), column_indexes);
+  Implementer::GetInstance()->AddTableBlock(
+      Implementer::GetInstance()->odf_form->GetLayout(), column_indexes);
 }
 
 void MainWindow::AssembleODF() {
@@ -382,7 +375,7 @@ void MainWindow::AssembleODF() {
   QTextDocument* document = new QTextDocument;
   QTextCursor* cursor = new QTextCursor(document);
 
-  for (auto& block : ManagerODF::GetInstance()->blocks) block->Save(cursor);
+  for (auto& block : Implementer::GetInstance()->blocks) block->Save(cursor);
 
   writer.setFormat("odf");
   writer.write(document);
@@ -395,14 +388,14 @@ void MainWindow::closeEvent(QCloseEvent* event) {
   if (lib::Manager::GetInstance()->GetVariablesCount() == 0 ||
       ConfirmingAction("Are you sure to close program?")) {
     event->accept();
-    if (ManagerODF::GetInstance()->form != NULL)
-      ManagerODF::GetInstance()->form->close();
+    if (Implementer::GetInstance()->odf_form != NULL)
+      Implementer::GetInstance()->odf_form->close();
   } else
     event->ignore();
 }
 
 void MainWindow::on_actionOpenDataBase_triggered() {
-  lib::Manager::GetInstance()->GetSQLite().form->show();
+  Implementer::GetInstance()->db_form->show();
 }
 
 void MainWindow::AddToDatabase() {
@@ -412,7 +405,7 @@ void MainWindow::AddToDatabase() {
       column_indexes.push_back(i);
   if (column_indexes.isEmpty()) return;
   for (int i : column_indexes)
-    lib::Manager::GetInstance()->GetSQLite().AddToDatabase(
+    Implementer::GetInstance()->database->AddToDatabase(
         lib::Manager::GetInstance()->GetVariable(i));
 }
 
