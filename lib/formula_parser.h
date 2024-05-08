@@ -32,6 +32,12 @@ parser<Iterator>::parser() : parser::base_type(expression) {
   qi::raw_type raw;
   qi::alpha_type alpha;
   // clang-format off
+  assignment =
+      varname
+      >   '='
+      >   expression
+      ;
+
   expression =
       additive_expr.alias()
       ;
