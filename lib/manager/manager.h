@@ -2,7 +2,7 @@
 #define MANAGER_H
 
 #include "QList"
-#include "variable.h"
+#include "variable/variable.h"
 
 namespace lib {
 

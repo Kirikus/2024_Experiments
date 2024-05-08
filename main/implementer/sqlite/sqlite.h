@@ -4,7 +4,7 @@
 #include "QTableWidget"
 #include "QtSql/QSqlDatabase"
 #include "QtSql/QSqlQuery"
-#include "variable.h"
+#include "manager/variable/variable.h"
 
 struct SQLite : QObject {
   Q_OBJECT

@@ -2,7 +2,7 @@
 
 #include "../implementer.h"
 #include "QtSql/qsqlrecord.h"
-#include "manager.h"
+#include "manager/manager.h"
 
 SQLite::SQLite() {
   data = QSqlDatabase::addDatabase("QSQLITE");
