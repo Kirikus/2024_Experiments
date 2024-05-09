@@ -1,6 +1,6 @@
 #include "table_block.h"
 
-#include "manager.h"
+#include "manager/manager.h"
 
 TableBlock::TableBlock(QVBoxLayout *block_chain, QList<int> column_indexes)
     : Block(), table(new QTableWidget) {

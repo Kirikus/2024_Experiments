@@ -3,7 +3,7 @@
 
 #include "QString"
 #include "QTabWidget"
-#include "manager.h"
+#include "manager/manager.h"
 #include "qcustomplot.h"
 
 class AbstractPlotModel : public QCustomPlot {

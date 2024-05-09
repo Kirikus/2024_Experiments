@@ -1,6 +1,6 @@
 #include "histogram_2d.h"
 
-#include "manager.h"
+#include "manager/manager.h"
 
 void Histogram2D::Draw() {
   // The color scheme automatically adjusts to the set of values

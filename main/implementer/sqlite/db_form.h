@@ -16,9 +16,6 @@ class DB_Form : public QMainWindow {
   ~DB_Form();
 
   QTableWidget *GetMeasurementsTableWidget();
-  QTableWidget *GetVisualTableWidget();
-  QTableWidget *GetNamingTableWidget();
-  QTableWidget *GetErrorTableWidget();
 
  public slots:
   void on_uploadBtn_clicked();
