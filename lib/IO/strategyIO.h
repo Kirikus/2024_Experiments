@@ -1,7 +1,7 @@
 #ifndef STRATEGYIO_H
 #define STRATEGYIO_H
 
-#include "manager.h"
+#include "manager/manager.h"
 
 namespace lib {
 

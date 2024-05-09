@@ -1,6 +1,6 @@
 #include "histogram.h"
 
-#include "manager.h"
+#include "manager/manager.h"
 
 void Histogram::Draw() {
   clearPlottables();

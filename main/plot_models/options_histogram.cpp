@@ -1,6 +1,6 @@
 #include "options_histogram.h"
 
-#include "manager.h"
+#include "manager/manager.h"
 
 OptionsHistogram::OptionsHistogram(QWidget *parent)
     : QDialog(parent), ui(new Ui::DialogHistogram) {

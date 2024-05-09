@@ -1,6 +1,6 @@
 #include "options_scatter_2d.h"
 
-#include "manager.h"
+#include "manager/manager.h"
 
 OptionsScatter2D::OptionsScatter2D(QWidget *parent)
     : QDialog(parent), ui(new Ui::DialogScattetPlot2D) {

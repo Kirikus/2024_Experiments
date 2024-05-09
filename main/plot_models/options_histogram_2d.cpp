@@ -1,6 +1,6 @@
 #include "options_histogram_2d.h"
 
-#include "manager.h"
+#include "manager/manager.h"
 
 OptionsHistogram2D::OptionsHistogram2D(QWidget *parent)
     : QDialog(parent), ui(new Ui::DialogHistogram2D) {
