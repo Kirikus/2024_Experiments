@@ -13,7 +13,10 @@ void Histogram::Draw() {
   const lib::Variable& variable =
       lib::Manager::GetInstance()->GetVariable(var_);
 
-  double max_value = variable.measurements[0], min_value = variable.measurements[0];
+  if (variable.GetMeasurementsCount() == 0) return;
+
+  double max_value = variable.measurements[0],
+         min_value = variable.measurements[0];
 
   for (int j = 0; j < variable.GetMeasurementsCount(); ++j) {
     max_value = std::max(max_value, variable.measurements[j]);
