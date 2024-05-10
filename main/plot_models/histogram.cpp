@@ -51,16 +51,19 @@ void Histogram::Draw() {
 }
 
 void Histogram::Options() {
-  OptionsHistogram a;
+  OptionsHistogram a(index_x_, index_granularity_);
   a.exec();
 
   var_ = a.choose_variable();
   granularity_ = a.choose_granularity();
 
+  index_x_ = a.get()->VariableComboBox->currentIndex();
+  index_granularity_ = a.get()->GranularityComboBox->currentIndex();
+
   Draw();
 }
 
-OptionsHistogram::OptionsHistogram(QWidget* parent)
+OptionsHistogram::OptionsHistogram(int index_x_, int index_granularity_,  QWidget* parent)
     : QDialog(parent), ui(new Ui::DialogHistogram) {
   ui->setupUi(this);
 
@@ -68,10 +71,12 @@ OptionsHistogram::OptionsHistogram(QWidget* parent)
     ui->VariableComboBox->addItem(
         lib::Manager::GetInstance()->GetVariable(i).naming.title);
   }
+  ui->VariableComboBox->setCurrentIndex(index_x_);
 
   ui->GranularityComboBox->addItem(QString("10"));
   ui->GranularityComboBox->addItem(QString("100"));
   ui->GranularityComboBox->addItem(QString("1000"));
+  ui->GranularityComboBox->setCurrentIndex(index_granularity_);
 
   connect(ui->okPushButton, &QPushButton::clicked, this, &QDialog::close);
 }
