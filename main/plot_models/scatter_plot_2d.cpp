@@ -20,7 +20,6 @@ void ScatterPlot2D::Draw() {
 
   QCPGraph* graph = addGraph();
 
-
   graph->setLineStyle(QCPGraph::lsNone);
 
   QVector<double> xAxis_data;
@@ -48,16 +47,19 @@ void ScatterPlot2D::Draw() {
 }
 
 void ScatterPlot2D::Options() {
-  OptionsScatter2D a;
+  OptionsScatter2D a(index_x_, index_y_);
   a.exec();
 
   x_ = a.choose_AxisX();
   y_ = a.choose_AxisY();
 
+  index_x_ = a.get()->AxisXComboBox->currentIndex();
+  index_y_ = a.get()->AxisYComboBox->currentIndex();
+
   Draw();
 }
 
-OptionsScatter2D::OptionsScatter2D(QWidget* parent)
+OptionsScatter2D::OptionsScatter2D(int index_x_, int index_y_, QWidget* parent)
     : QDialog(parent), ui(new Ui::DialogScattetPlot2D) {
   ui->setupUi(this);
 
@@ -65,11 +67,13 @@ OptionsScatter2D::OptionsScatter2D(QWidget* parent)
     ui->AxisXComboBox->addItem(
         lib::Manager::GetInstance()->GetVariable(i).naming.title);
   }
+  ui->AxisXComboBox->setCurrentIndex(index_x_);
 
   for (int i = 0; i < lib::Manager::GetInstance()->GetVariablesCount(); ++i) {
     ui->AxisYComboBox->addItem(
         lib::Manager::GetInstance()->GetVariable(i).naming.title);
   }
+  ui->AxisYComboBox->setCurrentIndex(index_y_);
 
   connect(ui->okPushButton, &QPushButton::clicked, this, &QDialog::close);
 }

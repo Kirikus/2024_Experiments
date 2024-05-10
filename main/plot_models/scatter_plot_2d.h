@@ -15,17 +15,21 @@ class ScatterPlot2D : public AbstractPlotModel {
  private:
   int x_ = 0;
   int y_ = 0;
+  int index_x_ = 0;
+  int index_y_ = 0;
 };
 
 class OptionsScatter2D : public QDialog {
   Q_OBJECT
 
  public:
-  OptionsScatter2D(QWidget *parent = nullptr);
+  OptionsScatter2D(int index_x_, int index_y_, QWidget *parent = nullptr);
   ~OptionsScatter2D();
 
   int choose_AxisX();
   int choose_AxisY();
+
+  Ui::DialogScattetPlot2D *get() { return ui; }
 
  private:
   Ui::DialogScattetPlot2D *ui;
