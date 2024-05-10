@@ -20,7 +20,6 @@ void ScatterPlot2D::Draw() {
 
   QCPGraph* graph = addGraph();
 
-  // setFont(QFont("Helvetica", 9)); // ?
 
   graph->setLineStyle(QCPGraph::lsNone);
 
