@@ -3,9 +3,9 @@
 #include "./ui_mainwindow.h"
 #include "IO/strategyIO.h"
 #include "QStandardPaths"
-#include "plot_models/abstractplotmodel.h"
 #include "implementer/implementer.h"
 #include "manager/manager.h"
+#include "plot_models/abstractplotmodel.h"
 #include "plot_models/column_plot.h"
 #include "plot_models/histogram.h"
 #include "plot_models/histogram_2d.h"
@@ -394,17 +394,21 @@ void MainWindow::DarkThemeOn() {
   darkPalette.setColor(QPalette::Highlight, QColor(42, 130, 218));
   darkPalette.setColor(QPalette::HighlightedText, Qt::black);
 
-  for (int i = 0; i < ui->tabWidgetPlots->count(); i++)
+  for (int i = 0; i < ui->tabWidgetPlots->count() - 1; i++)
     AbstractPlotModel::SetDarkTheme(
         qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(i)));
+  Histogram2D::SetDarkTheme(qobject_cast<QCustomPlot*>(
+      ui->tabWidgetPlots->widget(ui->tabWidgetPlots->count() - 1)));
 
   qApp->setPalette(darkPalette);
 }
 
 void MainWindow::LightThemeOn() {
-  for (int i = 0; i < ui->tabWidgetPlots->count(); i++)
+  for (int i = 0; i < ui->tabWidgetPlots->count() - 1; i++)
     AbstractPlotModel::SetLightTheme(
         qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(i)));
+  Histogram2D::SetLightTheme(qobject_cast<QCustomPlot*>(
+      ui->tabWidgetPlots->widget(ui->tabWidgetPlots->count() - 1)));
 
   qApp->setPalette(style()->standardPalette());
 }

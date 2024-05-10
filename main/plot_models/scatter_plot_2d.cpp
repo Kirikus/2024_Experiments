@@ -53,8 +53,8 @@ void ScatterPlot2D::Options() {
   x_ = a.choose_AxisX();
   y_ = a.choose_AxisY();
 
-  index_x_ = a.get()->AxisXComboBox->currentIndex();
-  index_y_ = a.get()->AxisYComboBox->currentIndex();
+  index_x_ = a.get()->axisXComboBox->currentIndex();
+  index_y_ = a.get()->axisYComboBox->currentIndex();
 
   Draw();
 }
@@ -66,26 +66,26 @@ OptionsScatter2D::OptionsScatter2D(int index_x_, int index_y_)
   setWindowTitle("ScatterPlot2D options");
 
   for (int i = 0; i < lib::Manager::GetInstance()->GetVariablesCount(); ++i) {
-    ui->AxisXComboBox->addItem(
+    ui->axisXComboBox->addItem(
         lib::Manager::GetInstance()->GetVariable(i).naming.title);
   }
-  ui->AxisXComboBox->setCurrentIndex(index_x_);
+  ui->axisXComboBox->setCurrentIndex(index_x_);
 
   for (int i = 0; i < lib::Manager::GetInstance()->GetVariablesCount(); ++i) {
-    ui->AxisYComboBox->addItem(
+    ui->axisYComboBox->addItem(
         lib::Manager::GetInstance()->GetVariable(i).naming.title);
   }
-  ui->AxisYComboBox->setCurrentIndex(index_y_);
+  ui->axisYComboBox->setCurrentIndex(index_y_);
 
-  connect(ui->okPushButton, &QPushButton::clicked, this, &QDialog::close);
+  connect(ui->confirmPushButton, &QPushButton::clicked, this, &QDialog::close);
 }
 
 int OptionsScatter2D::choose_AxisX() {
-  return ui->AxisXComboBox->currentIndex();
+  return ui->axisXComboBox->currentIndex();
 }
 
 int OptionsScatter2D::choose_AxisY() {
-  return ui->AxisYComboBox->currentIndex();
+  return ui->axisYComboBox->currentIndex();
 }
 
 OptionsScatter2D::~OptionsScatter2D() { delete ui; }

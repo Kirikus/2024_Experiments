@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-#include "manager.h"
+#include "manager/manager.h"
 
 class CustomTicker : public QCPAxisTicker {
  public:
@@ -113,9 +113,9 @@ void Histogram2D::Options() {
   y_ = a.choose_AxisY();
   granularity_ = a.choose_granularity();
 
-  index_x_ = a.get()->AxisXComboBox->currentIndex();
-  index_y_ = a.get()->AxisYComboBox->currentIndex();
-  index_granularity_ = a.get()->GranularityComboBox->currentIndex();
+  index_x_ = a.get()->axisXComboBox->currentIndex();
+  index_y_ = a.get()->axisYComboBox->currentIndex();
+  index_granularity_ = a.get()->granularityComboBox->currentIndex();
 
   Draw();
 }
@@ -128,28 +128,28 @@ OptionsHistogram2D::OptionsHistogram2D(int index_x_, int index_y_,
   setWindowTitle("Histogram2D options");
 
   for (int i = 0; i < lib::Manager::GetInstance()->GetVariablesCount(); ++i) {
-    ui->AxisXComboBox->addItem(
+    ui->axisXComboBox->addItem(
         lib::Manager::GetInstance()->GetVariable(i).naming.title);
   }
-  ui->AxisXComboBox->setCurrentIndex(index_x_);
+  ui->axisXComboBox->setCurrentIndex(index_x_);
 
   for (int i = 0; i < lib::Manager::GetInstance()->GetVariablesCount(); ++i) {
-    ui->AxisYComboBox->addItem(
+    ui->axisYComboBox->addItem(
         lib::Manager::GetInstance()->GetVariable(i).naming.title);
   }
-  ui->AxisYComboBox->setCurrentIndex(index_y_);
+  ui->axisYComboBox->setCurrentIndex(index_y_);
 
-  ui->GranularityComboBox->addItem("10");
-  ui->GranularityComboBox->addItem("50");
-  ui->GranularityComboBox->addItem("100");
-  ui->GranularityComboBox->addItem("200");
-  ui->GranularityComboBox->setCurrentIndex(index_granularity_);
+  ui->granularityComboBox->addItem("10");
+  ui->granularityComboBox->addItem("50");
+  ui->granularityComboBox->addItem("100");
+  ui->granularityComboBox->addItem("200");
+  ui->granularityComboBox->setCurrentIndex(index_granularity_);
 
-  connect(ui->okPushButton, &QPushButton::clicked, this, &QDialog::close);
+  connect(ui->confirmPushButton, &QPushButton::clicked, this, &QDialog::close);
 }
 
 double OptionsHistogram2D::choose_granularity() {
-  switch (ui->GranularityComboBox->currentIndex()) {
+  switch (ui->granularityComboBox->currentIndex()) {
     case 0:
       return 10;
     case 1:
@@ -162,11 +162,11 @@ double OptionsHistogram2D::choose_granularity() {
 }
 
 int OptionsHistogram2D::choose_AxisX() {
-  return ui->AxisXComboBox->currentIndex();
+  return ui->axisXComboBox->currentIndex();
 }
 
 int OptionsHistogram2D::choose_AxisY() {
-  return ui->AxisYComboBox->currentIndex();
+  return ui->axisYComboBox->currentIndex();
 }
 
 OptionsHistogram2D::~OptionsHistogram2D() { delete ui; }

@@ -57,8 +57,8 @@ void Histogram::Options() {
   var_ = a.choose_variable();
   granularity_ = a.choose_granularity();
 
-  index_x_ = a.get()->VariableComboBox->currentIndex();
-  index_granularity_ = a.get()->GranularityComboBox->currentIndex();
+  index_x_ = a.get()->variableComboBox->currentIndex();
+  index_granularity_ = a.get()->granularityComboBox->currentIndex();
 
   Draw();
 }
@@ -70,25 +70,25 @@ OptionsHistogram::OptionsHistogram(int index_x_, int index_granularity_)
   setWindowTitle("Histogram options");
 
   for (int i = 0; i < lib::Manager::GetInstance()->GetVariablesCount(); ++i) {
-    ui->VariableComboBox->addItem(
+    ui->variableComboBox->addItem(
         lib::Manager::GetInstance()->GetVariable(i).naming.title);
   }
-  ui->VariableComboBox->setCurrentIndex(index_x_);
+  ui->variableComboBox->setCurrentIndex(index_x_);
 
-  ui->GranularityComboBox->addItem(QString("10"));
-  ui->GranularityComboBox->addItem(QString("100"));
-  ui->GranularityComboBox->addItem(QString("1000"));
-  ui->GranularityComboBox->setCurrentIndex(index_granularity_);
+  ui->granularityComboBox->addItem(QString("10"));
+  ui->granularityComboBox->addItem(QString("100"));
+  ui->granularityComboBox->addItem(QString("1000"));
+  ui->granularityComboBox->setCurrentIndex(index_granularity_);
 
-  connect(ui->okPushButton, &QPushButton::clicked, this, &QDialog::close);
+  connect(ui->confirmPushButton, &QPushButton::clicked, this, &QDialog::close);
 }
 
 int OptionsHistogram::choose_variable() {
-  return ui->VariableComboBox->currentIndex();
+  return ui->variableComboBox->currentIndex();
 }
 
 int OptionsHistogram::choose_granularity() {
-  return std::pow(10, ui->GranularityComboBox->currentIndex() + 1);
+  return std::pow(10, ui->granularityComboBox->currentIndex() + 1);
 }
 
 OptionsHistogram::~OptionsHistogram() { delete ui; }
