@@ -121,6 +121,8 @@ OptionsHistogram2D::OptionsHistogram2D(int index_x_, int index_y_,
     : QDialog(parent), ui(new Ui::DialogHistogram2D) {
   ui->setupUi(this);
 
+  setWindowTitle("Histogram2D options");
+
   for (int i = 0; i < lib::Manager::GetInstance()->GetVariablesCount(); ++i) {
     ui->AxisXComboBox->addItem(
         lib::Manager::GetInstance()->GetVariable(i).naming.title);

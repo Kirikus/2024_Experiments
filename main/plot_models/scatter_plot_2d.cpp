@@ -63,6 +63,8 @@ OptionsScatter2D::OptionsScatter2D(int index_x_, int index_y_, QWidget* parent)
     : QDialog(parent), ui(new Ui::DialogScattetPlot2D) {
   ui->setupUi(this);
 
+  setWindowTitle("ScatterPlot2D options");
+
   for (int i = 0; i < lib::Manager::GetInstance()->GetVariablesCount(); ++i) {
     ui->AxisXComboBox->addItem(
         lib::Manager::GetInstance()->GetVariable(i).naming.title);

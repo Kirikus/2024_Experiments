@@ -67,6 +67,8 @@ OptionsHistogram::OptionsHistogram(int index_x_, int index_granularity_,  QWidge
     : QDialog(parent), ui(new Ui::DialogHistogram) {
   ui->setupUi(this);
 
+  setWindowTitle("Histogram options");
+
   for (int i = 0; i < lib::Manager::GetInstance()->GetVariablesCount(); ++i) {
     ui->VariableComboBox->addItem(
         lib::Manager::GetInstance()->GetVariable(i).naming.title);
