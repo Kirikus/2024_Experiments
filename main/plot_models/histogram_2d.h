@@ -15,7 +15,7 @@ class Histogram2D : public AbstractPlotModel {
  private:
   int x_ = 0;
   int y_ = 0;
-  int square_size_ = 1;
+  double granularity_ = 10;
 };
 
 class OptionsHistogram2D : public QDialog {
@@ -27,7 +27,7 @@ class OptionsHistogram2D : public QDialog {
 
   int choose_AxisX();
   int choose_AxisY();
-  int choose_square_size();
+  double choose_granularity();
 
  private:
   Ui::DialogHistogram2D *ui;

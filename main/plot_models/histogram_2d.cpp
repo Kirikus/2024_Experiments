@@ -1,6 +1,28 @@
 #include "histogram_2d.h"
 
+#include <cmath>
+
 #include "manager.h"
+
+class CustomTicker : public QCPAxisTicker {
+ public:
+  CustomTicker(double granularity_0) : granularity_(granularity_0 / 10) {}
+
+  // Функция для форматирования меток делений
+  QString getTickLabel(double tick, const QLocale& locale, QChar formatChar,
+                       int precision) override {
+    return QCPAxisTicker::getTickLabel(tick / granularity_, locale, formatChar,
+                                       precision);
+  }
+
+  // Функция для выбора интервала между делениями
+  double getTickStep(const QCPRange& range) override {
+    return QCPAxisTicker::getTickStep(range) * granularity_;
+  }
+
+ private:
+  double granularity_ = 1;
+};
 
 void Histogram2D::Draw() {
   // The color scheme automatically adjusts to the set of values
@@ -10,38 +32,44 @@ void Histogram2D::Draw() {
   xAxis->setLabel("");
   yAxis->setLabel("");
 
-  if (lib::Manager::GetInstance()->GetVariablesCount() == 0) return;
-
-  int size_box = 200;
+  if (lib::Manager::GetInstance()->GetVariablesCount() <= std::max(x_, y_))
+    return;
 
   const lib::Variable& variable_x =
       lib::Manager::GetInstance()->GetVariable(x_);
 
-  QCPGraph* graph = addGraph();
-
-  setFont(QFont("Helvetica", 9));
-
   const lib::Variable& variable_y =
       lib::Manager::GetInstance()->GetVariable(y_);
 
+  if (variable_x.GetMeasurementsCount() == 0 ||
+      variable_y.GetMeasurementsCount() == 0)
+    return;
+
+  double size_box =
+      std::max(variable_x.measurements[0], variable_y.measurements[0]);
+
   for (int i = 0; i < variable_y.GetMeasurementsCount(); ++i) {
     size_box =
-        std::max(size_box, 2 * std::max(abs(int(variable_x.measurements[i])),
-                                        abs(int(variable_y.measurements[i]))) +
+        std::max(size_box, 2 * std::max(abs(variable_x.measurements[i]),
+                                        abs(variable_y.measurements[i])) +
                                20);
   }
 
-  QVector<QVector<double>> density(size_box, QVector<double>(size_box));
-  QVector<QVector<bool>> flags(size_box, QVector<bool>(size_box, true));
+  size_box *= granularity_ / 10;
 
-  for (int i = 0; i < variable_y.GetMeasurementsCount(); ++i) {
-    for (int j = -size_box / 2; j <= size_box / 2; ++j) {
-      if (j <= variable_y.measurements[i] &&
-          variable_y.measurements[i] < j + 1) {
-        density[variable_x.measurements[i] + size_box / 2][j + size_box / 2]++;
-      }
-    }
+  QVector<QVector<double>> density(int(size_box) + 2,
+                                   QVector<double>(int(size_box) + 2, 0));
+
+  for (int i = 0; i < variable_x.GetMeasurementsCount(); ++i) {
+    density[std::round(variable_x.measurements[i] * (granularity_ / 10) +
+                       size_box / 2)]
+           [std::round(variable_y.measurements[i] * (granularity_ / 10) +
+                       size_box / 2)]++;
   }
+
+  QSharedPointer<CustomTicker> customTicker(new CustomTicker(granularity_));
+  xAxis->setTicker(customTicker);
+  yAxis->setTicker(customTicker);
 
   QCPColorMap* colorMap = new QCPColorMap(xAxis, yAxis);
 
@@ -51,24 +79,7 @@ void Histogram2D::Draw() {
 
   for (int i = 0; i < size_box; ++i) {
     for (int j = 0; j < size_box; ++j) {
-      if (flags[i][j]) {
-        double med = 0;
-        for (int l1 = 0; l1 < square_size_; ++l1) {
-          for (int l2 = 0; l2 < square_size_; ++l2) {
-            med += density[std::min(i + l1, size_box - 1)]
-                          [std::min(j + l2, size_box - 1)];
-            flags[std::min(i + l1, size_box - 1)]
-                 [std::min(j + l2, size_box - 1)] = false;
-          }
-        }
-        for (int l1 = 0; l1 < square_size_; ++l1) {
-          for (int l2 = 0; l2 < square_size_; ++l2) {
-            colorMap->data()->setCell(std::min(i + l1, size_box - 1),
-                                      std::min(j + l2, size_box - 1),
-                                      med / (square_size_ * square_size_));
-          }
-        }
-      }
+      colorMap->data()->setCell(i, j, density[i][j]);
     }
   }
 
@@ -96,7 +107,7 @@ void Histogram2D::Options() {
 
   x_ = a.choose_AxisX();
   y_ = a.choose_AxisY();
-  square_size_ = a.choose_AxisY();
+  granularity_ = a.choose_granularity();
 
   Draw();
 }
@@ -115,15 +126,25 @@ OptionsHistogram2D::OptionsHistogram2D(QWidget* parent)
         lib::Manager::GetInstance()->GetVariable(i).naming.title);
   }
 
-  ui->SquareSizeComboBox->addItem("1");
-  ui->SquareSizeComboBox->addItem("2");
-  ui->SquareSizeComboBox->addItem("4");
+  ui->GranularityComboBox->addItem("10");
+  ui->GranularityComboBox->addItem("50");
+  ui->GranularityComboBox->addItem("100");
+  ui->GranularityComboBox->addItem("200");
 
   connect(ui->okPushButton, &QPushButton::clicked, this, &QDialog::close);
 }
 
-int OptionsHistogram2D::choose_square_size() {
-  return std::pow(2, ui->SquareSizeComboBox->currentIndex());
+double OptionsHistogram2D::choose_granularity() {
+  switch (ui->GranularityComboBox->currentIndex()) {
+    case 0:
+      return 10;
+    case 1:
+      return 50;
+    case 2:
+      return 100;
+    case 3:
+      return 200;
+  }
 }
 
 int OptionsHistogram2D::choose_AxisX() {
