@@ -15,7 +15,13 @@ void ScatterPlot::Draw() {
 
     graph->setLineStyle(QCPGraph::lsNone);
 
-    graph->setScatterStyle(variable.visual.point_shape);
+    if (variable.visual.point_shape ==
+        QCPScatterStyle::ScatterShape::ssNone) {
+      graph->setScatterStyle(QCPScatterStyle::ScatterShape::ssDisc);
+    } else {
+      graph->setScatterStyle(variable.visual.point_shape);
+    }
+
     graph->setPen(QPen(QBrush(variable.visual.color), variable.visual.width,
                        variable.visual.line_type));
 
@@ -31,4 +37,8 @@ void ScatterPlot::Draw() {
   }
   setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
   replot();
+}
+
+void ScatterPlot::Options() {
+  // nothing
 }

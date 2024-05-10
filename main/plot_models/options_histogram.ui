@@ -111,7 +111,7 @@
           </spacer>
          </item>
          <item>
-          <widget class="QComboBox" name="columnSizeComboBox"/>
+          <widget class="QComboBox" name="granularityComboBox"/>
          </item>
         </layout>
        </item>

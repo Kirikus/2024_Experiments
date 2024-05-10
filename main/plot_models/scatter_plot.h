@@ -8,7 +8,8 @@ class ScatterPlot : public AbstractPlotModel {
  public:
   ScatterPlot() {}
 
-  virtual void Draw() override;
+  void Draw() override;
+  void Options() override;
 };
 
 #endif  // SCATTER_PLOT_H

@@ -8,7 +8,8 @@ class ColumnPlot : public AbstractPlotModel {
  public:
   ColumnPlot() {}
 
-  virtual void Draw() override;
+  void Draw() override;
+  void Options() override;
 };
 
 #endif  // COLUMN_PLOT_H

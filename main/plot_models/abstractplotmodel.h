@@ -9,9 +9,11 @@
 class AbstractPlotModel : public QCustomPlot {
   Q_OBJECT
  public:
-  AbstractPlotModel(QCustomPlot* parent = nullptr) : QCustomPlot(parent) {}
 
   virtual void Draw() = 0;
+  virtual void Options() = 0;
+
+  AbstractPlotModel(QCustomPlot* parent = nullptr) : QCustomPlot(parent) {}
 
   static void Rescale(QCustomPlot* plot) {
     plot->rescaleAxes();

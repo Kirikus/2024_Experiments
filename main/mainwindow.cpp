@@ -5,13 +5,11 @@
 #include "QStandardPaths"
 #include "implementer/implementer.h"
 #include "manager/manager.h"
+#include "plot_models/abstractplotmodel.h"
 #include "plot_models/column_plot.h"
 #include "plot_models/histogram.h"
 #include "plot_models/histogram_2d.h"
 #include "plot_models/line_plot.h"
-#include "plot_models/options_histogram.h"
-#include "plot_models/options_histogram_2d.h"
-#include "plot_models/options_scatter_2d.h"
 #include "plot_models/scatter_plot.h"
 #include "plot_models/scatter_plot_2d.h"
 #include "qcustomplot.h"
@@ -244,39 +242,9 @@ void MainWindow::RescalePlots() {
 }
 
 void MainWindow::OptionsPlot() {
-  int index = ui->tabWidgetPlots->currentIndex();
-
-  switch (index) {
-    case 0:
-      // nothing
-      break;
-    case 1:
-      // nothing
-      break;
-    case 2:
-      // nothing
-      break;
-    case 3: {
-      OptionsHistogram a;
-      a.exec();
-      ui->ObjectHistogram->set(a.choose_variable(), a.choose_column_size());
-      break;
-    }
-    case 4: {
-      OptionsScatter2D a;
-      a.exec();
-      ui->ObjectScatterPlot2D->set(a.choose_AxisX(), a.choose_AxisY());
-      break;
-    }
-    case 5: {
-      OptionsHistogram2D a;
-      a.exec();
-      ui->ObjectHistogram2D->set(a.choose_AxisX(), a.choose_AxisY(),
-                                 a.choose_square_size());
-      break;
-    }
-  }
-  UpdatePlots();
+  auto plot =
+      static_cast<AbstractPlotModel*>(ui->tabWidgetPlots->currentWidget());
+  plot->Options();
 }
 
 void MainWindow::ConnectingAction() {
@@ -388,7 +356,7 @@ void MainWindow::closeEvent(QCloseEvent* event) {
   if (lib::Manager::GetInstance()->GetVariablesCount() == 0 ||
       ConfirmingAction("Are you sure to close program?")) {
     event->accept();
-    if (Implementer::GetInstance()->odf_form != NULL)
+    if (Implementer::GetInstance()->odf_form)
       Implementer::GetInstance()->odf_form->close();
   } else
     event->ignore();
@@ -426,17 +394,21 @@ void MainWindow::DarkThemeOn() {
   darkPalette.setColor(QPalette::Highlight, QColor(42, 130, 218));
   darkPalette.setColor(QPalette::HighlightedText, Qt::black);
 
-  for (int i = 0; i < ui->tabWidgetPlots->count(); i++)
+  for (int i = 0; i < ui->tabWidgetPlots->count() - 1; i++)
     AbstractPlotModel::SetDarkTheme(
         qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(i)));
+  Histogram2D::SetDarkTheme(qobject_cast<QCustomPlot*>(
+      ui->tabWidgetPlots->widget(ui->tabWidgetPlots->count() - 1)));
 
   qApp->setPalette(darkPalette);
 }
 
 void MainWindow::LightThemeOn() {
-  for (int i = 0; i < ui->tabWidgetPlots->count(); i++)
+  for (int i = 0; i < ui->tabWidgetPlots->count() - 1; i++)
     AbstractPlotModel::SetLightTheme(
         qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(i)));
+  Histogram2D::SetLightTheme(qobject_cast<QCustomPlot*>(
+      ui->tabWidgetPlots->widget(ui->tabWidgetPlots->count() - 1)));
 
   qApp->setPalette(style()->standardPalette());
 }
