@@ -3,7 +3,7 @@
 #include <random>
 
 #include "../lib/formula_parser.h"
-#include "manager.h"
+#include "manager/manager.h"
 
 #if !defined(WIN32)
 #define BOOST_TEST_DYN_LINK

@@ -11,7 +11,7 @@
 #include <list>
 
 #include "formula_parser.h"
-#include "manager.h"
+#include "manager/manager.h"
 
 namespace client {
 namespace ast {
@@ -54,12 +54,6 @@ struct program
   operand first;
   std::list<operation> rest;
 };
-
-struct assignment
-{
-    variable lhs;
-    program rhs;
-};
 }}
 
 BOOST_FUSION_ADAPT_STRUCT(
@@ -79,12 +73,6 @@ BOOST_FUSION_ADAPT_STRUCT(
     (client::ast::operand, first)
     (std::list<client::ast::operation>, rest)
     )
-
-BOOST_FUSION_ADAPT_STRUCT(
-    client::ast::assignment,
-    (client::ast::variable, lhs)
-    (client::ast::program, rhs)
-)
 
 namespace client {
 namespace ast {
@@ -203,12 +191,6 @@ struct eval {
       state = (*this)(oper, state);
     }
     return state;
-  }
-
-  struct variable operator()(assignment const& x) const {
-    struct variable result = (*this)(x.rhs);
-    // some code
-    return result;
   }
 };
 }  // namespace ast

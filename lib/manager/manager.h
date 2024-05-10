@@ -4,7 +4,6 @@
 #include "QList"
 
 #include "string"
-#include "sqlite_database/sqlite.h"
 #include "variable/variable.h"
 
 namespace lib {
@@ -29,7 +28,7 @@ class Manager : public QObject {
   Variable& GetVariable(std::string name);
 
   void ClearCalculated();
-  void AddCalculated(Variable&);
+  void AddCalculated(const Variable& = Variable());
 
   void Clear();
 
