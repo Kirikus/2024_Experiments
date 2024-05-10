@@ -8,18 +8,22 @@ class CustomTicker : public QCPAxisTicker {
  public:
   CustomTicker(double granularity_0) : granularity_(granularity_0 / 10) {}
 
-  // Функция для форматирования меток делений
+  // selecting division values
   QString getTickLabel(double tick, const QLocale& locale, QChar formatChar,
                        int precision) override {
     return QCPAxisTicker::getTickLabel(tick / granularity_, locale, formatChar,
                                        precision);
   }
 
-  // Функция для выбора интервала между делениями
+  // the interval between divisions
   double getTickStep(const QCPRange& range) override {
     return QCPAxisTicker::getTickStep(range) * granularity_;
   }
 
+  // the number of divisions that display the values
+  QVector<double> createTickVector(double tickStep, const QCPRange &range) override {
+    return QCPAxisTicker::createTickVector(tickStep / granularity_, range);
+  }
  private:
   double granularity_ = 1;
 };
