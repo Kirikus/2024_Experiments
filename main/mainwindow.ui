@@ -29,7 +29,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidgetOptionsTabs">
       <property name="currentIndex">
-       <number>4</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="MainTab">
        <attribute name="title">
@@ -73,28 +73,45 @@
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_2">
             <item>
-             <widget class="QPushButton" name="SaveDataBtn">
+             <widget class="QPushButton" name="uploadToDataBaseBtn">
               <property name="text">
-               <string>Save data</string>
+               <string>Upload to data base</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="LoadDataBtn">
-              <property name="font">
-               <font>
-                <pointsize>9</pointsize>
-                <bold>true</bold>
-               </font>
+             <spacer name="horizontalSpacer_19">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Maximum</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>10</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="clearDataBtn">
+              <property name="toolTip">
+               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+hr { height: 1px; border-width: 0; }
+li.unchecked::marker { content: &quot;\2610&quot;; }
+li.checked::marker { content: &quot;\2612&quot;; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Segoe UI'; font-size:9pt; font-weight:700; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Delete all variables&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <property name="whatsThis">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
               <property name="text">
-               <string>Load data</string>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>12</width>
-                <height>12</height>
-               </size>
+               <string>Clear</string>
               </property>
              </widget>
             </item>
@@ -111,13 +128,6 @@
               </property>
              </spacer>
             </item>
-            <item>
-             <widget class="QPushButton" name="uploadToDatabaseBtn">
-              <property name="text">
-               <string>Upload to data base</string>
-              </property>
-             </widget>
-            </item>
            </layout>
           </item>
           <item>
@@ -130,14 +140,14 @@
               <item row="0" column="1">
                <widget class="QPushButton" name="addRowBtn">
                 <property name="text">
-                 <string>add row</string>
+                 <string>Add new measurment</string>
                 </property>
                </widget>
               </item>
               <item row="1" column="3">
                <widget class="QPushButton" name="deleteColumnBtn">
                 <property name="text">
-                 <string>delete column</string>
+                 <string>Delete selected variables</string>
                 </property>
                </widget>
               </item>
@@ -151,7 +161,7 @@
                 </property>
                 <property name="sizeHint" stdset="0">
                  <size>
-                  <width>40</width>
+                  <width>60</width>
                   <height>20</height>
                  </size>
                 </property>
@@ -160,14 +170,14 @@
               <item row="0" column="3">
                <widget class="QPushButton" name="addColumnBtn">
                 <property name="text">
-                 <string>add column</string>
+                 <string>Add new variable</string>
                 </property>
                </widget>
               </item>
               <item row="1" column="1">
                <widget class="QPushButton" name="deleteRowBtn">
                 <property name="text">
-                 <string>delete row</string>
+                 <string>Delete selected measurments</string>
                 </property>
                </widget>
               </item>
@@ -181,7 +191,23 @@
                 </property>
                 <property name="sizeHint" stdset="0">
                  <size>
-                  <width>40</width>
+                  <width>60</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item row="0" column="2">
+               <spacer name="horizontalSpacer_18">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeType">
+                 <enum>QSizePolicy::Maximum</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
                   <height>20</height>
                  </size>
                 </property>
@@ -516,6 +542,12 @@
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <widget class="QTabWidget" name="tabWidgetPlots">
+        <property name="minimumSize">
+         <size>
+          <width>300</width>
+          <height>300</height>
+         </size>
+        </property>
         <property name="currentIndex">
          <number>0</number>
         </property>
@@ -570,7 +602,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="redrawPlotBtn">
+         <widget class="QPushButton" name="rescalePlotsBtn">
           <property name="font">
            <font>
             <pointsize>10</pointsize>
@@ -578,7 +610,7 @@
            </font>
           </property>
           <property name="text">
-           <string>Redraw</string>
+           <string>Rescale</string>
           </property>
          </widget>
         </item>
@@ -599,7 +631,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="OptionsPlotBtn">
+         <widget class="QPushButton" name="optionsPlotBtn">
           <property name="text">
            <string>Options</string>
           </property>
@@ -634,7 +666,7 @@
      <x>0</x>
      <y>0</y>
      <width>1280</width>
-     <height>25</height>
+     <height>17</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuSettings">
@@ -642,42 +674,39 @@
      <string>Settings</string>
     </property>
    </widget>
-   <widget class="QMenu" name="menuHelp">
-    <property name="title">
-     <string>Help</string>
-    </property>
-   </widget>
    <widget class="QMenu" name="menuTheme">
     <property name="title">
      <string>Theme</string>
     </property>
-    <addaction name="actionWhite"/>
-    <addaction name="actionDark"/>
-   </widget>
-   <widget class="QMenu" name="menuODF">
-    <property name="title">
-     <string>ODF</string>
-    </property>
-    <addaction name="actionCreate_ODF"/>
+    <addaction name="actionLightTheme"/>
+    <addaction name="actionDarkTheme"/>
    </widget>
    <widget class="QMenu" name="menuData_base">
     <property name="title">
      <string>Data base</string>
     </property>
-    <addaction name="actionOpen_data_base"/>
+    <addaction name="actionOpenDataBase"/>
    </widget>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionSave"/>
+    <addaction name="actionLoad"/>
+    <addaction name="separator"/>
+    <addaction name="actionCreateODF"/>
+   </widget>
+   <addaction name="menuFile"/>
    <addaction name="menuSettings"/>
    <addaction name="menuTheme"/>
-   <addaction name="menuHelp"/>
-   <addaction name="menuODF"/>
    <addaction name="menuData_base"/>
   </widget>
-  <action name="actionWhite">
+  <action name="actionLightTheme">
    <property name="text">
     <string>Light</string>
    </property>
   </action>
-  <action name="actionDark">
+  <action name="actionDarkTheme">
    <property name="text">
     <string>Dark</string>
    </property>
@@ -687,9 +716,29 @@
     <string>Create ODF</string>
    </property>
   </action>
-  <action name="actionOpen_data_base">
+  <action name="actionOpenDataBase">
    <property name="text">
     <string>Open data base</string>
+   </property>
+  </action>
+  <action name="actionHelp">
+   <property name="text">
+    <string>Help</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="text">
+    <string>Save</string>
+   </property>
+  </action>
+  <action name="actionLoad">
+   <property name="text">
+    <string>Load</string>
+   </property>
+  </action>
+  <action name="actionCreateODF">
+   <property name="text">
+    <string>Create ODF</string>
    </property>
   </action>
  </widget>

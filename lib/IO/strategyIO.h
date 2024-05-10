@@ -1,7 +1,7 @@
 #ifndef STRATEGYIO_H
 #define STRATEGYIO_H
 
-#include "manager.h"
+#include "manager/manager.h"
 
 namespace lib {
 
@@ -16,11 +16,6 @@ struct StrategyIO_JSON : public StrategyIO {
 };
 
 struct StrategyIO_CSV : public StrategyIO {
-  void Save(const QString&) override;
-  void Load(const QString&) override;
-};
-
-struct StrategyIO_DB : public StrategyIO {
   void Save(const QString&) override;
   void Load(const QString&) override;
 };

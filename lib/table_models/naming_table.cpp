@@ -1,7 +1,7 @@
 #include "naming_table.h"
 
 #include "QVariant"
-#include "manager.h"
+#include "manager/manager.h"
 
 namespace lib {
 

@@ -1,6 +1,6 @@
 #include "strategyIO.h"
 
-#include "manager.h"
+#include "manager/manager.h"
 
 namespace lib {
 
@@ -162,9 +162,5 @@ void StrategyIO_CSV::Load(const QString& input_file) {
   }
   file.close();
 }
-
-void StrategyIO_DB::Save(const QString&) {}
-
-void StrategyIO_DB::Load(const QString&) {}
 
 }  // namespace lib

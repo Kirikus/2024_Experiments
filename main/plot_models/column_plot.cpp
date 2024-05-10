@@ -1,6 +1,6 @@
 #include "column_plot.h"
 
-#include "manager.h"
+#include "manager/manager.h"
 
 void ColumnPlot::Draw() {
   clearPlottables();

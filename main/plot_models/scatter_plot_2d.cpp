@@ -1,6 +1,6 @@
 #include "scatter_plot_2d.h"
 
-#include "manager.h"
+#include "manager/manager.h"
 
 void ScatterPlot2D::Draw() {
   clearGraphs();

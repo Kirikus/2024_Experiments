@@ -1,6 +1,6 @@
 #include "line_plot.h"
 
-#include "manager.h"
+#include "manager/manager.h"
 
 void LinePlot::Draw() {
   clearGraphs();
