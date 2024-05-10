@@ -5,27 +5,32 @@
 void ScatterPlot2D::Draw() {
   clearGraphs();
 
-  if (lib::Manager::GetInstance()->GetVariablesCount() == 0) return;
+  if (lib::Manager::GetInstance()->GetVariablesCount() <= std::max(x_, y_))
+    return;
 
   const lib::Variable& variable_x =
       lib::Manager::GetInstance()->GetVariable(x_);
+
+  const lib::Variable& variable_y =
+      lib::Manager::GetInstance()->GetVariable(y_);
+
+  if (variable_x.GetMeasurementsCount() == 0 ||
+      variable_y.GetMeasurementsCount() == 0)
+    return;
+
   QCPGraph* graph = addGraph();
 
-  setFont(QFont("Helvetica", 9));
+  // setFont(QFont("Helvetica", 9)); // ?
 
   graph->setLineStyle(QCPGraph::lsNone);
 
   QVector<double> xAxis_data;
   QVector<double> yAxis_data;
 
-  const lib::Variable& variable_y =
-      lib::Manager::GetInstance()->GetVariable(y_);
-
-  if (variable_y.visual.point_shape ==
-      QCPScatterStyle::ScatterShape::ssNone) {
-      graph->setScatterStyle(QCPScatterStyle::ScatterShape::ssDisc);
+  if (variable_y.visual.point_shape == QCPScatterStyle::ScatterShape::ssNone) {
+    graph->setScatterStyle(QCPScatterStyle::ScatterShape::ssDisc);
   } else {
-      graph->setScatterStyle(variable_y.visual.point_shape);
+    graph->setScatterStyle(variable_y.visual.point_shape);
   }
 
   graph->setPen(QPen(QBrush(variable_y.visual.color), variable_y.visual.width,
