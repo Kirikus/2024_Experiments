@@ -16,18 +16,24 @@ class Histogram2D : public AbstractPlotModel {
   int x_ = 0;
   int y_ = 0;
   double granularity_ = 10;
+  int index_x_ = 0;
+  int index_y_ = 0;
+  int index_granularity_ = 0;
 };
 
 class OptionsHistogram2D : public QDialog {
   Q_OBJECT
 
  public:
-  OptionsHistogram2D(QWidget *parent = nullptr);
+  OptionsHistogram2D(int index_x_, int index_y_, int index_granularity_,
+                     QWidget *parent = nullptr);
   ~OptionsHistogram2D();
 
   int choose_AxisX();
   int choose_AxisY();
   double choose_granularity();
+
+  Ui::DialogHistogram2D *get() { return ui; }
 
  private:
   Ui::DialogHistogram2D *ui;

@@ -102,17 +102,22 @@ void Histogram2D::Draw() {
 }
 
 void Histogram2D::Options() {
-  OptionsHistogram2D a;
+  OptionsHistogram2D a(index_x_, index_y_, index_granularity_);
   a.exec();
 
   x_ = a.choose_AxisX();
   y_ = a.choose_AxisY();
   granularity_ = a.choose_granularity();
 
+  index_x_ = a.get()->AxisXComboBox->currentIndex();
+  index_y_ = a.get()->AxisYComboBox->currentIndex();
+  index_granularity_ = a.get()->GranularityComboBox->currentIndex();
+
   Draw();
 }
 
-OptionsHistogram2D::OptionsHistogram2D(QWidget* parent)
+OptionsHistogram2D::OptionsHistogram2D(int index_x_, int index_y_,
+                                       int index_granularity_, QWidget* parent)
     : QDialog(parent), ui(new Ui::DialogHistogram2D) {
   ui->setupUi(this);
 
@@ -120,16 +125,19 @@ OptionsHistogram2D::OptionsHistogram2D(QWidget* parent)
     ui->AxisXComboBox->addItem(
         lib::Manager::GetInstance()->GetVariable(i).naming.title);
   }
+  ui->AxisXComboBox->setCurrentIndex(index_x_);
 
   for (int i = 0; i < lib::Manager::GetInstance()->GetVariablesCount(); ++i) {
     ui->AxisYComboBox->addItem(
         lib::Manager::GetInstance()->GetVariable(i).naming.title);
   }
+  ui->AxisYComboBox->setCurrentIndex(index_y_);
 
   ui->GranularityComboBox->addItem("10");
   ui->GranularityComboBox->addItem("50");
   ui->GranularityComboBox->addItem("100");
   ui->GranularityComboBox->addItem("200");
+  ui->GranularityComboBox->setCurrentIndex(index_granularity_);
 
   connect(ui->okPushButton, &QPushButton::clicked, this, &QDialog::close);
 }
