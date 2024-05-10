@@ -117,8 +117,8 @@ void Histogram2D::Options() {
 }
 
 OptionsHistogram2D::OptionsHistogram2D(int index_x_, int index_y_,
-                                       int index_granularity_, QWidget* parent)
-    : QDialog(parent), ui(new Ui::DialogHistogram2D) {
+                                       int index_granularity_)
+    : ui(new Ui::DialogHistogram2D) {
   ui->setupUi(this);
 
   setWindowTitle("Histogram2D options");

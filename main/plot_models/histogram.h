@@ -23,7 +23,7 @@ class OptionsHistogram : public QDialog {
   Q_OBJECT
 
  public:
-  OptionsHistogram(int index_x_, int index_granularity_,  QWidget *parent = nullptr);
+  OptionsHistogram(int index_x_, int index_granularity_);
   ~OptionsHistogram();
 
   int choose_variable();

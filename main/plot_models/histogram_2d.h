@@ -25,8 +25,7 @@ class OptionsHistogram2D : public QDialog {
   Q_OBJECT
 
  public:
-  OptionsHistogram2D(int index_x_, int index_y_, int index_granularity_,
-                     QWidget *parent = nullptr);
+  OptionsHistogram2D(int index_x_, int index_y_, int index_granularity_);
   ~OptionsHistogram2D();
 
   int choose_AxisX();

@@ -59,8 +59,8 @@ void ScatterPlot2D::Options() {
   Draw();
 }
 
-OptionsScatter2D::OptionsScatter2D(int index_x_, int index_y_, QWidget* parent)
-    : QDialog(parent), ui(new Ui::DialogScattetPlot2D) {
+OptionsScatter2D::OptionsScatter2D(int index_x_, int index_y_)
+    : ui(new Ui::DialogScattetPlot2D) {
   ui->setupUi(this);
 
   setWindowTitle("ScatterPlot2D options");

@@ -23,7 +23,7 @@ class OptionsScatter2D : public QDialog {
   Q_OBJECT
 
  public:
-  OptionsScatter2D(int index_x_, int index_y_, QWidget *parent = nullptr);
+  OptionsScatter2D(int index_x_, int index_y_);
   ~OptionsScatter2D();
 
   int choose_AxisX();

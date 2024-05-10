@@ -63,8 +63,8 @@ void Histogram::Options() {
   Draw();
 }
 
-OptionsHistogram::OptionsHistogram(int index_x_, int index_granularity_,  QWidget* parent)
-    : QDialog(parent), ui(new Ui::DialogHistogram) {
+OptionsHistogram::OptionsHistogram(int index_x_, int index_granularity_)
+    : ui(new Ui::DialogHistogram) {
   ui->setupUi(this);
 
   setWindowTitle("Histogram options");
