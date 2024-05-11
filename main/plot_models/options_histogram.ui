@@ -87,7 +87,7 @@
             </font>
            </property>
            <property name="text">
-            <string>Granularity</string>
+            <string>Column size</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

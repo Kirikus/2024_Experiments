@@ -84,8 +84,8 @@ void Histogram2D::Draw() {
 
   moveLayer(layer("grid"), layer("main"), QCustomPlot::limAbove);
 
-  xAxis->setLabel("Axis " + variable_x.naming.title);
-  yAxis->setLabel("Axis " + variable_y.naming.title);
+  xAxis->setLabel(variable_x.naming.title);
+  yAxis->setLabel(variable_y.naming.title);
   setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
   replot();
 }

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>272</width>
-    <height>153</height>
+    <width>305</width>
+    <height>187</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -111,7 +111,7 @@
             </font>
            </property>
            <property name="text">
-            <string>Square size</string>
+            <string>Granularity</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
