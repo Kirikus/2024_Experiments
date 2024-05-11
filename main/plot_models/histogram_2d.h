@@ -14,14 +14,10 @@ class Histogram2D : public AbstractPlotModel {
 
   static void SetDarkTheme(QCustomPlot* plot) {
     plot->setBackground(QBrush(QColor("#FFFF00")));
-    // plot->yAxis->setTickLabelColor(Qt::white);
-    // plot->xAxis->setTickLabelColor(Qt::white);
     plot->replot();
   }
   static void SetLightTheme(QCustomPlot* plot) {
     plot->setBackground(QBrush(QColor("#FFFF00")));
-    // plot->yAxis->setTickLabelColor(Qt::black);
-    // plot->xAxis->setTickLabelColor(Qt::black);
     plot->replot();
   }
 
