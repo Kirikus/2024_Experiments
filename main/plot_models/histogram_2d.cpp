@@ -74,9 +74,9 @@ void Histogram2D::Draw() {
 
   QCPColorGradient gradient;
   gradient.clearColorStops();
-  gradient.setColorStopAt(0, QColor(255, 255, 0));
-  gradient.setColorStopAt(0.5, QColor(255, 0, 0));
-  gradient.setColorStopAt(1, QColor(128, 0, 128));
+  gradient.setColorStopAt(0, QColor(255, 255, 255));
+  gradient.setColorStopAt(0.5, QColor(255, 255, 0));
+  gradient.setColorStopAt(1, QColor(255, 0, 0));
   colorMap->setGradient(gradient);
 
   colorMap->setInterpolate(true);
@@ -100,6 +100,7 @@ void Histogram2D::Options() {
 
   index_x_ = a.get()->axisXComboBox->currentIndex();
   index_y_ = a.get()->axisYComboBox->currentIndex();
+
   index_granularity_ = a.get()->granularityComboBox->currentIndex();
 
   Draw();
@@ -112,17 +113,17 @@ OptionsHistogram2D::OptionsHistogram2D(int index_x_, int index_y_,
 
   setWindowTitle("Histogram2D options");
 
-  for (int i = 0; i < lib::Manager::GetInstance()->GetVariablesCount(); ++i) {
+  int n = lib::Manager::GetInstance()->GetVariablesCount();
+
+  for (int i = 0; i < n; ++i) {
     ui->axisXComboBox->addItem(
         lib::Manager::GetInstance()->GetVariable(i).naming.title);
-  }
-  ui->axisXComboBox->setCurrentIndex(index_x_);
-
-  for (int i = 0; i < lib::Manager::GetInstance()->GetVariablesCount(); ++i) {
     ui->axisYComboBox->addItem(
         lib::Manager::GetInstance()->GetVariable(i).naming.title);
   }
-  ui->axisYComboBox->setCurrentIndex(index_y_);
+
+  if (index_x_ < n) ui->axisXComboBox->setCurrentIndex(index_x_);
+  if (index_y_ < n) ui->axisYComboBox->setCurrentIndex(index_y_);
 
   ui->granularityComboBox->addItem("10");
   ui->granularityComboBox->addItem("50");
