@@ -74,9 +74,9 @@ void Histogram2D::Draw() {
 
   QCPColorGradient gradient;
   gradient.clearColorStops();
-  gradient.setColorStopAt(0, QColor(255, 255, 255));
-  gradient.setColorStopAt(0.5, QColor(255, 255, 0));
-  gradient.setColorStopAt(1, QColor(255, 0, 0));
+  gradient.setColorStopAt(0, QColor(255, 255, 0));
+  gradient.setColorStopAt(0.5, QColor(255, 0, 0));
+  gradient.setColorStopAt(1, QColor(128, 0, 128));
   colorMap->setGradient(gradient);
 
   colorMap->setInterpolate(true);
