@@ -28,7 +28,6 @@ void Histogram2D::Draw() {
 
   if (lib::Manager::GetInstance()->GetVariablesCount() <= std::max(x_, y_))
     return;
-
   const lib::Variable& variable_x =
       lib::Manager::GetInstance()->GetVariable(x_);
 
@@ -39,8 +38,7 @@ void Histogram2D::Draw() {
       variable_y.GetMeasurementsCount() == 0)
     return;
 
-  double size_box =
-      std::max(variable_x.measurements[0], variable_y.measurements[0]);
+  double size_box = 1e-300;
 
   for (int i = 0; i < variable_y.GetMeasurementsCount(); ++i) {
     size_box = std::max(size_box, std::max(abs(variable_x.measurements[i]),
@@ -57,20 +55,20 @@ void Histogram2D::Draw() {
                        granularity_)]++;
   }
 
-  QSharedPointer<CustomTicker> customTicker(new CustomTicker(int(size_box / (granularity_ / 10))));
+  QSharedPointer<CustomTicker> customTicker(
+      new CustomTicker(int(size_box / (granularity_ / 10))));
   xAxis->setTicker(customTicker);
   yAxis->setTicker(customTicker);
 
   QCPColorMap* colorMap = new QCPColorMap(xAxis, yAxis);
 
-
-  colorMap->data()->setSize(2 * granularity_+4, 2 * granularity_+4);
-  colorMap->data()->setRange(QCPRange(-granularity_-2, granularity_+2),
-                             QCPRange(-granularity_-2, granularity_+2));
+  colorMap->data()->setSize(2 * granularity_ + 4, 2 * granularity_ + 4);
+  colorMap->data()->setRange(QCPRange(-granularity_ - 2, granularity_ + 2),
+                             QCPRange(-granularity_ - 2, granularity_ + 2));
 
   for (int i = 0; i <= 2 * granularity_; ++i) {
     for (int j = 0; j <= 2 * granularity_; ++j) {
-      colorMap->data()->setCell(i+2, j+2, density[i][j]);
+      colorMap->data()->setCell(i + 2, j + 2, density[i][j]);
     }
   }
 
