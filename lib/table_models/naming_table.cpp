@@ -6,10 +6,12 @@
 namespace lib {
 
 int NamingTable::rowCount(const QModelIndex &parent) const {
+  Q_UNUSED(parent)
   return Manager::GetInstance()->GetVariablesCount();
 }
 
 int NamingTable::columnCount(const QModelIndex &parent) const {
+  Q_UNUSED(parent)
   return columns_data::kCount;
 }
 
@@ -21,6 +23,8 @@ QVariant NamingTable::data(const QModelIndex &index, int role) const {
           return Manager::GetInstance()->GetVariable(index.row()).naming.title;
         case columns_data::kTag:
           return Manager::GetInstance()->GetVariable(index.row()).naming.tag;
+        default:
+      return QVariant();
       }
     default:
       return QVariant();
@@ -43,6 +47,8 @@ bool NamingTable::setData(const QModelIndex &index, const QVariant &value,
           naming.tag = value.toString();
           emit dataChanged(index, index);
           return true;
+        default:
+          return false;
       }
     default:
       return false;
@@ -62,7 +68,12 @@ QVariant NamingTable::headerData(int section, Qt::Orientation orientation,
               return QString("Title");
             case kTag:
               return QString("Tag");
+            default:
+              return QVariant();
+
           }
+        default:
+          return QVariant();
       }
     default:
       return QVariant();

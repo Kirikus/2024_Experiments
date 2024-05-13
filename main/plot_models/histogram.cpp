@@ -18,7 +18,7 @@ void Histogram::Draw() {
   double max_value = variable.measurements[0],
          min_value = variable.measurements[0];
 
-  for (int j = 0; j < variable.GetMeasurementsCount(); ++j) {
+  for (size_t j = 0; j < variable.GetMeasurementsCount(); ++j) {
     max_value = std::max(max_value, variable.measurements[j]);
     min_value = std::min(min_value, variable.measurements[j]);
   }
@@ -30,7 +30,7 @@ void Histogram::Draw() {
 
   for (double i = min_value; i <= max_value; i += column_size_) {
     int count = 0;
-    for (int j = 0; j < variable.GetMeasurementsCount(); ++j) {
+    for (size_t j = 0; j < variable.GetMeasurementsCount(); ++j) {
       if (i <= variable.measurements[j] &&
           variable.measurements[j] < i + column_size_) {
         count++;
@@ -69,7 +69,7 @@ OptionsHistogram::OptionsHistogram(int index_x_, int index_granularity_)
 
   setWindowTitle("Histogram options");
 
-  for (int i = 0; i < lib::Manager::GetInstance()->GetVariablesCount(); ++i) {
+  for (size_t i = 0; i < lib::Manager::GetInstance()->GetVariablesCount(); ++i) {
     ui->variableComboBox->addItem(
         lib::Manager::GetInstance()->GetVariable(i).naming.title);
   }

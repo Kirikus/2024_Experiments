@@ -9,7 +9,7 @@ void StrategyIO_JSON::Save(const QString& output_file) {
   file.setFileName(output_file);
   file.open(QIODevice::WriteOnly | QIODevice::Text);
   QJsonArray json_array;
-  for (int i = 0; i < Manager::GetInstance()->GetVariablesCount(); i++) {
+  for (size_t i = 0; i < Manager::GetInstance()->GetVariablesCount(); i++) {
     QJsonObject json_object;
 
     json_object["Naming"] = QJsonObject(
@@ -98,8 +98,8 @@ void StrategyIO_CSV::Save(const QString& output_file) {
 
   QTextStream output_stream(&file);
 
-  for (int i = 0; i < Manager::GetInstance()->GetVariablesCount(); i++) {
-    for (int j = 0; j < Manager::GetInstance()->GetMeasurementsCount(); j++)
+  for (size_t i = 0; i < Manager::GetInstance()->GetVariablesCount(); i++) {
+    for (size_t j = 0; j < Manager::GetInstance()->GetMeasurementsCount(); j++)
       output_stream << Manager::GetInstance()->GetVariable(i).measurements[j]
                     << ',';
     output_stream << '\n';
@@ -162,5 +162,7 @@ void StrategyIO_CSV::Load(const QString& input_file) {
   }
   file.close();
 }
+
+StrategyIO::~StrategyIO() {}
 
 }  // namespace lib
