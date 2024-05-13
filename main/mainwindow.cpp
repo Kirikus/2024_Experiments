@@ -1,22 +1,18 @@
 #include "mainwindow.h"
 
 #include "./ui_mainwindow.h"
+#include "IO/strategyIO.h"
 #include "QStandardPaths"
-#include "manager.h"
-#include "manager_odf/manager_odf.h"
+#include "implementer/implementer.h"
+#include "manager/manager.h"
+#include "plot_models/abstractplotmodel.h"
 #include "plot_models/column_plot.h"
 #include "plot_models/histogram.h"
 #include "plot_models/histogram_2d.h"
 #include "plot_models/line_plot.h"
-#include "plot_models/options_histogram.h"
-#include "plot_models/options_histogram_2d.h"
-#include "plot_models/options_scatter_2d.h"
 #include "plot_models/scatter_plot.h"
 #include "plot_models/scatter_plot_2d.h"
 #include "qcustomplot.h"
-#include "sqlite_database/db_form.h"
-#include "sqlite_database/sqlite.h"
-#include "strategyIO.h"
 #include "table_models/delegates/color_delegate.h"
 #include "table_models/delegates/combobox_delegate.h"
 #include "table_models/errors_table.h"
@@ -238,39 +234,9 @@ void MainWindow::RescalePlots() {
 }
 
 void MainWindow::OptionsPlot() {
-  int index = ui->tabWidgetPlots->currentIndex();
-
-  switch (index) {
-    case 0:
-      // nothing
-      break;
-    case 1:
-      // nothing
-      break;
-    case 2:
-      // nothing
-      break;
-    case 3: {
-      OptionsHistogram a;
-      a.exec();
-      ui->ObjectHistogram->set(a.choose_variable(), a.choose_column_size());
-      break;
-    }
-    case 4: {
-      OptionsScatter2D a;
-      a.exec();
-      ui->ObjectScatterPlot2D->set(a.choose_AxisX(), a.choose_AxisY());
-      break;
-    }
-    case 5: {
-      OptionsHistogram2D a;
-      a.exec();
-      ui->ObjectHistogram2D->set(a.choose_AxisX(), a.choose_AxisY(),
-                                 a.choose_square_size());
-      break;
-    }
-  }
-  UpdatePlots();
+  auto plot =
+      static_cast<AbstractPlotModel*>(ui->tabWidgetPlots->currentWidget());
+  plot->Options();
 }
 
 void MainWindow::ConnectingAction() {
@@ -285,16 +251,6 @@ void MainWindow::ConnectingAction() {
 
   connect(ui->rescalePlotsBtn, &QAbstractButton::clicked, this,
           &MainWindow::RescalePlots);
-
-  connect(ManagerODF::GetInstance()->form, &ODF_Form::textBtn_is_clicked, this,
-          &MainWindow::AddTextBlock);
-  connect(ManagerODF::GetInstance()->form, &ODF_Form::plotBtn_is_clicked, this,
-          &MainWindow::AddPlotBlock);
-  connect(ManagerODF::GetInstance()->form, &ODF_Form::tableBtn_is_clicked, this,
-          &MainWindow::AddTableBlock);
-  connect(ManagerODF::GetInstance()->form, &ODF_Form::assembleBtn_is_clicked,
-          this, &MainWindow::AssembleODF);
-
   connect(ui->optionsPlotBtn, &QAbstractButton::clicked, this,
           &MainWindow::OptionsPlot);
 
@@ -324,30 +280,36 @@ void MainWindow::ConnectingAction() {
   connect(ui->uploadToDataBaseBtn, &QAbstractButton::clicked, this,
           &MainWindow::AddToDatabase);
 
-  // conecting menu
-
   connect(ui->actionDarkTheme, &QAction::triggered, this,
           &MainWindow::DarkThemeOn);
-
   connect(ui->actionLightTheme, &QAction::triggered, this,
           &MainWindow::LightThemeOn);
 
   connect(ui->actionLoad, &QAction::triggered, this, &MainWindow::Load);
   connect(ui->actionSave, &QAction::triggered, this, &MainWindow::Save);
+
+  connect(Implementer::GetInstance()->odf_form, &ODF_Form::textBtn_is_clicked,
+          this, &MainWindow::AddTextBlock);
+  connect(Implementer::GetInstance()->odf_form, &ODF_Form::plotBtn_is_clicked,
+          this, &MainWindow::AddPlotBlock);
+  connect(Implementer::GetInstance()->odf_form, &ODF_Form::tableBtn_is_clicked,
+          this, &MainWindow::AddTableBlock);
+  connect(Implementer::GetInstance()->odf_form,
+          &ODF_Form::assembleBtn_is_clicked, this, &MainWindow::AssembleODF);
 }
 
 void MainWindow::on_actionCreateODF_triggered() {
-  ManagerODF::GetInstance()->form->show();
+  Implementer::GetInstance()->odf_form->show();
 }
 
 void MainWindow::AddTextBlock() {
-  ManagerODF::GetInstance()->AddTextBlock(
-      ManagerODF::GetInstance()->form->GetLayout());
+  Implementer::GetInstance()->AddTextBlock(
+      Implementer::GetInstance()->odf_form->GetLayout());
 }
 
 void MainWindow::AddPlotBlock() {
-  ManagerODF::GetInstance()->AddPlotBlock(
-      ManagerODF::GetInstance()->form->GetLayout(),
+  Implementer::GetInstance()->AddPlotBlock(
+      Implementer::GetInstance()->odf_form->GetLayout(),
       QPixmap(ui->ObjectLinePlot->toPixmap(256, 256)));
 }
 
@@ -357,8 +319,8 @@ void MainWindow::AddTableBlock() {
     if (ui->tableViewMain->selectionModel()->isColumnSelected(i))
       column_indexes.push_back(i);
   if (column_indexes.isEmpty()) return;
-  ManagerODF::GetInstance()->AddTableBlock(
-      ManagerODF::GetInstance()->form->GetLayout(), column_indexes);
+  Implementer::GetInstance()->AddTableBlock(
+      Implementer::GetInstance()->odf_form->GetLayout(), column_indexes);
 }
 
 void MainWindow::AssembleODF() {
@@ -373,7 +335,7 @@ void MainWindow::AssembleODF() {
   QTextDocument* document = new QTextDocument;
   QTextCursor* cursor = new QTextCursor(document);
 
-  for (auto& block : ManagerODF::GetInstance()->blocks) block->Save(cursor);
+  for (auto& block : Implementer::GetInstance()->blocks) block->Save(cursor);
 
   writer.setFormat("odf");
   writer.write(document);
@@ -386,14 +348,14 @@ void MainWindow::closeEvent(QCloseEvent* event) {
   if (lib::Manager::GetInstance()->GetVariablesCount() == 0 ||
       ConfirmingAction("Are you sure to close program?")) {
     event->accept();
-    if (ManagerODF::GetInstance()->form != NULL)
-      ManagerODF::GetInstance()->form->close();
+    if (Implementer::GetInstance()->odf_form)
+      Implementer::GetInstance()->odf_form->close();
   } else
     event->ignore();
 }
 
 void MainWindow::on_actionOpenDataBase_triggered() {
-  lib::Manager::GetInstance()->GetSQLite().form->show();
+  Implementer::GetInstance()->db_form->show();
 }
 
 void MainWindow::AddToDatabase() {
@@ -403,7 +365,7 @@ void MainWindow::AddToDatabase() {
       column_indexes.push_back(i);
   if (column_indexes.isEmpty()) return;
   for (int i : column_indexes)
-    lib::Manager::GetInstance()->GetSQLite().AddToDatabase(
+    Implementer::GetInstance()->database->AddToDatabase(
         lib::Manager::GetInstance()->GetVariable(i));
 }
 
@@ -424,17 +386,21 @@ void MainWindow::DarkThemeOn() {
   darkPalette.setColor(QPalette::Highlight, QColor(42, 130, 218));
   darkPalette.setColor(QPalette::HighlightedText, Qt::black);
 
-  for (int i = 0; i < ui->tabWidgetPlots->count(); i++)
+  for (int i = 0; i < ui->tabWidgetPlots->count() - 1; i++)
     AbstractPlotModel::SetDarkTheme(
         qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(i)));
+  Histogram2D::SetDarkTheme(qobject_cast<QCustomPlot*>(
+      ui->tabWidgetPlots->widget(ui->tabWidgetPlots->count() - 1)));
 
   qApp->setPalette(darkPalette);
 }
 
 void MainWindow::LightThemeOn() {
-  for (int i = 0; i < ui->tabWidgetPlots->count(); i++)
+  for (int i = 0; i < ui->tabWidgetPlots->count() - 1; i++)
     AbstractPlotModel::SetLightTheme(
         qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(i)));
+  Histogram2D::SetLightTheme(qobject_cast<QCustomPlot*>(
+      ui->tabWidgetPlots->widget(ui->tabWidgetPlots->count() - 1)));
 
   qApp->setPalette(style()->standardPalette());
 }

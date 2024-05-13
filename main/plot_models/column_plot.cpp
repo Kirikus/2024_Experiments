@@ -1,6 +1,6 @@
 #include "column_plot.h"
 
-#include "manager.h"
+#include "manager/manager.h"
 
 void ColumnPlot::Draw() {
   clearPlottables();
@@ -9,7 +9,7 @@ void ColumnPlot::Draw() {
 
   for (int i = 0; i < n; ++i) {
     const lib::Variable& variable = lib::Manager::GetInstance()->GetVariable(i);
-    if (!variable.visual.visible) continue;
+    if (!variable.visual.visible || variable.GetMeasurementsCount() == 0) continue;
 
     QVector<double> xAxis_data;
     QVector<double> yAxis_data;
@@ -29,4 +29,8 @@ void ColumnPlot::Draw() {
 
   setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
   replot();
+}
+
+void ColumnPlot::Options() {
+  // nothing
 }

@@ -8,7 +8,8 @@ class LinePlot : public AbstractPlotModel {
  public:
   LinePlot() {}
 
-  virtual void Draw() override;
+  void Draw() override;
+  void Options() override;
 };
 
 #endif  // LINE_PLOT_H

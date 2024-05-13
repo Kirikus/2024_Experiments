@@ -1,6 +1,6 @@
 #include "strategyIO.h"
 
-#include "manager.h"
+#include "manager/manager.h"
 
 namespace lib {
 

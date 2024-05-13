@@ -35,14 +35,14 @@
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_3">
        <item>
-        <widget class="QLabel" name="SubVarLabel">
+        <widget class="QLabel" name="axisXLabel">
          <property name="font">
           <font>
            <pointsize>10</pointsize>
           </font>
          </property>
          <property name="text">
-          <string>Sub variable</string>
+          <string>Axis X</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -66,21 +66,21 @@
         </spacer>
        </item>
        <item>
-        <widget class="QComboBox" name="subVarComboBox"/>
+        <widget class="QComboBox" name="axisXComboBox"/>
        </item>
       </layout>
      </item>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_2">
        <item>
-        <widget class="QLabel" name="mainVarLabel">
+        <widget class="QLabel" name="axisYLabel">
          <property name="font">
           <font>
            <pointsize>10</pointsize>
           </font>
          </property>
          <property name="text">
-          <string>Main variable</string>
+          <string>Axis Y</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -104,7 +104,7 @@
         </spacer>
        </item>
        <item>
-        <widget class="QComboBox" name="mainVarComboBox">
+        <widget class="QComboBox" name="axisYComboBox">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
            <horstretch>0</horstretch>

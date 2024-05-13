@@ -1,6 +1,6 @@
 #include "line_plot.h"
 
-#include "manager.h"
+#include "manager/manager.h"
 
 void LinePlot::Draw() {
   clearGraphs();
@@ -44,4 +44,8 @@ void LinePlot::Draw() {
   }
   setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
   replot();
+}
+
+void LinePlot::Options() {
+  // nothing
 }
