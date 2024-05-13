@@ -48,7 +48,7 @@ class MainWindow : public QMainWindow {
 
   void UpdatePlots();
 
-  void RescalePlots();
+  void ZoomPlots();
 
   void ConnectingAction();
 
@@ -71,7 +71,9 @@ class MainWindow : public QMainWindow {
   void DarkThemeOn();
   void LightThemeOn();
 
- private:
+  void on_tabWidgetPlots_tabBarClicked(int index);
+
+private:
   Ui::MainWindow *ui;
 };
 
