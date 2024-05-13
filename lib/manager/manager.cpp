@@ -26,14 +26,14 @@ void Manager::AddMeasurements() {
   if (variables.isEmpty())
     AddVariable();
   else
-    for (int i = 0; i < GetVariablesCount(); i++)
+    for (size_t i = 0; i < GetVariablesCount(); i++)
       GetVariable(i).measurements.push_back(0);
   emit measurements_is_added();
 }
 
 void Manager::DeleteMeasurements(int index) {
   if (GetMeasurementsCount() == 0) return;
-  for (int i = 0; i < GetVariablesCount(); i++)
+  for (size_t i = 0; i < GetVariablesCount(); i++)
     GetVariable(i).measurements.removeAt(index);
   emit measurements_is_deleted();
 }
@@ -53,7 +53,7 @@ void Manager::AugmentVariables() {
 }
 
 size_t Manager::GetMeasurementsCount() const {
-  size_t MeasurementsCount = 0;
+  qsizetype MeasurementsCount = 0;
   for (size_t i = 0; i < GetVariablesCount(); i++)
     if (variables[i].measurements.size() > MeasurementsCount)
       MeasurementsCount = variables[i].measurements.size();

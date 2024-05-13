@@ -6,7 +6,7 @@ void ScatterPlot::Draw() {
   clearGraphs();
   legend->setVisible(true);
 
-  for (int i = 0; i < lib::Manager::GetInstance()->GetVariablesCount(); ++i) {
+  for (size_t i = 0; i < lib::Manager::GetInstance()->GetVariablesCount(); ++i) {
     const lib::Variable& variable = lib::Manager::GetInstance()->GetVariable(i);
     if (!variable.visual.visible) continue;
     QCPGraph* graph = addGraph();
@@ -27,7 +27,7 @@ void ScatterPlot::Draw() {
 
     QVector<double> xAxis_data;
     QVector<double> yAxis_data;
-    for (int j = 0; j < variable.GetMeasurementsCount(); j++) {
+    for (size_t j = 0; j < variable.GetMeasurementsCount(); j++) {
       if (variable.measurements[j]) {
         xAxis_data.push_back(j + 1);
         yAxis_data.push_back(variable.measurements[j]);

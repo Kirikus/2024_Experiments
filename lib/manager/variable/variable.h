@@ -42,8 +42,8 @@ struct Variable {
   } visual;
 
   struct ErrorOptions {
-    int type;
     double value;
+    int type;
 
     ErrorOptions(double value = 1.0, int type = Types::kAbsolute)
         : value(value), type(type) {}

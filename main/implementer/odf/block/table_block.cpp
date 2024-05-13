@@ -10,11 +10,11 @@ TableBlock::TableBlock(QVBoxLayout *block_chain, QList<int> column_indexes)
   table->setColumnCount(column_indexes.size());
   table->setRowCount(manager->GetMeasurementsCount());
 
-  for (int i = 0; i < column_indexes.size(); i++) {
+  for (size_t i = 0; i < size_t(column_indexes.size()); i++) {
     table->setHorizontalHeaderItem(
         i, new QTableWidgetItem(
                manager->GetVariable(column_indexes[i]).naming.title));
-    for (int j = 0; j < manager->GetMeasurementsCount(); j++) {
+    for (size_t j = 0; j < manager->GetMeasurementsCount(); j++) {
       table->setItem(
           j, i,
           new QTableWidgetItem(

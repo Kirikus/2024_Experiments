@@ -15,7 +15,7 @@ class AbstractPlotModel : public QCustomPlot {
 
   AbstractPlotModel(QCustomPlot* parent = nullptr) : QCustomPlot(parent) {}
 
-  static void Rescale(QCustomPlot* plot) {
+  static void Zoom(QCustomPlot* plot) {
     plot->rescaleAxes();
     plot->replot();
   }
@@ -32,6 +32,15 @@ class AbstractPlotModel : public QCustomPlot {
     plot->xAxis->setTickLabelColor(Qt::black);
     plot->replot();
   }
+
+  enum Types {
+    LinePlot = 0,
+    ScatterPlot,
+    ColumnPlot,
+    Histogram,
+    ScatterPlot2D,
+    Histogram2D,
+  };
 };
 
 #endif  // ABSTRACTPLOTMODEL_H

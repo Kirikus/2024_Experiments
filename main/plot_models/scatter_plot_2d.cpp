@@ -5,7 +5,7 @@
 void ScatterPlot2D::Draw() {
   clearGraphs();
 
-  if (lib::Manager::GetInstance()->GetVariablesCount() <= std::max(x_, y_))
+  if (int(lib::Manager::GetInstance()->GetVariablesCount()) <= std::max(x_, y_))
     return;
 
   const lib::Variable& variable_x =
@@ -34,7 +34,7 @@ void ScatterPlot2D::Draw() {
   graph->setPen(QPen(QBrush(variable_y.visual.color), variable_y.visual.width,
                      variable_y.visual.line_type));
 
-  for (int j = 0; j < variable_x.GetMeasurementsCount(); j++) {
+  for (size_t j = 0; j < variable_x.GetMeasurementsCount(); j++) {
     xAxis_data.push_back(variable_x.measurements[j]);
     yAxis_data.push_back(variable_y.measurements[j]);
   }
@@ -65,13 +65,13 @@ OptionsScatter2D::OptionsScatter2D(int index_x_, int index_y_)
 
   setWindowTitle("ScatterPlot2D options");
 
-  for (int i = 0; i < lib::Manager::GetInstance()->GetVariablesCount(); ++i) {
+  for (size_t i = 0; i < lib::Manager::GetInstance()->GetVariablesCount(); ++i) {
     ui->axisXComboBox->addItem(
         lib::Manager::GetInstance()->GetVariable(i).naming.title);
   }
   ui->axisXComboBox->setCurrentIndex(index_x_);
 
-  for (int i = 0; i < lib::Manager::GetInstance()->GetVariablesCount(); ++i) {
+  for (size_t i = 0; i < lib::Manager::GetInstance()->GetVariablesCount(); ++i) {
     ui->axisYComboBox->addItem(
         lib::Manager::GetInstance()->GetVariable(i).naming.title);
   }

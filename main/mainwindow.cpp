@@ -28,19 +28,9 @@ MainWindow::MainWindow(QWidget* parent)
   setWindowIcon(QIcon("C:/2024_Experiments/images/mainwindow.png"));
   setWindowTitle("Data Handler");
 
-  lib::Variable Foo({1, 2, 3, 4, 5}, lib::Variable::Naming("Foo"),
-                    lib::Variable::VisualOptions(true, 1, {255, 0, 0},
-                                                 QCPScatterStyle::ssCircle));
-  lib::Variable bar({4, 2, 11, 3, 5, 1}, lib::Variable::Naming("bar"),
-                    lib::Variable::VisualOptions(true, 1, {83, 204, 101},
-                                                 QCPScatterStyle::ssCircle));
-  lib::Variable var({5, 3, 3, 2, 6, 1}, lib::Variable::Naming("var"),
-                    lib::Variable::VisualOptions(true, 1, {42, 182, 204},
-                                                 QCPScatterStyle::ssCircle));
-
-  lib::Manager::GetInstance()->AddVariable(Foo);
-  lib::Manager::GetInstance()->AddVariable(bar);
-  lib::Manager::GetInstance()->AddVariable(var);
+  lib::StrategyIO* loader = new lib::StrategyIO_CSV;
+  loader->Load("C:/2024_Experiments/initial_data.csv");
+  delete loader;
 
   SetupTables();
 
@@ -48,7 +38,13 @@ MainWindow::MainWindow(QWidget* parent)
 
   UpdatePlots();
 
-  RescalePlots();
+  ui->horizontalSpacer_17->changeSize(0, 0);
+
+  ui->optionsPlotBtn->hide();
+
+  ZoomPlots();
+
+  DarkThemeOn();
 }
 
 MainWindow::~MainWindow() { delete ui; }
@@ -140,7 +136,7 @@ void MainWindow::Load() {
 }
 
 void MainWindow::Save() {
-  QString file_name = QFileDialog::getOpenFileName(
+  QString file_name = QFileDialog::getSaveFileName(
       this, tr("Select a file"),
       QStandardPaths::writableLocation(QStandardPaths::DesktopLocation),
       tr("Open CSV (*.csv);;Open JSON (*.json);;"));
@@ -236,9 +232,9 @@ void MainWindow::UpdatePlots() {
   ui->ObjectHistogram2D->Draw();
 }
 
-void MainWindow::RescalePlots() {
+void MainWindow::ZoomPlots() {
   for (int i = 0; i < ui->tabWidgetPlots->count(); i++)
-    AbstractPlotModel::Rescale(
+    AbstractPlotModel::Zoom(
         qobject_cast<QCustomPlot*>(ui->tabWidgetPlots->widget(i)));
 }
 
@@ -258,8 +254,8 @@ void MainWindow::ConnectingAction() {
   connect(ui->tableViewPlotsSets->model(), &QAbstractTableModel::dataChanged,
           this, &MainWindow::UpdatePlots, Qt::DirectConnection);
 
-  connect(ui->rescalePlotsBtn, &QAbstractButton::clicked, this,
-          &MainWindow::RescalePlots);
+  connect(ui->zoomPlotsBtn, &QAbstractButton::clicked, this,
+          &MainWindow::ZoomPlots);
   connect(ui->optionsPlotBtn, &QAbstractButton::clicked, this,
           &MainWindow::OptionsPlot);
 
@@ -268,8 +264,8 @@ void MainWindow::ConnectingAction() {
   connect(lib::Manager::GetInstance(), &lib::Manager::variable_is_deleted, this,
           &MainWindow::DeleteColumn);
 
-  connect(ui->addColumnBtn, SIGNAL(clicked()), lib::Manager::GetInstance(),
-          SLOT(AddVariable()));
+  connect(ui->addColumnBtn, &QAbstractButton::clicked,
+          lib::Manager::GetInstance(), &lib::Manager::CreateNewVariable);
   connect(lib::Manager::GetInstance(), &lib::Manager::variable_is_added, this,
           &MainWindow::AddColumn);
 
@@ -327,7 +323,7 @@ void MainWindow::AddPlotBlock() {
 
 void MainWindow::AddTableBlock() {
   QList<int> column_indexes;
-  for (int i = 0; i < lib::Manager::GetInstance()->GetVariablesCount(); i++)
+  for (size_t i = 0; i < lib::Manager::GetInstance()->GetVariablesCount(); i++)
     if (ui->tableViewMain->selectionModel()->isColumnSelected(i))
       column_indexes.push_back(i);
   if (column_indexes.isEmpty()) return;
@@ -372,11 +368,11 @@ void MainWindow::on_actionOpenDataBase_triggered() {
 
 void MainWindow::AddToDatabase() {
   QList<int> column_indexes;
-  for (int i = 0; i < lib::Manager::GetInstance()->GetVariablesCount(); i++)
+  for (size_t i = 0; i < lib::Manager::GetInstance()->GetVariablesCount(); i++)
     if (ui->tableViewMain->selectionModel()->isColumnSelected(i))
       column_indexes.push_back(i);
   if (column_indexes.isEmpty()) return;
-  for (int i : column_indexes)
+  for (size_t i : column_indexes)
     Implementer::GetInstance()->database->AddToDatabase(
         lib::Manager::GetInstance()->GetVariable(i));
 }
@@ -417,6 +413,36 @@ void MainWindow::LightThemeOn() {
 
   qApp->setPalette(style()->standardPalette());
 }
+
+void MainWindow::on_tabWidgetPlots_tabBarClicked(int index) {
+  switch (index) {
+    case AbstractPlotModel::LinePlot:
+      ui->horizontalSpacer_17->changeSize(0, 0);
+      ui->optionsPlotBtn->hide();
+      break;
+    case AbstractPlotModel::ScatterPlot:
+      ui->horizontalSpacer_17->changeSize(0, 0);
+      ui->optionsPlotBtn->hide();
+      break;
+    case AbstractPlotModel::ColumnPlot:
+      ui->horizontalSpacer_17->changeSize(0, 0);
+      ui->optionsPlotBtn->hide();
+      break;
+    case AbstractPlotModel::Histogram:
+      ui->horizontalSpacer_17->changeSize(60, 20);
+      ui->optionsPlotBtn->show();
+      break;
+    case AbstractPlotModel::ScatterPlot2D:
+      ui->horizontalSpacer_17->changeSize(60, 20);
+      ui->optionsPlotBtn->show();
+      break;
+    case AbstractPlotModel::Histogram2D:
+      ui->horizontalSpacer_17->changeSize(60, 20);
+      ui->optionsPlotBtn->show();
+      break;
+    default:
+      break;
+  }
 
 void MainWindow::AddCalculated() {
   AddCalculatedDialog dialog;

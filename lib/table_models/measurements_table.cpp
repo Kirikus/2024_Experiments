@@ -6,10 +6,12 @@
 namespace lib {
 
 int MeasurementsTable::rowCount(const QModelIndex &parent) const {
+  Q_UNUSED(parent)
   return Manager::GetInstance()->GetMeasurementsCount();
 }
 
 int MeasurementsTable::columnCount(const QModelIndex &parent) const {
+  Q_UNUSED(parent)
   return Manager::GetInstance()->GetVariablesCount();
 }
 
@@ -29,8 +31,12 @@ QVariant MeasurementsTable::data(const QModelIndex &index, int role) const {
                    QVariant(variable.measurements[index.row()] *
                             variable.error.value * 0.5)
                        .toString();
+          default:
+            return QVariant();
         }
-      }
+
+      } else
+        return QVariant();
     default:
       return QVariant();
   }
@@ -59,8 +65,10 @@ QVariant MeasurementsTable::headerData(int section, Qt::Orientation orientation,
       switch (orientation) {
         case Qt::Vertical:
           return section + 1;
-        case Qt::Horizontal:
-          return Manager::GetInstance()->GetVariable(section).naming.title;
+        default:
+          auto naming = Manager::GetInstance()->GetVariable(section).naming;
+          return naming.tag.isEmpty() ? naming.title
+                                      : naming.title + "\n(" + naming.tag + ")";
       }
     default:
       return QVariant();

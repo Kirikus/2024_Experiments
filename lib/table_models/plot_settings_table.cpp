@@ -6,10 +6,12 @@
 namespace lib {
 
 int PlotSettingsTable::rowCount(const QModelIndex &parent) const {
+  Q_UNUSED(parent)
   return Manager::GetInstance()->GetVariablesCount();
 }
 
 int PlotSettingsTable::columnCount(const QModelIndex &parent) const {
+  Q_UNUSED(parent)
   return columns_data::kCount;
 }
 
@@ -17,7 +19,7 @@ QVariant PlotSettingsTable::data(const QModelIndex &index, int role) const {
   auto &visual = Manager::GetInstance()->GetVariable(index.row()).visual;
   switch (role) {
     case Qt::BackgroundRole:
-      if (index.column() == columns_data::kColor) return visual.color;
+      return index.column() == columns_data::kColor ? visual.color : QVariant();
     case Qt::CheckStateRole:
       return index.column() == columns_data::kVisible
                  ? visual.visible ? Qt::Checked : Qt::Unchecked
@@ -31,6 +33,8 @@ QVariant PlotSettingsTable::data(const QModelIndex &index, int role) const {
               visual.point_shape);
         case columns_data::kLineType:
           return Variable::VisualOptions::line_types.value(visual.line_type);
+        default:
+          return QVariant();
       }
     default:
       return QVariant();
@@ -50,6 +54,7 @@ bool PlotSettingsTable::setData(const QModelIndex &index, const QVariant &value,
             static_cast<Qt::CheckState>(value.toInt()) == Qt::Checked;
         return true;
       }
+      else return false;
     case Qt::EditRole:
       switch (index.column()) {
         case columns_data::kWidth:
@@ -71,6 +76,8 @@ bool PlotSettingsTable::setData(const QModelIndex &index, const QVariant &value,
           visual.color = value.value<QColor>();
           emit dataChanged(index, index);
           return true;
+        default:
+          return false;
       }
     default:
       return false;
@@ -97,7 +104,11 @@ QVariant PlotSettingsTable::headerData(int section, Qt::Orientation orientation,
               return QString("Line type");
             case columns_data::kColor:
               return QString("Color");
+            default:
+              return QVariant();
           }
+        default:
+          return QVariant();
       }
     default:
       return QVariant();
