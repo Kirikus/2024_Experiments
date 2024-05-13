@@ -39,14 +39,18 @@ bool NamingTable::setData(const QModelIndex &index, const QVariant &value,
     case Qt::EditRole:
       switch (index.column()) {
         case columns_data::kTitle:
-          value.toString().isEmpty() ? naming.title = "unnamed"
-                                     : naming.title = value.toString();
-          emit dataChanged(index, index);
-          return true;
+          if (!Manager::GetInstance()->IsVariableExisting(value.toString())) {
+            value.toString().isEmpty() ? naming.title = "unnamed"
+                                       : naming.title = value.toString();
+            emit dataChanged(index, index);
+            return true;
+          }
         case columns_data::kTag:
-          naming.tag = value.toString();
-          emit dataChanged(index, index);
-          return true;
+           if (!Manager::GetInstance()->IsVariableExisting(value.toString())) {
+             naming.tag = value.toString();
+             emit dataChanged(index, index);
+             return true;
+          }
         default:
           return false;
       }
@@ -65,12 +69,11 @@ QVariant NamingTable::headerData(int section, Qt::Orientation orientation,
         case Qt::Horizontal:
           switch (section) {
             case kTitle:
-              return QString("Title");
+              return QString("Title of variable");
             case kTag:
-              return QString("Tag");
+              return QString("Tag of variable");
             default:
               return QVariant();
-
           }
         default:
           return QVariant();

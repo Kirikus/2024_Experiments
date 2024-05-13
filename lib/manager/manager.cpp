@@ -9,16 +9,17 @@ namespace lib {
 Manager* Manager::GetInstance() { return instance; }
 
 void Manager::AddVariable(const Variable& variable) {
-  variables.append(variable);
-  if (variables.size() == 1) {
-    if (variable.measurements.isEmpty()) {
-      AddMeasurements();
-    } else
-      for (size_t i = 0; i < variable.GetMeasurementsCount(); i++)
-        emit measurements_is_added();
+  if (!IsVariableExisting(variable.naming.title) || variable.naming.title == "unnamed") {
+    variables.append(variable);
+    if (variables.size() == 1)
+      if (variable.measurements.isEmpty())
+        AddMeasurements();
+      else
+        for (int i = 0; i < variable.GetMeasurementsCount(); i++)
+          emit measurements_is_added();
+    AugmentVariables();
+    emit variable_is_added();
   }
-  AugmentVariables();
-  emit variable_is_added();
 }
 
 void Manager::AddMeasurements() {
@@ -57,6 +58,23 @@ size_t Manager::GetMeasurementsCount() const {
     if (variables[i].measurements.size() > MeasurementsCount)
       MeasurementsCount = variables[i].measurements.size();
   return MeasurementsCount;
+}
+
+bool Manager::IsVariableExisting(QString name) {
+  for (int i = 0; i < GetVariablesCount(); i++)
+    if (GetVariable(i).naming.title == name ||
+        GetVariable(i).naming.tag == name) {
+      return true;
+    }
+  return false;
+}
+
+Variable& Manager::GetVariable(QString name) {
+  for (int i = 0; i < GetVariablesCount(); i++)
+    if (GetVariable(i).naming.title == name ||
+        GetVariable(i).naming.tag == name) {
+      return GetVariable(i);
+    }
 }
 
 void Manager::Clear() {

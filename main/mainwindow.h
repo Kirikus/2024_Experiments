@@ -12,8 +12,6 @@
 #include <QMainWindow>
 #include <QStandardItem>
 
-#include "implementer/odf/odf_form.h"
-
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -72,6 +70,8 @@ class MainWindow : public QMainWindow {
   void LightThemeOn();
 
   void on_tabWidgetPlots_tabBarClicked(int index);
+
+  void AddCalculated();
 
 private:
   Ui::MainWindow *ui;

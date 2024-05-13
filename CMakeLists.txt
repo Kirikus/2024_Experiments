@@ -11,3 +11,6 @@ add_subdirectory(qcustomplot)
 add_subdirectory(main)
 
 add_subdirectory(lib)
+
+add_subdirectory(tests)
+

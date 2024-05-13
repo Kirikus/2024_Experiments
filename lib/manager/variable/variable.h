@@ -10,6 +10,7 @@ namespace lib {
 
 struct Variable {
   QList<double> measurements;
+  bool isCalculated;
 
   struct Naming {
     QString title;
@@ -57,11 +58,12 @@ struct Variable {
 
   Variable(QList<double> measurements = {}, Naming naming = Naming(),
            VisualOptions visual = VisualOptions(),
-           ErrorOptions error = ErrorOptions())
+           ErrorOptions error = ErrorOptions(), bool isCalculated = false)
       : measurements(measurements),
         naming(naming),
         visual(visual),
-        error(error) {}
+        error(error),
+        isCalculated(isCalculated)  {}
 };
 
 }  // namespace lib
