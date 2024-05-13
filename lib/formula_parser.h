@@ -25,9 +25,9 @@ namespace ascii = boost::spirit::ascii;
 
 template <typename Iterator>
 parser<Iterator>::parser() : parser::base_type(expression) {
-  qi::int_type int_;
   qi::char_type char_;
   qi::double_type double_;
+  qi::digit_type digit;
   qi::lexeme_type lexeme;
   qi::raw_type raw;
   qi::alpha_type alpha;
@@ -68,7 +68,7 @@ parser<Iterator>::parser() : parser::base_type(expression) {
       |   '(' > expression > ')'
       ;
 
-  varname = raw[lexeme[+(alpha) >> *(double_ | alpha | char_('_'))]];
+  varname = raw[lexeme[+(alpha) >> *(digit | alpha | char_('_'))]];
 }
 }
 // clang-format on

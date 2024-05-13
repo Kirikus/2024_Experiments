@@ -10,7 +10,6 @@
 #include <cmath>
 #include <list>
 
-#include "formula_parser.h"
 #include "manager/manager.h"
 
 namespace client {
@@ -20,9 +19,20 @@ struct signed_;
 struct program;
 
 struct variable {
-  variable(const std::string& name)
-      : values(lib::Manager::GetInstance()->GetVariable(name).measurements) {}
-  variable(double val) { values.push_back(val); }
+  variable(const std::string& name) {
+    if (lib::Manager::GetInstance()->IsVariableExisting(
+            QString::fromStdString(name))) {
+      values = (lib::Manager::GetInstance()
+                    ->GetVariable(QString::fromStdString(name))
+                    .measurements);
+    } else
+      throw std::logic_error("Undefinded varname");
+  }
+  variable(double val) {
+    for (int i = 0; i < lib::Manager::GetInstance()->GetMeasurementsCount();
+         i++)
+      values.push_back(val);
+  }
   variable(QList<double> vals) : values(vals) {}
 
   QList<double> values;
@@ -90,82 +100,30 @@ struct eval {
     QList<double> result;
     switch (x.operator_) {
       case '+':
-        if (lhs.values.size() == 1 || rhs.values.size() == 1) {
-          if (lhs.values.size() == 1) std::swap(lhs, rhs);
-          for (double i : lhs.values) result.push_back(i + rhs.values[0]);
-          return variable(result);
-        } else {
-          for (int i = 0; i < lhs.values.size(); i++)
-            result.push_back(lhs.values[i] + rhs.values[i]);
-          return variable(result);
-        }
+        for (int i = 0; i < lib::Manager::GetInstance()->GetMeasurementsCount();
+             i++)
+          result.push_back(lhs.values[i] + rhs.values[i]);
+        return variable(result);
       case '-':
-        if (lhs.values.size() == 1 && rhs.values.size() == 1) {
-          result.push_back(lhs.values[0] - rhs.values[0]);
-          return variable(result);
-        }
-        if (lhs.values.size() == 1 && rhs.values.size() != 1) {
-          for (double i : rhs.values) result.push_back(lhs.values[0] - i);
-          return variable(result);
-        }
-        if (lhs.values.size() != 1 && rhs.values.size() == 1) {
-          for (double i : lhs.values) result.push_back(i - rhs.values[0]);
-          return variable(result);
-        }
-        if (lhs.values.size() != 1 && rhs.values.size() != 1) {
-          for (int i = 0;
-               i < lib::Manager::GetInstance()->GetMeasurementsCount(); i++)
-            result.push_back(lhs.values[i] - rhs.values[i]);
-          return variable(result);
-        }
+        for (int i = 0; i < lib::Manager::GetInstance()->GetMeasurementsCount();
+             i++)
+          result.push_back(lhs.values[i] - rhs.values[i]);
+        return variable(result);
       case '*':
-        if (lhs.values.size() == 1 || rhs.values.size() == 1) {
-          if (lhs.values.size() == 1) std::swap(lhs, rhs);
-          for (double i : lhs.values) result.push_back(i * rhs.values[0]);
-          return variable(result);
-        } else {
-          for (int i = 0; i < lhs.values.size(); i++)
-            result.push_back(lhs.values[i] * rhs.values[i]);
-          return variable(result);
-        }
+        for (int i = 0; i < lib::Manager::GetInstance()->GetMeasurementsCount();
+             i++)
+          result.push_back(lhs.values[i] * rhs.values[i]);
+        return variable(result);
       case '/':
-        if (lhs.values.size() == 1 && rhs.values.size() == 1) {
-          result.push_back(lhs.values[0] / rhs.values[0]);
-          return variable(result);
-        }
-        if (lhs.values.size() == 1 && rhs.values.size() != 1) {
-          for (double i : rhs.values) result.push_back(lhs.values[0] / i);
-          return variable(result);
-        }
-        if (lhs.values.size() != 1 && rhs.values.size() == 1) {
-          for (double i : lhs.values) result.push_back(i / rhs.values[0]);
-          return variable(result);
-        }
-        if (lhs.values.size() != 1 && rhs.values.size() != 1) {
-          for (int i = 0;
-               i < lib::Manager::GetInstance()->GetMeasurementsCount(); i++)
-            result.push_back(lhs.values[i] / rhs.values[i]);
-          return variable(result);
-        }
+        for (int i = 0; i < lib::Manager::GetInstance()->GetMeasurementsCount();
+             i++)
+          result.push_back(lhs.values[i] / rhs.values[i]);
+        return variable(result);
       case '^':
-        if (lhs.values.size() == 1 && rhs.values.size() == 1) {
-          result.push_back(pow(lhs.values[0], rhs.values[0]));
-          return variable(result);
-        }
-        if (lhs.values.size() == 1 && rhs.values.size() != 1) {
-          for (double i : rhs.values) result.push_back(pow(lhs.values[0], i));
-          return variable(result);
-        }
-        if (lhs.values.size() != 1 && rhs.values.size() == 1) {
-          for (double i : lhs.values) result.push_back(pow(i, rhs.values[0]));
-          return variable(result);
-        }
-        if (lhs.values.size() != 1 && rhs.values.size() != 1) {
-          for (int i = 0;
-               i < lib::Manager::GetInstance()->GetMeasurementsCount(); i++)
-            result.push_back(pow(lhs.values[i], rhs.values[i]));
-          return variable(result);
-        }
+        for (int i = 0; i < lib::Manager::GetInstance()->GetMeasurementsCount();
+             i++)
+          result.push_back(pow(lhs.values[i], rhs.values[i]));
+        return variable(result);
     }
     BOOST_ASSERT(0);
     return variable(0);

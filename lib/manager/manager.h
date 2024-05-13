@@ -25,7 +25,9 @@ class Manager : public QObject {
 
   Variable& GetVariable(size_t index) { return variables[index]; }
 
-  Variable& GetVariable(std::string name);
+  Variable& GetVariable(QString name);
+
+  bool IsVariableExisting(QString name);
 
   void ClearCalculated();
   void AddCalculated(const Variable& = Variable());

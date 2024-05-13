@@ -1,6 +1,4 @@
 #include <QApplication>
-#include <iostream>
-#include <random>
 
 #include "../lib/formula_parser.h"
 #include "manager/manager.h"
@@ -28,21 +26,24 @@ bool parser_test_func(std::string str, client::ast::variable result) {
   std::string::const_iterator iter = str.begin();
   std::string::const_iterator end = str.end();
   bool r = phrase_parse(iter, end, pars, space, program);
-  // for (double i : eval(program).values) qDebug() << i;
-  return r && iter == end  && eval(program).values == result.values;
+  return r && iter == end && eval(program).values == result.values;
 }
 
 BOOST_AUTO_TEST_SUITE(parser)
 
 BOOST_AUTO_TEST_CASE(simple) {
   lib::Manager::GetInstance()->AddVariable(
-      lib::Variable({1, 2, 3, 4, 5}, lib::Variable::Naming("Bar")));
+      lib::Variable({5, 4, 3, 2, 1}, lib::Variable::Naming("Bar")));
 
-  std::string test_string{"Bar^(4/2) - 0.5*Bar"};
+  lib::Manager::GetInstance()->AddVariable(
+      lib::Variable({1, 2, 3, 4, 5}, lib::Variable::Naming("Var")));
 
-  QList<double> expected_value{0.5, 3.0, 7.5, 14.0, 22.5};
+  std::string test_string{"Var^3 + Bar^2"};
 
-  BOOST_CHECK(parser_test_func(test_string, client::ast::variable(expected_value)));
+  QList<double> expected_value{26, 24, 36, 68, 126};
+
+  BOOST_CHECK(
+      parser_test_func(test_string, client::ast::variable(expected_value)));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
