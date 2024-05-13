@@ -31,7 +31,6 @@ QVariant MeasurementsTable::data(const QModelIndex &index, int role) const {
                        .toString();
         }
       }
-
     default:
       return QVariant();
   }
@@ -42,12 +41,12 @@ bool MeasurementsTable::setData(const QModelIndex &index, const QVariant &value,
   if (!value.canConvert<double>()) return false;
   switch (role) {
     case Qt::EditRole:
+    if (value.toString() == "") return false;
       Manager::GetInstance()
           ->GetVariable(index.column())
           .measurements[index.row()] = value.toDouble();
       emit dataChanged(index, index);
       return true;
-
     default:
       return false;
   }
@@ -69,7 +68,9 @@ QVariant MeasurementsTable::headerData(int section, Qt::Orientation orientation,
 }
 
 Qt::ItemFlags MeasurementsTable::flags(const QModelIndex &index) const {
-  return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
+  return !Manager::GetInstance()->GetVariable(index.column()).isCalculated
+             ? QAbstractItemModel::flags(index) | Qt::ItemIsEditable
+             : QAbstractItemModel::flags(index) | Qt::NoItemFlags;
 }
 
 void MeasurementsTable::insertRow(int index) {

@@ -3,6 +3,7 @@
 #include "./ui_mainwindow.h"
 #include "IO/strategyIO.h"
 #include "QStandardPaths"
+#include "addcalculateddialog.h"
 #include "implementer/implementer.h"
 #include "manager/manager.h"
 #include "plot_models/abstractplotmodel.h"
@@ -285,6 +286,9 @@ void MainWindow::ConnectingAction() {
   connect(ui->clearDataBtn, &QAbstractButton::clicked, this,
           &MainWindow::ClearData);
 
+  connect(ui->addCalculatedPushButton, &QAbstractButton::clicked, this,
+          &MainWindow::AddCalculated);
+
   connect(ui->uploadToDataBaseBtn, &QAbstractButton::clicked, this,
           &MainWindow::AddToDatabase);
 
@@ -393,6 +397,7 @@ void MainWindow::DarkThemeOn() {
   darkPalette.setColor(QPalette::Link, QColor(42, 130, 218));
   darkPalette.setColor(QPalette::Highlight, QColor(42, 130, 218));
   darkPalette.setColor(QPalette::HighlightedText, Qt::black);
+  darkPalette.setColor(QPalette::PlaceholderText, Qt::white);
 
   for (int i = 0; i < ui->tabWidgetPlots->count() - 1; i++)
     AbstractPlotModel::SetDarkTheme(
@@ -411,4 +416,9 @@ void MainWindow::LightThemeOn() {
       ui->tabWidgetPlots->widget(ui->tabWidgetPlots->count() - 1)));
 
   qApp->setPalette(style()->standardPalette());
+}
+
+void MainWindow::AddCalculated() {
+  AddCalculatedDialog dialog;
+  dialog.exec();
 }
