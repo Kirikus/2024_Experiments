@@ -1,7 +1,7 @@
 #include "addcalculateddialog.h"
 
-#include "../lib/formula_parser.h"
-#include "../lib/parser_ast.h"
+#include "parser/formula_parser.h"
+#include "parser/parser_ast.h"
 #include "manager/manager.h"
 #include "ui_addcalculateddialog.h"
 
@@ -15,8 +15,8 @@ AddCalculatedDialog::AddCalculatedDialog(QWidget* parent)
 
   ui->varnameLineEdit->setFixedSize(QSize(85, 30));
   ui->expressionLineEdit->setFixedSize(QSize(200, 30));
-  ui->errorInputLabel->setStyleSheet("QLabel {color : red; }");
-  ui->errorInputLabel->setVisible(false);
+  ui->infoLabel->setStyleSheet("QLabel {color : red; }");
+  ui->infoLabel->setVisible(false);
   ui->addCalculatedPushButton->setDisabled(true);
 }
 
@@ -43,28 +43,28 @@ void AddCalculatedDialog::on_addCalculatedPushButton_clicked() {
     if (r && iter == end) {
       if (!lib::Manager::GetInstance()->IsVariableExisting(varname)) {
         lib::Manager::GetInstance()->AddVariable(lib::Variable(
-            eval(program).values, varname, lib::Variable::VisualOptions(),
+            eval(program).values, varname, lib::Variable::VisualOptions(false),
             lib::Variable::ErrorOptions(), true));
-        ui->errorInputLabel->setStyleSheet("QLabel {color : green; }");
-        ui->errorInputLabel->setText("Calculated has been added");
-        ui->errorInputLabel->setVisible(true);
+        ui->infoLabel->setStyleSheet("QLabel {color : green; }");
+        ui->infoLabel->setText("Calculated has been added");
+        ui->infoLabel->setVisible(true);
       } else if (lib::Manager::GetInstance()
                      ->GetVariable(varname)
-                     .isCalculated) {
+                     .is_calculated) {
         lib::Manager::GetInstance()->GetVariable(varname).measurements =
             eval(program).values;
-        ui->errorInputLabel->setStyleSheet("QLabel {color : gray; }");
-        ui->errorInputLabel->setText("Calculated has been changed");
-        ui->errorInputLabel->setVisible(true);
+        ui->infoLabel->setStyleSheet("QLabel {color : gray; }");
+        ui->infoLabel->setText("Calculated has been changed");
+        ui->infoLabel->setVisible(true);
       } else {
         throw std::logic_error("Redefining a not calculated variable");
       }
     } else
       throw std::logic_error("Uncorrect formula");
   } catch (...) {
-    ui->errorInputLabel->setText("The formula is written incorrectly");
-    ui->errorInputLabel->setStyleSheet("QLabel {color : red; }");
-    ui->errorInputLabel->setVisible(true);
+    ui->infoLabel->setText("The formula is written incorrectly");
+    ui->infoLabel->setStyleSheet("QLabel {color : red; }");
+    ui->infoLabel->setVisible(true);
   }
 }
 

@@ -33,7 +33,7 @@
    <item row="0" column="0">
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QLabel" name="infoLabel">
+      <widget class="QLabel" name="createCalcLabel">
        <property name="font">
         <font>
          <pointsize>14</pointsize>
@@ -48,7 +48,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="errorInputLabel">
+      <widget class="QLabel" name="infoLabel">
        <property name="font">
         <font>
          <pointsize>11</pointsize>
@@ -184,6 +184,9 @@
           <font>
            <pointsize>11</pointsize>
           </font>
+         </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Adds the written formula to the table as a new immutable variable&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="text">
           <string>Add</string>

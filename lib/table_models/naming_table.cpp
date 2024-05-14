@@ -45,12 +45,14 @@ bool NamingTable::setData(const QModelIndex &index, const QVariant &value,
             emit dataChanged(index, index);
             return true;
           }
+          else return false;
         case columns_data::kTag:
            if (!Manager::GetInstance()->IsVariableExisting(value.toString())) {
              naming.tag = value.toString();
              emit dataChanged(index, index);
              return true;
           }
+           else return false;
         default:
           return false;
       }

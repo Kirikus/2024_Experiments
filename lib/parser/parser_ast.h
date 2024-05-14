@@ -19,17 +19,12 @@ struct signed_;
 struct program;
 
 struct variable {
-  variable(const std::string& name) {
-    if (lib::Manager::GetInstance()->IsVariableExisting(
-            QString::fromStdString(name))) {
-      values = (lib::Manager::GetInstance()
-                    ->GetVariable(QString::fromStdString(name))
-                    .measurements);
-    } else
-      throw std::logic_error("Undefinded varname");
-  }
+  variable(const std::string& name)
+      : values(lib::Manager::GetInstance()
+                   ->GetVariable(QString::fromStdString(name))
+                   .measurements) {}
   variable(double val) {
-    for (int i = 0; i < lib::Manager::GetInstance()->GetMeasurementsCount();
+    for (size_t i = 0; i < lib::Manager::GetInstance()->GetMeasurementsCount();
          i++)
       values.push_back(val);
   }
@@ -100,27 +95,27 @@ struct eval {
     QList<double> result;
     switch (x.operator_) {
       case '+':
-        for (int i = 0; i < lib::Manager::GetInstance()->GetMeasurementsCount();
+        for (size_t i = 0; i < lib::Manager::GetInstance()->GetMeasurementsCount();
              i++)
           result.push_back(lhs.values[i] + rhs.values[i]);
         return variable(result);
       case '-':
-        for (int i = 0; i < lib::Manager::GetInstance()->GetMeasurementsCount();
+        for (size_t i = 0; i < lib::Manager::GetInstance()->GetMeasurementsCount();
              i++)
           result.push_back(lhs.values[i] - rhs.values[i]);
         return variable(result);
       case '*':
-        for (int i = 0; i < lib::Manager::GetInstance()->GetMeasurementsCount();
+        for (size_t i = 0; i < lib::Manager::GetInstance()->GetMeasurementsCount();
              i++)
           result.push_back(lhs.values[i] * rhs.values[i]);
         return variable(result);
       case '/':
-        for (int i = 0; i < lib::Manager::GetInstance()->GetMeasurementsCount();
+        for (size_t i = 0; i < lib::Manager::GetInstance()->GetMeasurementsCount();
              i++)
           result.push_back(lhs.values[i] / rhs.values[i]);
         return variable(result);
       case '^':
-        for (int i = 0; i < lib::Manager::GetInstance()->GetMeasurementsCount();
+        for (size_t i = 0; i < lib::Manager::GetInstance()->GetMeasurementsCount();
              i++)
           result.push_back(pow(lhs.values[i], rhs.values[i]));
         return variable(result);
