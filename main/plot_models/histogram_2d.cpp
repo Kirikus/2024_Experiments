@@ -28,6 +28,7 @@ void Histogram2D::Draw() {
 
   if (x_ == -1 || y_ == -1 ||
       lib::Manager::GetInstance()->GetVariablesCount() <= std::max(x_, y_))
+
     return;
   const lib::Variable& variable_x =
       lib::Manager::GetInstance()->GetVariable(x_);
@@ -41,7 +42,7 @@ void Histogram2D::Draw() {
 
   double size_box = 1e-300;
 
-  for (int i = 0; i < variable_y.GetMeasurementsCount(); ++i) {
+  for (size_t i = 0; i < variable_y.GetMeasurementsCount(); ++i) {
     size_box = std::max(size_box, std::max(abs(variable_x.measurements[i]),
                                            abs(variable_y.measurements[i])));
   }
@@ -49,7 +50,7 @@ void Histogram2D::Draw() {
   QVector<QVector<double>> density(
       2 * int(granularity_) + 2, QVector<double>(2 * int(granularity_) + 2, 0));
 
-  for (int i = 0; i < variable_x.GetMeasurementsCount(); ++i) {
+  for (size_t i = 0; i < variable_x.GetMeasurementsCount(); ++i) {
     density[std::round(variable_x.measurements[i] * (granularity_ / size_box) +
                        granularity_)]
            [std::round(variable_y.measurements[i] * (granularity_ / size_box) +
@@ -119,6 +120,7 @@ OptionsHistogram2D::OptionsHistogram2D(int index_x_, int index_y_,
   for (int i = 0; i < n; ++i) {
     ui->axisXComboBox->addItem(
         lib::Manager::GetInstance()->GetVariable(i).naming.title);
+
     ui->axisYComboBox->addItem(
         lib::Manager::GetInstance()->GetVariable(i).naming.title);
   }
@@ -145,6 +147,8 @@ double OptionsHistogram2D::choose_granularity() {
       return 200;
     case 3:
       return 1000;
+    default:
+      return 50;
   }
 }
 

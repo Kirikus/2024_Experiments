@@ -2,6 +2,8 @@
 #define MANAGER_H
 
 #include "QList"
+
+#include "string"
 #include "variable/variable.h"
 
 namespace lib {
@@ -23,8 +25,12 @@ class Manager : public QObject {
 
   Variable& GetVariable(size_t index) { return variables[index]; }
 
+  Variable& GetVariable(QString name);
+
+  bool IsVariableExisting(QString name);
+
   void ClearCalculated();
-  void AddCalculated(Variable&);
+  void AddCalculated(const Variable& = Variable());
 
   void Clear();
 
@@ -33,6 +39,8 @@ class Manager : public QObject {
   void AddVariable(const Variable& = Variable());
   void AddMeasurements();
   void DeleteMeasurements(int index = 0);
+
+  void CreateNewVariable() { AddVariable(Variable()); }
 
  signals:
   void variable_is_deleted();

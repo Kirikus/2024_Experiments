@@ -6,10 +6,12 @@
 namespace lib {
 
 int MeasurementsTable::rowCount(const QModelIndex &parent) const {
+  Q_UNUSED(parent)
   return Manager::GetInstance()->GetMeasurementsCount();
 }
 
 int MeasurementsTable::columnCount(const QModelIndex &parent) const {
+  Q_UNUSED(parent)
   return Manager::GetInstance()->GetVariablesCount();
 }
 
@@ -29,9 +31,12 @@ QVariant MeasurementsTable::data(const QModelIndex &index, int role) const {
                    QVariant(variable.measurements[index.row()] *
                             variable.error.value * 0.5)
                        .toString();
+          default:
+            return QVariant();
         }
-      }
 
+      } else
+        return QVariant();
     default:
       return QVariant();
   }
@@ -42,12 +47,12 @@ bool MeasurementsTable::setData(const QModelIndex &index, const QVariant &value,
   if (!value.canConvert<double>()) return false;
   switch (role) {
     case Qt::EditRole:
+    if (value.toString() == "") return false;
       Manager::GetInstance()
           ->GetVariable(index.column())
           .measurements[index.row()] = value.toDouble();
       emit dataChanged(index, index);
       return true;
-
     default:
       return false;
   }
@@ -60,8 +65,10 @@ QVariant MeasurementsTable::headerData(int section, Qt::Orientation orientation,
       switch (orientation) {
         case Qt::Vertical:
           return section + 1;
-        case Qt::Horizontal:
-          return Manager::GetInstance()->GetVariable(section).naming.title;
+        default:
+          auto naming = Manager::GetInstance()->GetVariable(section).naming;
+          return naming.tag.isEmpty() ? naming.title
+                                      : naming.title + "\n(" + naming.tag + ")";
       }
     default:
       return QVariant();
@@ -69,7 +76,9 @@ QVariant MeasurementsTable::headerData(int section, Qt::Orientation orientation,
 }
 
 Qt::ItemFlags MeasurementsTable::flags(const QModelIndex &index) const {
-  return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
+  return !Manager::GetInstance()->GetVariable(index.column()).isCalculated
+             ? QAbstractItemModel::flags(index) | Qt::ItemIsEditable
+             : QAbstractItemModel::flags(index) | Qt::NoItemFlags;
 }
 
 void MeasurementsTable::insertRow(int index) {

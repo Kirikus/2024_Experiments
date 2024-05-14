@@ -5,9 +5,6 @@ set(CMAKE_AUTOUIC ON)   # Specific to Qt
 set(CMAKE_AUTOMOC ON)   # Specific to Qt
 set(CMAKE_AUTORCC ON)   # Specific to Qt
 
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 find_package(QT NAMES Qt6 COMPONENTS Core Widgets Sql REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Widgets Sql REQUIRED)
 
@@ -21,3 +18,4 @@ target_link_libraries(main PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MA
 target_link_libraries(main PRIVATE core qcustomplot)
 
 target_compile_definitions(main PRIVATE QCUSTOMPLOT_USE_LIBRARY)
+target_compile_features(main PRIVATE cxx_std_20)

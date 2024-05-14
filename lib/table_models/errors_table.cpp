@@ -11,10 +11,12 @@ QMap<int, QString> ErrorsTable::error_types = {
 };
 
 int ErrorsTable::rowCount(const QModelIndex &parent) const {
+  Q_UNUSED(parent)
   return Manager::GetInstance()->GetVariablesCount();
 }
 
 int ErrorsTable::columnCount(const QModelIndex &parent) const {
+  Q_UNUSED(parent)
   return columns_data::kCount;
 }
 
@@ -27,6 +29,8 @@ QVariant ErrorsTable::data(const QModelIndex &index, int role) const {
               Manager::GetInstance()->GetVariable(index.row()).error.type);
         case columns_data::kValue:
           return Manager::GetInstance()->GetVariable(index.row()).error.value;
+        default:
+          return QVariant();
       }
     }
     default:
@@ -50,6 +54,8 @@ bool ErrorsTable::setData(const QModelIndex &index, const QVariant &value,
               value.toDouble();
           emit dataChanged(index, index);
           return true;
+        default:
+          return false;
       }
     }
     default:
@@ -71,7 +77,11 @@ QVariant ErrorsTable::headerData(int section, Qt::Orientation orientation,
               return QString("Type of error");
             case columns_data::kValue:
               return QString("Error");
+            default:
+              return QVariant();
           }
+        default:
+          return QVariant();
       }
     default:
       return QVariant();
