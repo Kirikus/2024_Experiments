@@ -38,8 +38,8 @@ void ScatterPlot2D::Draw() {
     xAxis_data.push_back(variable_x.measurements[j]);
     yAxis_data.push_back(variable_y.measurements[j]);
   }
-  xAxis->setLabel("Axis " + variable_x.naming.title);
-  yAxis->setLabel("Axis " + variable_y.naming.title);
+  xAxis->setLabel(variable_x.naming.title);
+  yAxis->setLabel(variable_y.naming.title);
   graph->setData(xAxis_data, yAxis_data);
 
   setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);

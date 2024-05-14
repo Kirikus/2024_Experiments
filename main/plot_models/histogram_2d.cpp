@@ -26,7 +26,9 @@ void Histogram2D::Draw() {
   xAxis->setLabel("");
   yAxis->setLabel("");
 
-  if (int(lib::Manager::GetInstance()->GetVariablesCount()) <= std::max(x_, y_))
+  if (x_ == -1 || y_ == -1 ||
+      lib::Manager::GetInstance()->GetVariablesCount() <= std::max(x_, y_))
+
     return;
   const lib::Variable& variable_x =
       lib::Manager::GetInstance()->GetVariable(x_);
@@ -84,8 +86,8 @@ void Histogram2D::Draw() {
 
   moveLayer(layer("grid"), layer("main"), QCustomPlot::limAbove);
 
-  xAxis->setLabel("Axis " + variable_x.naming.title);
-  yAxis->setLabel("Axis " + variable_y.naming.title);
+  xAxis->setLabel(variable_x.naming.title);
+  yAxis->setLabel(variable_y.naming.title);
   setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
   replot();
 }
@@ -100,6 +102,7 @@ void Histogram2D::Options() {
 
   index_x_ = a.get()->axisXComboBox->currentIndex();
   index_y_ = a.get()->axisYComboBox->currentIndex();
+
   index_granularity_ = a.get()->granularityComboBox->currentIndex();
 
   Draw();
@@ -112,17 +115,18 @@ OptionsHistogram2D::OptionsHistogram2D(int index_x_, int index_y_,
 
   setWindowTitle("Histogram2D options");
 
-  for (size_t i = 0; i < lib::Manager::GetInstance()->GetVariablesCount(); ++i) {
+  int n = lib::Manager::GetInstance()->GetVariablesCount();
+
+  for (int i = 0; i < n; ++i) {
     ui->axisXComboBox->addItem(
         lib::Manager::GetInstance()->GetVariable(i).naming.title);
-  }
-  ui->axisXComboBox->setCurrentIndex(index_x_);
 
-  for (size_t i = 0; i < lib::Manager::GetInstance()->GetVariablesCount(); ++i) {
     ui->axisYComboBox->addItem(
         lib::Manager::GetInstance()->GetVariable(i).naming.title);
   }
-  ui->axisYComboBox->setCurrentIndex(index_y_);
+
+  if (index_x_ < n) ui->axisXComboBox->setCurrentIndex(index_x_);
+  if (index_y_ < n) ui->axisYComboBox->setCurrentIndex(index_y_);
 
   ui->granularityComboBox->addItem("10");
   ui->granularityComboBox->addItem("50");
