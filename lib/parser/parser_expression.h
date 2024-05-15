@@ -5,7 +5,6 @@
 
 #include <boost/spirit/include/qi.hpp>
 #include "parser_ast.h"
-#include <vector>
 
 namespace client {
 namespace qi = boost::spirit::qi;

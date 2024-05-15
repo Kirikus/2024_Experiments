@@ -10,14 +10,8 @@
 #include <boost/spirit/include/qi.hpp>
 #include <boost/variant/apply_visitor.hpp>
 #include <boost/variant/recursive_variant.hpp>
-#include <iostream>
-#include <list>
-#include <string>
-#include <vector>
 
-#include "parser_ast.h"
 #include "parser_expression.h"
-
 
 namespace client {
 namespace qi = boost::spirit::qi;
@@ -65,7 +59,7 @@ parser<Iterator>::parser() : parser::base_type(expression) {
   primary_expr =
       double_
       |   varname
-      |   '(' > expression > ')'
+      |   ('(' > expression > ')')
       ;
 
   varname = raw[lexeme[+(alpha) >> *(digit | alpha | char_('_'))]];

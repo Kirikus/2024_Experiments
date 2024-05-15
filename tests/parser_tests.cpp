@@ -1,6 +1,6 @@
 #include <QApplication>
 
-#include "../lib/formula_parser.h"
+#include "../lib/parser/formula_parser.h"
 #include "manager/manager.h"
 
 #if !defined(WIN32)

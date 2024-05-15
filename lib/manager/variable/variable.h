@@ -10,7 +10,6 @@ namespace lib {
 
 struct Variable {
   QList<double> measurements;
-  bool isCalculated;
 
   struct Naming {
     QString title;
@@ -54,16 +53,18 @@ struct Variable {
     };
   } error;
 
+  bool is_calculated;
+
   size_t GetMeasurementsCount() const { return measurements.size(); }
 
   Variable(QList<double> measurements = {}, Naming naming = Naming(),
            VisualOptions visual = VisualOptions(),
-           ErrorOptions error = ErrorOptions(), bool isCalculated = false)
+           ErrorOptions error = ErrorOptions(), bool is_calculated = false)
       : measurements(measurements),
         naming(naming),
         visual(visual),
         error(error),
-        isCalculated(isCalculated)  {}
+        is_calculated(is_calculated) {}
 };
 
 }  // namespace lib

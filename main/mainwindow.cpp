@@ -3,7 +3,7 @@
 #include "./ui_mainwindow.h"
 #include "IO/strategyIO.h"
 #include "QStandardPaths"
-#include "addcalculateddialog.h"
+#include "calculated/addcalculateddialog.h"
 #include "implementer/implementer.h"
 #include "manager/manager.h"
 #include "plot_models/abstractplotmodel.h"
@@ -385,7 +385,7 @@ void MainWindow::DarkThemeOn() {
   darkPalette.setColor(QPalette::Base, QColor(25, 25, 25));
   darkPalette.setColor(QPalette::AlternateBase, QColor(53, 53, 53));
   darkPalette.setColor(QPalette::ToolTipBase, Qt::white);
-  darkPalette.setColor(QPalette::ToolTipText, Qt::white);
+  darkPalette.setColor(QPalette::ToolTipText, Qt::black);
   darkPalette.setColor(QPalette::Text, Qt::white);
   darkPalette.setColor(QPalette::Button, QColor(53, 53, 53));
   darkPalette.setColor(QPalette::ButtonText, Qt::white);
@@ -443,6 +443,7 @@ void MainWindow::on_tabWidgetPlots_tabBarClicked(int index) {
     default:
       break;
   }
+}
 
 void MainWindow::AddCalculated() {
   AddCalculatedDialog dialog;

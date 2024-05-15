@@ -18,23 +18,22 @@ int MeasurementsTable::columnCount(const QModelIndex &parent) const {
 QVariant MeasurementsTable::data(const QModelIndex &index, int role) const {
   const Variable &variable =
       Manager::GetInstance()->GetVariable(index.column());
+  QString value_str = QVariant(variable.measurements[index.row()]).toString();
   switch (role) {
     case Qt::DisplayRole:
       if (variable.measurements[index.row()]) {
         switch (variable.error.type) {
           case Variable::ErrorOptions::Types::kAbsolute:
-            return QVariant(variable.measurements[index.row()]).toString() +
-                   " ± " + QVariant(variable.error.value).toString();
+            return value_str + " ± " +
+                   QVariant(variable.error.value).toString();
           case Variable::ErrorOptions::Types::kRelative:
-            return QVariant(variable.measurements[index.row()]).toString() +
-                   " ± " +
+            return value_str + " ± " +
                    QVariant(variable.measurements[index.row()] *
                             variable.error.value * 0.5)
                        .toString();
           default:
             return QVariant();
         }
-
       } else
         return QVariant();
     default:
@@ -47,12 +46,15 @@ bool MeasurementsTable::setData(const QModelIndex &index, const QVariant &value,
   if (!value.canConvert<double>()) return false;
   switch (role) {
     case Qt::EditRole:
-    if (value.toString() == "") return false;
-      Manager::GetInstance()
-          ->GetVariable(index.column())
-          .measurements[index.row()] = value.toDouble();
-      emit dataChanged(index, index);
-      return true;
+      if (value.toString() == "") return false;
+      if (value.toDouble()) {
+        Manager::GetInstance()
+            ->GetVariable(index.column())
+            .measurements[index.row()] = value.toDouble();
+        emit dataChanged(index, index);
+        return true;
+      } else
+        return false;
     default:
       return false;
   }
@@ -67,7 +69,11 @@ QVariant MeasurementsTable::headerData(int section, Qt::Orientation orientation,
           return section + 1;
         default:
           auto naming = Manager::GetInstance()->GetVariable(section).naming;
-          return naming.tag.isEmpty() ? naming.title
+          QString cstr;
+          Manager::GetInstance()->GetVariable(section).is_calculated
+              ? cstr = " # "
+              : "";
+          return naming.tag.isEmpty() ? cstr + naming.title + cstr
                                       : naming.title + "\n(" + naming.tag + ")";
       }
     default:
@@ -76,7 +82,7 @@ QVariant MeasurementsTable::headerData(int section, Qt::Orientation orientation,
 }
 
 Qt::ItemFlags MeasurementsTable::flags(const QModelIndex &index) const {
-  return !Manager::GetInstance()->GetVariable(index.column()).isCalculated
+  return !Manager::GetInstance()->GetVariable(index.column()).is_calculated
              ? QAbstractItemModel::flags(index) | Qt::ItemIsEditable
              : QAbstractItemModel::flags(index) | Qt::NoItemFlags;
 }
