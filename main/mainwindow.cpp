@@ -318,7 +318,9 @@ void MainWindow::AddTextBlock() {
 void MainWindow::AddPlotBlock() {
   Implementer::GetInstance()->AddPlotBlock(
       Implementer::GetInstance()->odf_form->GetLayout(),
-      QPixmap(ui->ObjectLinePlot->toPixmap(256, 256)));
+      QPixmap(
+          static_cast<AbstractPlotModel*>(ui->tabWidgetPlots->currentWidget())
+              ->toPixmap(256, 256)));
 }
 
 void MainWindow::AddTableBlock() {
