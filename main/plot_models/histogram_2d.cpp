@@ -27,7 +27,7 @@ void Histogram2D::Draw() {
   yAxis->setLabel("");
 
   if (x_ == -1 || y_ == -1 ||
-      lib::Manager::GetInstance()->GetVariablesCount() <= std::max(x_, y_))
+      lib::Manager::GetInstance()->GetVariablesCount() <= size_t(std::max(x_, y_)))
 
     return;
   const lib::Variable& variable_x =
