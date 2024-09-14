@@ -74,7 +74,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 Sukhanov George - [vk](https://vk.com/thefuer) - sukhanov.ge@phystech.edu
 
-Kurchenko Mathew
+Kurchenko Mathew-Mansur
 
 Yuri Shishkinsky
 
